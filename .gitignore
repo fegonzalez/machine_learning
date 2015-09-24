@@ -1,0 +1,50 @@
+# when not working try this to update the ignored files
+# git rm -r --cached .
+# git add .
+# git commit -m "fixed untracked files"
+
+
+
+*~
+*.*~
+*.zip
+*.tar.gz
+
+# html
+*_files/*
+
+
+
+# videos
+*.mp4
+*.srt
+*.vyy
+
+# python stuff
+*.pyc
+*.pyo
+*/__pycache__/*
+
+# concepts
+linear_algebra/*
+linear_regression/*
+neural_networks/*
+SVMs/*
+
+################################################################################
+# Courses
+################################################################################
+
+#===============================================================================
+## curso_stanford/
+#===============================================================================
+
+curso_stanford/*
+
+#===============================================================================
+## curso_uw/
+#===============================================================================
+
+# avoid local links
+!curso_uw/ipython_books/ipython2
+!curso_uw/ipython_books/launcher_ipython2

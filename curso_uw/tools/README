@@ -1,0 +1,70 @@
+
+1) Python tools
+
+a) machine learning libraries
+
+   - GraphLab Create (highly scalable)
+
+     * Installation (adding to python)
+
+       pip3 install GraphLab-Create
+
+     * Installation (full: anaconda + python +graphlab)
+
+       Register info
+
+       Registered email address: fer.gonzalez.rodriguez@gmail.com
+       Product key: 9B3B-E2E5-CC2B-2C35-CAD4-AE6B-2048-3BBD
+
+     * Doc
+
+       Learning Concepts about the Tools	https://dato.com/learn/
+
+       The User Guide	     	 	https://dato.com/learn/userguide/
+
+       More Detailed API Docs		https://dato.com/products/create/docs/
+
+     * Use
+
+       import graphlab
+
+   
+b) data manipulation libraries
+
+   - SFrame (highly-scalable) (included inside inGraphLab)
+   
+   
+c) Python editors
+
+   ipython
+
+   # INSTALL
+
+   # jupiter: New installation with brew (mac)
+   pip3 install jupyter
+
+   # ipython: New installation with brew (mac)
+   brew python3
+   pip3 install ipython pyzmq jinja2 tornado
+   ipython notebook
+
+   # jupyter: updating from ipython to jupyter
+   pip3 install -U jupyter
+
+
+   # EXECUTION
+   jupyter notebook
+
+
+z) Other tools
+
+   - scikit-learn (ML lib)
+   - pandas (data manipulation lib)
+
+
+
+INSTALL
+
+1) install python
+2) install jupyter (ipython)
+3) install graphlab

@@ -1,0 +1,46 @@
+
+# ------------------------------------------------------------------------------
+# launch ipython notebook with Python 3
+# ------------------------------------------------------------------------------
+
+>>> ipython notebook
+
+
+
+# ------------------------------------------------------------------------------
+# launch ipython notebook with Python 2
+# ------------------------------------------------------------------------------
+
+>>> ./launcher_ipython2 &
+
+     # Dato launcher screen is opened
+
+
+>>> click on TERMINAL icon
+
+    # A new terminal screen is opened. Using this terminal for now on.
+
+
+>>> close Dato launcher screen
+
+
+    # In the new terminal:
+
+>>> mv to the directory where you want to launch the notebook (where you have
+    the notebooks ".ipynb" files)
+
+
+    # In the new directory:
+    
+>>> ipython notebook
+
+    # the notebook is opened with Python 2.
+
+
+# ------------------------------------------------------------------------------
+# How to use.
+# ------------------------------------------------------------------------------
+
+# Keyboard shortcuts
+
+  /Menu/Help/Keyboard shortcuts   or   ESC-H

@@ -1,0 +1,44 @@
+
+################################################################################
+# BUG: Graphlab - graphlab.canvas.set_target('ipynb')  does not work
+################################################################################
+
+If you happen to install graphlab 1.6, there is a bug which prevents
+show(view='Scatter Plot'...) and other specific plot types from working when
+the canvas target is 'ipynb'. It instead will always show the 'Summary'. Drove
+me crazy for a while. Perhaps Dato has some QA problems.
+
+
+1) Open:
+
+- MAC with Anaconda:
+  "anaconda/lib/python2.7/site-packages/graphlab/canvas/views/sframe.py"
+   
+- Linux: "lib/python2.7/site-packages/graphlab/canvas/views/sframe.py"
+
+
+2) Replace the last view lines of the get_js_component function. Basically
+replace this:
+
+(Conditional statement to be patched is on line 225)
+
+
+      if name not in self.get_js_components():
+                logging.warning('View param %s is not recognized. You may want to use "Summary", "Plots", "Table" or a specific plot type such as "Scatter Plot". I am showing you the Summary view for now.' % name)
+        return 'Summary'
+
+with this:
+
+
+      if name not in self.get_js_components():
+                logging.warning('View param %s is not recognized. You may want to use "Summary", "Plots", "Table" or a specific plot type such as "Scatter Plot". I am showing you the Summary view for now.' % name)
+                return 'Summary'
+            else:
+                return 'Plots'
+        return 'Summary'
+
+
+3) Restart your notebook server or notebook kernel as appropriate to your
+   situation and retry your notebook statements with show(view='...') in them.
+
+################################################################################

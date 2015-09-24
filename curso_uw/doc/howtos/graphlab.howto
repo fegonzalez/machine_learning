@@ -1,0 +1,94 @@
+################################################################################
+#
+# WARNING 'GraphLab Create' is non-free tool (licensed for this course)
+# 	  Same actions can be performed with free tools
+#
+################################################################################
+
+
+# Tools
+
+- GraphLab Create: (highly scalable) machine learning library. Runs over
+  ipython notebooks.
+
+- SFrame (highly-scalable) data manipulation library (R-style). Included inside
+  GraphLab, thus runs over ipython notebooks.
+
+
+
+################################################################################
+# INDEX
+################################################################################
+
+# 1) SFrame Basics 
+
+
+
+
+# ==============================================================================
+# 1) SFrame Basics 
+# ==============================================================================
+
+a) import graphlab
+
+   > import graphlab   # or "import graphlab as gl; gl.SFrame ..."
+
+b) Load dataset
+
+   > sf = graphlab.SFrame('people-example.csv') 
+
+c) Data manipulation
+
+   > sf.head() # or just 'sf'
+
+   > sf.tail()
+
+
+   i) Operations over dataset's columns
+
+   > sf['Country'].head()
+
+   > sf['age'].mean()	# max(), ...
+
+   > map(lambda x: x*x, sf['age'])
+
+   # Create new columns
+   > sf['Full Name'] = sf['First Name'] + ' ' + sf['Last Name']
+
+
+   ii) Use the 'apply' function to do a advance transformation of our data
+
+       - Similar to Python.map() but using parallelism.
+
+   > sf['Country'].apply(transform_country)
+
+     # def transform_country(country):
+     # 	 if country == 'USA':
+     #        return 'United States'
+     # 	 else:   	
+     #        return country
+
+     > sf['Country'] = sf['Country'].apply(transform_country)
+
+     ['United States', 'Canada', 'England', 'United States', 'Poland']
+     type: <class 'graphlab.data_structures.sarray.SArray'>
+
+     > map_vs_apply = map(transform_country, sf['Country'])
+     ['United States', 'Canada', 'England', 'United States', 'Poland']
+     type: list
+     
+
+d) Canvas
+
+   # Visualizes any data structure in GraphLab Create (plots & tables)
+   # (http://localhost:52331/index.html)
+
+   > sf.show()
+
+
+   # If you want Canvas visualization to show up on this notebook, 
+   # rather than popping up a new window, add this line:
+   #
+   > graphlab.canvas.set_target('ipynb')
+
+   > sf['age'].show(view='Categorical')
