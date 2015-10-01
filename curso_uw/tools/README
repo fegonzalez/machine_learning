@@ -32,7 +32,8 @@ a) machine learning libraries
 b) data manipulation libraries
 
    - SFrame (highly-scalable) (included inside inGraphLab)
-   
+
+     https://github.com/dato-code/SFrame  (free version)
    
 c) Python editors
 

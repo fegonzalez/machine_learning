@@ -18,7 +18,7 @@
 # videos
 *.mp4
 *.srt
-*.vyy
+*.vtt
 
 # python stuff
 *.pyc
@@ -48,3 +48,16 @@ curso_stanford/*
 # avoid local links
 !curso_uw/ipython_books/ipython2
 !curso_uw/ipython_books/launcher_ipython2
+
+# notebooks
+
+# tools
+curso_uw/tools/sframe/doc/*
+
+# programming_exercices
+curso_uw/programming_exercices/1.predicting_house_prices/statement/local_copy/*
+curso_uw/programming_exercices/1.predicting_house_prices/enunciado
+curso_uw/programming_exercices/1.predicting_house_prices/sframe_doc
+
+#===============================================================================
+

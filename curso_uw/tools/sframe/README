@@ -1,0 +1,10 @@
+
+* The SFrame package is available in open-source under a permissive BSD
+  license. So, you will always be able to use SFrames for free.
+
+  https://github.com/dato-code/SFrame
+
+
+* SFrame, which will allow you to scale to much larger datasets than Pandas. 
+
+* DOC - https://dato.com/products/create/docs/generated/graphlab.SFrame.html#graphlab.SFrame

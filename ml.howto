@@ -1,0 +1,242 @@
+
+
+##==============================================================================
+## INDEX
+##==============================================================================
+
+# 1.- Types of Problems
+#
+#     1.1. Regression Problems
+#     	   1.1.1. Linear Regression
+# 	   1.1.2. Multivariate Regression
+#     1.2. Classification Problems
+
+
+# 2.- Supervised Learning Algorithms
+#
+#     2.1 Gradient Descent Algorithm
+
+
+# 3.- Unsupervised Learning Algorithms
+#
+
+
+# 4.- Techniques
+
+# Hints
+
+# Warnings
+
+# Annex.- Maths Review
+
+# Annex.- Linear Algebra Review
+
+# Glossary 
+
+# References
+
+##==============================================================================
+
+
+
+##==============================================================================
+## 1.-   Types of Problems
+##==============================================================================
+
+
+# 1.1. Regression Problems
+
+  To predict the actual CONTINUOUS valued output.
+
+# 1.1.1. Linear Regression:        y = f(X)
+
+# 1.1.2. Multivariate Regression:  y = f(X1, .., Xn)
+
+
+# 1.2. Classification Problems
+
+  To predict the actual DISCRETE valued output (i.e. {yes, no})
+
+
+
+##==============================================================================
+## 2.- Supervised Learning Algorithms
+##==============================================================================
+
+# 2.1 Gradient Descent Algorithm
+
+  NOTICE always using Batch G.D. (See Glossary)
+
+- Resolution for:
+  
+    > Linear Regression with one variable [2.1]
+    > Multivariate Regression
+
+
+  a) GD(J, Theta, alpha): 
+
+
+  b) alpha selection for GD
+
+    > Goal is to get the convergence curve as expected (3.c.1)
+    > Proven: if alpha is small enough then J will decrease on every iteration
+    > NG suggestion: decreasing alpha by multiples of 3:
+      0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, ...
+
+  c) Numbers of iterations: it is hard to predict for every problem.
+
+  d) Correct Convergence Detection.
+
+    > Automatic convergence test (the correct in theory)
+
+   	IF J(theta) <= Epsilon in one iteration THEN declare convergence
+
+    > Plot of convergence (the easy in practice)
+
+   	(OX = #iterations ; OY = J)
+	Convergence iff curve form is the expected (fast fall - medium fall -
+	almost flat)
+
+
+
+
+##==============================================================================
+## 3.- Unsupervised Learning Algorithms
+##==============================================================================
+
+
+
+##==============================================================================
+## 4.- Techniques
+##==============================================================================
+
+a) Feature scaling
+
+    Xi = Xi / S    ; S = range(X)
+
+    To speed up Gradient Descent Alg.
+
+
+WARNING Feature scaling when S is close to 0
+	(S ~= 0) iff vector feature ~= constant => bad feature => the feature
+	must be removed => PROBLEM: S does not exists anymore.
+
+  
+
+b) Mean Normalization
+
+   Xi =  Xi / u   ; u =  mean(X)
+
+   To speed up Gradient Descent Alg.
+
+
+
+
+##==============================================================================
+## Hints
+##==============================================================================
+
+HINT (Batch) Gradient Descent algorithm ALWAYS converge to GLOBAL minimum for
+     linear regression problems. [2.1]
+
+HINT (Batch) Gradient Descent algorithm scales better than the numerical method
+     (Normal Equations Method), for large training sets.
+
+
+##==============================================================================
+## Warnings
+##==============================================================================
+
+WARNING Feature scaling when S is close to 0
+	(S ~= 0) iff vector feature ~= constant => bad feature => the feature
+	must be removed => PROBLEM: S does not exists anymore.
+
+
+WARNING Multiple Regression vs Multivariate Regression
+	Multiple Regression:      y = f(X1, .., Xn)
+	Multivariate Regression:  f(Y1, .., Yn) = f(X1, .., Xn)
+
+
+
+##==============================================================================
+## Annex.- Maths Review
+##==============================================================================
+
+
+##==============================================================================
+## Annex.- Linear Algebra Review
+##==============================================================================
+
+
+
+##==============================================================================
+## Annex.- Glossary 
+##==============================================================================
+
+A
+
+B
+
+- Batch Gradient Descent algorithm: for every iteration step of the GD
+  algorithm, we SIMULTANEOUSLY use (update) the entire training set.
+
+C
+
+- Classification Problem: to predict the actual DISCRETE valued output
+  (i.e. {yes, no})
+  
+- Cost function: function to get the learning algorithm result.
+  i.e. in linear regression this is the function to minimize
+
+
+N
+
+- Normal Equations Method: mathematical (not AI) method to solve linear
+  regression. This method is suggested for low size training sets.
+
+
+O
+
+- Ordinary Least Squares (OLS): method for estimating the unknown parameters in
+  a (linear) regression problem
+
+
+R
+
+- Regression Problem: predict the actual CONTINUOUS valued output.
+
+
+S
+
+- Sigmoid Function [2].ML.C5 : cost function used to solve logistic
+  (classification) regression problems.
+
+- Supervised Learning (Algorithms): for every example of the data set, we are
+  provided with the "correct answer" to predict. Thus, the training example
+  sets are provided to the algorithm.
+
+
+U
+
+- Unsupervised Learning (Algorithms): neither the training set, nor the possible
+  solution are provided to the algorithm. The algorithm itself make its own
+  conclusions as a result to an input; and later the human engineer will study
+  this conclusions.
+
+
+##==============================================================================
+## References
+##==============================================================================
+
+[1] Machine Learning course - U. Stanford (Andrew Ng)
+
+[1.1] Using Python on a Macintosh - https://docs.python.org/3.3/using/mac.html
+
+
+[2] Notest at the ML (paper) notebook.
+
+[2.1] (Batch) Gradient Descent algorithm - page 1 to 3
+
+
+[3] Machine Learning course - U.Washington
+
