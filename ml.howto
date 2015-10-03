@@ -7,14 +7,18 @@
 # 1.- Types of Problems
 #
 #     1.1. Regression Problems
-#     	   1.1.1. Linear Regression
+#     	   1.1.1. Linear Regression (one variable regression)
 # 	   1.1.2. Multivariate Regression
 #     1.2. Classification Problems
 
 
 # 2.- Supervised Learning Algorithms
 #
-#     2.1 Gradient Descent Algorithm
+#     2.1. Gradient Descent Algorithm
+#     2.1.1 Equation
+#     2.1.2 Vectorized Notation
+#     2.1.3 Speeding up Gradient Descent
+#     2.1.4 Debugging Gradient Descent [2.6]
 
 
 # 3.- Unsupervised Learning Algorithms
@@ -22,6 +26,11 @@
 
 
 # 4.- Techniques
+#     4.1. Feature scaling  
+#     4.2. Mean Normalization
+#     4.3. Polynomial Regression
+
+
 
 # Hints
 
@@ -44,18 +53,108 @@
 ##==============================================================================
 
 
+INFO notation   x sub i represented as  'x_i'
+
+INFO notation   x super i represented as  'x((i))'
+
+INFO notation	Summation from i=1 to m represented as 'SUM_i=1_to_m'
+
+INFO Notation 	theta can be represented as 'O' is some equations.
+
+INFO Notation 	h_theta can be represented as 'h' is some equations.
+
+INFO Notation 	in vectorized notation, uppercase means MATRIX & lowercase means
+     	      	scalar variable.
+
+INFO Notation   Matrix: A' is the transpose matrix of A
+
+INFO Notation   Matrix: inv(A) is the inverse matrix of A
+
+
+##------------------------------------------------------------------------------
 # 1.1. Regression Problems
+##------------------------------------------------------------------------------
 
   To predict the actual CONTINUOUS valued output.
 
-# 1.1.1. Linear Regression:        y = f(X)
+# 1.1.1. Linear Regression (one variable regression):  y = f(X)
 
-# 1.1.2. Multivariate Regression:  y = f(X1, .., Xn)
+# 1.1.2. Multivariate Regression:                      y = f(X1, .., Xn)
+
+  	 n = 1: linear regression
 
 
+
+a) Model representation
+
+   Training set (x, y, m)   ->   i-th training example ( x(i), y(i) )
+
+   m: number of examples
+   n: number of features (n=1 in linear regression)
+   x: inputs
+   y: outputs
+
+   X((i)): i-th training example input
+
+   X_j((i)): i-th training example value of feature j
+
+   Y((i)): i-th training example output
+
+
+b) Problem representation
+
+
+         training set
+
+             |
+	     v
+
+      learning algorithm
+
+             |
+	     v
+
+ x  ->  h (hypothesis)  ->  y
+
+
+c) hypothesis representation
+
+   h_theta(x) = theta_0 + theta_1 * x  # linear regression (n=1)
+
+   INFO h_theta(x) can be notated as h(x)
+
+
+d) Cost function 
+
+   # linear regression (particular case, n=1)
+   J(theta_0, theta_1) = 1/(2m) * SUM_i=1_to_m ( h( x((i)) ) - y((i)) ) **2
+
+   # multivariate regression (general case)
+
+
+e) Schema
+
+   - Hypothesis:	h_theta(x)
+
+   - Parameters:	theta_0, theta_1, .., theta_n
+
+   - Cost Function:	J(theta)
+
+   - GOAL:		find theta values to minimize J(theta)
+
+
+   The Problem is  How to get theta values?
+
+   -> we want software that automatically find theta values that minimize J
+      (i.e) Gradient Descent algorithms
+
+
+##------------------------------------------------------------------------------
 # 1.2. Classification Problems
+##------------------------------------------------------------------------------
 
   To predict the actual DISCRETE valued output (i.e. {yes, no})
+
 
 
 
@@ -63,29 +162,73 @@
 ## 2.- Supervised Learning Algorithms
 ##==============================================================================
 
-# 2.1 Gradient Descent Algorithm
+##------------------------------------------------------------------------------
+# 2.1. Gradient Descent Algorithm
+##------------------------------------------------------------------------------
 
   NOTICE always using Batch G.D. (See Glossary)
 
 - Resolution for:
   
-    > Linear Regression with one variable [2.1]
-    > Multivariate Regression
+    > Multivariate Regression [2.3]
+    > Linear Regression with one variable (multivariate reg. where n=1) [2.1]
 
 
-  a) GD(J, Theta, alpha): 
+  2.1.1 Equation
+
+  # Notation note.- theta = O
+  # Notation note.- h_theta = h
+
+  REPEAT
+  {
+    grad = (1/m) * ( SUM_i=1_to_m ( h( x((i)) ) - y((i)) ) * x_j((i)) )
+    O_j = O_j - (alpha * grad)
+
+    # Batch GD: updating O_j simultaneously# j = 0..n
+    # x_0((i)) = 1 for every i
+    
+  }
 
 
-  b) alpha selection for GD
+  2.1.2 Vectorized Notation (see glossary for details)
+
+  	# INFO Notation in vectorized notation, uppercase means MATRIX &
+  	# lowercase means scalar variable.
+
+
+	> h(x) = X * O
+
+
+	> J(O) =  (1/2m) (XO-y)' (XO-y)
+
+	  #INFO (XO-y)' * (XO-y) is just the error calculation, thus (h-y)**2,
+	  #     in matrix notation (scalar product).
+
+
+	> O = O - (alpha * grad)
+
+	  # grad = (1/m) * X' * (XO-y)
+
+
+  2.1.3 Speeding up Gradient Descent
+
+  	 - feature scaling technique (GOTO 4.1)
+	 - mean normalization technique (GOTO 4.2)
+	 - Polynomial Regression technique (GOTO 4.3)
+
+
+  2.1.4 Debugging Gradient Descent [2.6]
+  
+  a) alpha selection for GD
 
     > Goal is to get the convergence curve as expected (3.c.1)
     > Proven: if alpha is small enough then J will decrease on every iteration
     > NG suggestion: decreasing alpha by multiples of 3:
       0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, ...
 
-  c) Numbers of iterations: it is hard to predict for every problem.
+  b) Numbers of iterations: it is hard to predict for every problem.
 
-  d) Correct Convergence Detection.
+  c) Correct Convergence Detection
 
     > Automatic convergence test (the correct in theory)
 
@@ -99,6 +242,39 @@
 
 
 
+##------------------------------------------------------------------------------
+# 2.2. Normal Equation Method [2.2]
+##------------------------------------------------------------------------------
+
+- Mathematical (not AI) method to solve linear regression: finding the optimal
+  theta values without iterations.
+
+
+  O = inv(X' * X) * X' * y   #WARNING computation order is O(n**3)
+
+  #INFO Octave notation: O = pinv(X) * y 
+
+
+- GD vs Normal Equation
+
+
+          GD                vs        Normal Eq.
+ ---------------------------|---------------------------
+                            |
+      Needs alpha           |          No alpha
+                            |
+  Needs many iterations     |        No iterations
+                            |
+         O(n)               |          O(n**3)           # WARNING key fact
+ ---------------------------|---------------------------
+ 
+           ||                             ||
+           vv    ((according to Ng))      vv
+	   
+ ---------------------------|---------------------------	   
+ OK for large n (n>=10**4)  |  OK for short n (n<10**4)  # CONCLUSION !!
+
+
 
 ##==============================================================================
 ## 3.- Unsupervised Learning Algorithms
@@ -110,11 +286,11 @@
 ## 4.- Techniques
 ##==============================================================================
 
-a) Feature scaling
+4.1. Feature scaling [2.5]
 
     Xi = Xi / S    ; S = range(X)
 
-    To speed up Gradient Descent Alg.
+    Used to speed up Gradient Descent Alg.
 
 
 WARNING Feature scaling when S is close to 0
@@ -122,14 +298,21 @@ WARNING Feature scaling when S is close to 0
 	must be removed => PROBLEM: S does not exists anymore.
 
   
-
-b) Mean Normalization
+4.2. Mean Normalization [2.5]
 
    Xi =  Xi / u   ; u =  mean(X)
 
-   To speed up Gradient Descent Alg.
+   Used to speed up Gradient Descent Alg.
 
 
+4.3. Polynomial Regression [2.4]
+
+   h(x) = O0 + O1(x1) ...  ==>  h(x) = O0 + O1(x1) +  O2 * sqrt(x1)
+
+   	where (O2 * sqrt(x1) ) is created to change the behaviour of the curve
+   	to get a bettet fit of the solution (y)
+
+   Used to improve the hypothesis function (h)
 
 
 ##==============================================================================
@@ -191,7 +374,13 @@ C
 
 N
 
-- Normal Equations Method: mathematical (not AI) method to solve linear
+- Non invertibility Problem [2.7]: Matrix non invertible -> can not be used to
+  GD calculation.
+  Cause -> Solution: feature redundancy -> remove the dependent feature
+  Cause -> Solution: (n >= m) -> remove some features or regularization.
+  INFO In Octave, pinv(X) ALWAYS calculates the inverse matrix of X.
+
+- Normal Equation Method: mathematical (not AI) method to solve linear
   regression. This method is suggested for low size training sets.
 
 
@@ -224,6 +413,15 @@ U
   this conclusions.
 
 
+V
+
+- Vectorized Notation (or Matrix Notation): used to optimize the speed of the
+  calculations.
+  Relies on the mathematical software libraries used: using the library's
+  matrix operations instead of manual programming using "for loops".
+  The speed up can be in order of hundreds (empirically tested)
+
+
 ##==============================================================================
 ## References
 ##==============================================================================
@@ -235,8 +433,13 @@ U
 
 [2] Notest at the ML (paper) notebook.
 
-[2.1] (Batch) Gradient Descent algorithm - page 1 to 3
-
+[2.1] (Batch) Gradient Descent algorithm - page ML.C3
+[2.2] Normal Equation Method - page 8
+[2.3] Multivariate Regression - pages 5-6
+[2.4] Features and Polynomial Regression - page 8
+[2.5] Speeding up Gradient Descent - page 6
+[2.6] Debugging Gradient Descent - page 7
+[2.7] Non invertibility Problem - page 9
 
 [3] Machine Learning course - U.Washington
 
