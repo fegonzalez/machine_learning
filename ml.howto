@@ -6,33 +6,67 @@
 
 # 1.- Types of Problems
 #
-#     1.1. Regression Problems
-#     	   1.1.1. Linear Regression (one variable regression)
-# 	   1.1.2. Multivariate Regression
-#     1.2. Classification Problems
+#     1.1 Regression Problems
+#     	   1.1.1 Linear Regression (one variable regression)
+# 	   1.1.2 Multivariate Regression
+#     1.2 Classification Problems
 
 
 # 2.- Supervised Learning Algorithms
 #
 #     2.1. Gradient Descent Algorithm
-#     2.1.1 Equation
-#     2.1.2 Vectorized Notation
-#     2.1.3 Speeding up Gradient Descent
-#     2.1.4 Debugging Gradient Descent [2.6]
-
+#     	   2.1.1 Equation
+#     	   2.1.2 Vectorized Notation
+#     	   2.1.3 Speeding up Gradient Descent
+#     	   2.1.4 Debugging Gradient Descent [2.6]
 
 # 3.- Unsupervised Learning Algorithms
 #
 
 
 # 4.- Techniques
-#     4.1. Feature scaling  
-#     4.2. Mean Normalization
-#     4.3. Polynomial Regression
+#
+#     4.1 Feature scaling  
+#     4.2 Mean Normalization
+#     4.3 Polynomial Regression
 
+
+# 5.- Regularization (solving the over-fitting problem)
+#
+#     5.1 Overfitting Problem (high variance)
+#     5.2 Underfitting Problem (high bias)
+#     5.3 Regularization
+#     5.4 Regularized Linear Regression
+#     	   5.4.4.1 Vectorized Linear Regression with Regularization
+#     5.5 Regularized Normal Equation
+#     5.6 Regularized Logistic Regression
+#     	   5.4.6.1 Vectorized Logistic Regression with Regularization
+
+
+# 6.- Advice for applying Machine Learning FIXME_TODO
+#
+#     6.1 Is h(x) OK? - evaluating the hypothesis function
+#     6.2 Are the data sets OK? - Model selection & train/cv/test sets
+#     6.3 Bias/Variance
+#     	  6.3.1 Trade-off intuition 
+# 	  6.3.2 Is 'd' OK? -  Bias & Variance diagnosis : 'd' selection
+# 	  6.3.3 Is 'm' OK? - Learning curves: 'm' selection
+# 	  6.3.4 Is lambda OK? - Regularization & Bias/Variance: selecting lambda
+# 	  6.3.5 The decision process
+#     6.4 Neural Networks Diagnosis FIXME_TODO
+
+# 7.- Machine Learning systems design [2.10] FIXME_TODO
+#
+#     7.1 Error analysis:
+#     7.2 Error metrics for skewed classes:
+#     7.3 Precision-Recall trade-off
+#     7.4 How much data should we train?
 
 
 # Hints
+
+HINT Why train/cv/test sets: GOTO 6.2
+
 
 # Warnings
 
@@ -314,6 +348,235 @@ WARNING Feature scaling when S is close to 0
 
    Used to improve the hypothesis function (h)
 
+   INFO    d: polynomial degree of h(x)
+
+
+##==============================================================================
+# 5.- Regularization (solving the over-fitting problem)
+##==============================================================================
+
+# 5.1. Overfitting Problem (high variance - related to precision) [2.8]
+
+  - Detection: h(x) match the training set almost perfectly.
+
+  - Consequences: h(x) bad generalization.
+  
+  - Causes & solutions:
+
+    i) Cause: too many features (n >> m). This means that some features are not
+       representative to find the solution.
+
+       Solution (-n): reduction of the number of features; manually or
+       automatically (Model Selection algorithm)
+       
+       Solution (+m): add more training examples.
+       
+    ii) Cause: all the features are useful to find the solution, but the cost
+    	function (J) is too much complex.
+
+	Solution: Regularization
+
+
+    WARNING First Mandatory action to get a solution: split the data set into:
+    	    - training set
+	    - cross validation set
+	    - test set
+
+
+# 5.2. Underfitting Problem (high bias - related to exactitude) [2.8]
+
+  - Detection: h(x) does not fit the training set.
+
+  - Consequences: h(x) bad generalization.
+  
+  - Causes & solutions:
+
+    i) Cause: too few features (n << m). 
+
+       Solution (+ n): add features.
+       
+    ii) Cause: cost function (J) is too much simple (i.e. h(x) = cte = 2)
+
+    	Solution (+ d): increase the complexity of J (i.e. Polynomial Regression
+    	technique)
+
+
+# 5.3. Regularization [2.8]
+
+  WHY Solution to overfitting problem caused by an excesive complex cost
+      function, and when all the fer¡tures are usefull to find the solution.
+
+  HOW keep all the features but reduce the weight of some/every feature by
+      incresing their cost.
+
+  i) Decrease lambda -> to fix high bias problem
+  
+  ii) Increase lambda -> to fix high variance problem
+
+  
+
+##==============================================================================
+# 6.- Advice for applying Machine Learning [2.9]
+##==============================================================================
+
+#INFO Notation: 'd' is the polynomial degree of h(x)
+
+
+# 6.1 Is h(x) OK? - Evaluating the hypothesis function FIXME_TODO
+
+  Overfitting => split the data in different sets: training, cv, tesst
+
+
+# 6.2 Are the data sets OK? - Model selection & train/cv/test sets
+
+  We need to split the data set into three different sets:
+  
+  - training set (60%): used to optimize h(x)
+  
+  - cross validation set (20%): used to optimize other training parameters (d,
+    lambda, ...)
+
+  - test set (20%): used to check the resulting cost function.
+  
+
+  WHY? Because J_training has been optimized for the training set -> J_training
+       bad generalization.
+
+       And because J_cv has been optimized for (e.g.) 'd' -> J_cv bad
+       generalization.
+
+       But the test set has not been used yet -> J_test good generalization
+
+
+  Goal: selection of the best polynomial degree for h(x)
+
+  Steps:
+
+  i)   Training set: for every 'd', min J_train = 1/2m SUM((h-y)**2)
+
+  ii)  Cross Validation set:  for every 'd', min J_cv
+
+  iii) Pick 'd' where J_cv is minimum
+
+  iv)  Estimate generalization error for the test set: J_test(O((d_min)))
+
+
+# 6.3 Bias/Variance
+
+  INFO High variance => over-fitting problem
+  INFO High bias => under-fitting problem
+
+
+# 6.3.1 Trade-off intuition 
+
+  i) Complex Model (high polynomial degree) ->
+     -> very sensitive to data ->
+     -> highly affected by changes in X (input)
+
+     => high variance & low bias
+
+
+  i) Simple Model -> rigid -> lowly affected by changes in X (input)
+
+     => low variance & high bias
+
+
+# 6.3.2 Is 'd' OK? -  Bias & Variance diagnosis : 'd' selection
+
+  - Plot (OX is 'd'; OY is J(theta))
+
+    INFO J result high: means J value is distant to 0 
+
+    INFO J result low: means J value is close to 0
+
+  - Check the plot values of J_train & J_cv to check/find 'd'
+  
+  case High bias: if (J_train ~= J_cv) and (both of them are high)
+
+  case High variance: if (J_cv >> J_train ) and (J_train low)
+
+  case optimal value for 'd': the lowest point for both J_train & J_cv where
+       	       	     	      (J_train ~= J_cv)
+
+
+# 6.3.3 Is 'm' OK? - Learning curves: 'm' selection
+
+  - Plot (OX is 'm'; OY is J(theta))
+
+  - Check the plot values of J_train & J_cv to check/find 'm'
+  
+  case High bias: if (J_train ~= J_cv) and (both of them are high)
+
+  case High variance: if (J_cv >> J_train ) and (J_train low)
+
+
+# 6.3.4 Is lambda OK? - Regularization & Bias/Variance: selecting lambda
+
+
+# 6.3.5 The decision process
+
+  a) Fixing high variance problem (over-fitting)
+
+     i)   (+l) Increase lambda (in regularization).
+
+     ii)  (-n) Remove some (non representatives) features.
+
+     iii) (+m) Add training examples.
+
+  b) Fixing high bias problem (under-fitting)
+
+     i)   (-l) Decrease lambda (in regularization).
+
+     ii)  (+n) Add features.
+
+     iii) (+d) Add polynomial features.
+
+
+     WARNING Adding training examples (+m) does not fix high bias.
+     
+
+# 6.4 Neural Networks Diagnosis
+
+
+##==============================================================================
+# 7.- Machine Learning systems design [2.10] FIXME_TODO
+##==============================================================================
+
+7.1 Error analysis:
+
+- Recommended approach to solve a ML problem
+
+  a) Start with a quick and dirty algorithm.
+     Test this alg. on the cross validation (cv) data set
+
+  b) Plot learning curves to decide:
+     > more data (+m) ?
+     > more features (+n) ?
+     > ...
+
+  c) Error analysis: MANUALLY examine the errors on the cross validation (cv)
+     data set to find systematic trends.
+
+- Numerical evaluation: set a measure of your algorithm (%error, accuracy,
+  ...), to see the results quickly.
+
+
+7.2 Error metrics for skewed classes:
+
+
+7.3 Precision-Recall trade-off
+
+
+7.4 How much data should we train?
+
+    a) Choose the correct features (X set) to have enough information:
+
+       Given X, would a human expert predict y?
+
+    b) Once having a low bias algorithm, then enlarge the training set to
+       reduce overfitting and increase the accuracy of the training set
+
+
 
 ##==============================================================================
 ## Hints
@@ -371,6 +634,7 @@ C
 - Cost function: function to get the learning algorithm result.
   i.e. in linear regression this is the function to minimize
 
+- cv: cross validation set
 
 N
 
@@ -440,6 +704,10 @@ V
 [2.5] Speeding up Gradient Descent - page 6
 [2.6] Debugging Gradient Descent - page 7
 [2.7] Non invertibility Problem - page 9
+[2.8] Regularization
+[2.9] Advice for applying Machine Learning - pages 29-32
+[2.10] Machine Learning systems design - pages 33
+
 
 [3] Machine Learning course - U.Washington
 
