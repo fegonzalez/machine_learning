@@ -22,6 +22,7 @@
 
 # 1) SFrame Basics 
 
+# 2) SFrame Regression
 
 
 
@@ -80,15 +81,114 @@ c) Data manipulation
 
 d) Canvas
 
+   # If you want Canvas visualization to show up on this notebook, 
+   # rather than popping up a new window, add this line:
+   #
+   > graphlab.canvas.set_target('ipynb')
+
    # Visualizes any data structure in GraphLab Create (plots & tables)
    # (http://localhost:52331/index.html)
 
    > sf.show()
 
 
-   # If you want Canvas visualization to show up on this notebook, 
-   # rather than popping up a new window, add this line:
-   #
-   > graphlab.canvas.set_target('ipynb')
-
    > sf['age'].show(view='Categorical')
+
+   > sales.show(view="Scatter Plot", x="sqft_living", y="price")
+
+   > sales.show(view='BoxWhisker Plot', x='zipcode', y='price')
+
+
+
+# ==============================================================================
+# 2) SFrame Regression
+# ==============================================================================
+
+#INFO rmse: root_mean_squeare_error == J(theta)
+
+#INFO Matplotlib is a Python plotting library that is also useful for plotting.
+#     You can install it with: 'pip install matplotlib'
+
+
+a) split data sets
+
+  > train_data,test_data = sales.random_split(.8,seed=0)
+
+
+b) Build the regression model
+
+  # graphlab.linear_regression.create: will create AND TRAIN the algorithm
+
+
+# WARNING graphlab.linear_regression.create: set 'validation_set=None' when no 
+# cv set is needed, otherwise the algorithm will create one by itself that 
+# could have different size each execution -> non-repeatable results.
+# This has been empirically tested.
+
+
+# WARNING 'graphlab.linear_regression.create' output: check the output messages,
+# it gives information related to learning errors (i.e. useless features)
+
+
+  # (e.g. linear regression)
+  
+  > sqft_model = graphlab.linear_regression.create
+    	            (train_data,                       # data source
+                     validation_set=None,
+	             target='price',                   # y to predict
+	             features=['sqft_living'])         # 1 feature
+
+
+  # (e.g. multivariate regression)
+  > my_features = ['bedrooms', 'sqft_living', 'sqft_lot', 'floors', 'zipcode']
+  > my_features_model = graphlab.linear_regression.create
+    		           (train_data, target='price', features=my_features)
+
+
+c) View the learned regression coefficients: theta
+
+  > sqft_model.get('coefficients')
+
+  # Result example: table
+  #
+  #    name      index      value
+  # -------------------------------------
+  # intercept) 	  None 	  -46630.3239865      # theta_0
+  # sqft_living   None 	  282.066576944	      # theta_1
+
+
+d) Evaluate the regression algorithm
+
+  > sqft_model.evaluate(test_data)  # e.g. evaluating the X_test
+
+    # Result example: rmse has order of millions -> bad generalization
+    {'max_error': 4141991.878006587, 'rmse': 255183.70971457666}
+  
+
+e) Predict new solutions: apply the regression model to predict new values.
+
+ > house1 = sales[sales['id']=='5309101200'] # data for a db ...
+ 
+ > my_features_model.predict(house1)
+
+
+ >  bill_gates = {'bedrooms':[8],                  # or a python data
+              'bathrooms':[25], 
+              'sqft_living':[50000], 
+              'sqft_lot':[225000],
+              'floors':[4], 
+              'zipcode':['98039'], 
+              'condition':[10], 
+              'grade':[10],
+              'waterfront':[1],
+              'view':[4],
+              'sqft_above':[37500],
+              'sqft_basement':[12500],
+              'yr_built':[1994],
+              'yr_renovated':[2010],
+              'lat':[47.627606],
+              'long':[-122.242054],
+              'sqft_living15':[5000],
+              'sqft_lot15':[40000]}
+ > print my_features_model.predict(graphlab.SFrame(bill_gates))	      
+ 

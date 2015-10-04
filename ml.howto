@@ -490,6 +490,8 @@ WARNING Feature scaling when S is close to 0
     INFO J result low: means J value is close to 0
 
   - Check the plot values of J_train & J_cv to check/find 'd'
+
+  For any point in the plot, this is the meaning:
   
   case High bias: if (J_train ~= J_cv) and (both of them are high)
 
@@ -503,7 +505,9 @@ WARNING Feature scaling when S is close to 0
 
   - Plot (OX is 'm'; OY is J(theta))
 
-  - Check the plot values of J_train & J_cv to check/find 'm'
+  - Check the plot values of J_train & J_cv to check/find 'm'.
+
+  For any point in the plot, this is the meaning:
   
   case High bias: if (J_train ~= J_cv) and (both of them are high)
 
