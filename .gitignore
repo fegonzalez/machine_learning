@@ -13,8 +13,6 @@
 # html
 *_files/*
 
-
-
 # videos
 *.mp4
 *.srt
@@ -24,6 +22,10 @@
 *.pyc
 *.pyo
 */__pycache__/*
+
+
+#ipython stuff
+.ipynb_checkpoints
 
 # concepts
 linear_algebra/*
@@ -58,6 +60,7 @@ curso_uw/tools/sframe/doc/*
 curso_uw/programming_exercices/1.predicting_house_prices/statement/local_copy/*
 curso_uw/programming_exercices/1.predicting_house_prices/enunciado
 curso_uw/programming_exercices/1.predicting_house_prices/sframe_doc
+curso_uw/quizzes/*
 
 #===============================================================================
 
