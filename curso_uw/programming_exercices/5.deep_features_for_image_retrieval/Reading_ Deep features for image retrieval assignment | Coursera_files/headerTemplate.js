@@ -1,0 +1,1 @@
+"use strict";define("bundles/assess/questionTypes/checkboxPoll/student/nls/es/headerTemplate",{"Checkbox Poll":"Encuesta con casillas de verificación"});

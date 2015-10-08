@@ -1,0 +1,1 @@
+"use strict";define("bundles/assess/questionTypes/reflect/student/nls/es/template",{"Well done!&nbsp;":"¡Bien hecho!&nbsp;&nbsp;","What do you think?":"¿Qué piensas?"});

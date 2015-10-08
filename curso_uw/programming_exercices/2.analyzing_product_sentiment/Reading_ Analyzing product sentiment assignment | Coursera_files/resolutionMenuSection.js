@@ -1,0 +1,1 @@
+"use strict";define("bundles/videojs/layout/nls/es/resolutionMenuSection",{High:"Alta",Low:"Baja",Medium:"Media","Video Quality":"Calidad del Vídeo"});
