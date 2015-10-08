@@ -10,7 +10,9 @@
 #     	   1.1.1 Linear Regression (one variable regression)
 # 	   1.1.2 Multivariate Regression
 #     1.2 Classification Problems
-
+#     	  1.2.1 Estimated (class) probabilities: how confident is a prediction?
+#     	  1.2.2 Decision Boundary: What can h(x) represent?
+#     	  1.2.3 Multiclass Classification: one-vs-all algorithm (method)
 
 # 2.- Supervised Learning Algorithms
 #
@@ -18,7 +20,7 @@
 #     	   2.1.1 Equation
 #     	   2.1.2 Vectorized Notation
 #     	   2.1.3 Speeding up Gradient Descent
-#     	   2.1.4 Debugging Gradient Descent [2.6]
+#     	   2.1.4 Debugging Gradient Descent [2].p7
 
 # 3.- Unsupervised Learning Algorithms
 #
@@ -29,7 +31,7 @@
 #     4.1 Feature scaling  
 #     4.2 Mean Normalization
 #     4.3 Polynomial Regression
-
+#     4.4 Advanced Optimization
 
 # 5.- Regularization (solving the over-fitting problem)
 #
@@ -49,24 +51,20 @@
 #     6.2 Are the data sets OK? - Model selection & train/cv/test sets
 #     6.3 Bias/Variance
 #     	  6.3.1 Trade-off intuition 
-# 	  6.3.2 Is 'd' OK? -  Bias & Variance diagnosis : 'd' selection
+# 	  6.3.2 Is 'd' OK? - Learning curves: 'd' selection
 # 	  6.3.3 Is 'm' OK? - Learning curves: 'm' selection
-# 	  6.3.4 Is lambda OK? - Regularization & Bias/Variance: selecting lambda
+# 	  6.3.4 Is λ OK? - Regularization & Bias/Variance: selecting λ
 # 	  6.3.5 The decision process
 #     6.4 Neural Networks Diagnosis FIXME_TODO
 
-# 7.- Machine Learning systems design [2.10] FIXME_TODO
+# 7.- Machine Learning systems design [2].page33 FIXME_TODO
 #
 #     7.1 Error analysis:
-#     7.2 Error metrics for skewed classes:
-#     7.3 Precision-Recall trade-off
-#     7.4 How much data should we train?
+#     7.2 Error metrics for skewed classes: apply the Precision-Recall trade-off
+#     7.3 How much data should we train?. Learning curves
 
 
 # Hints
-
-HINT Why train/cv/test sets: GOTO 6.2
-
 
 # Warnings
 
@@ -80,20 +78,13 @@ HINT Why train/cv/test sets: GOTO 6.2
 
 ##==============================================================================
 
-
-
-##==============================================================================
-## 1.-   Types of Problems
-##==============================================================================
-
-
 INFO notation   x sub i represented as  'x_i'
 
 INFO notation   x super i represented as  'x((i))'
 
 INFO notation	Summation from i=1 to m represented as 'SUM_i=1_to_m'
 
-INFO Notation 	theta can be represented as 'O' is some equations.
+INFO Notation 	theta can be represented as 'θ' is some equations.
 
 INFO Notation 	h_theta can be represented as 'h' is some equations.
 
@@ -103,6 +94,13 @@ INFO Notation 	in vectorized notation, uppercase means MATRIX & lowercase means
 INFO Notation   Matrix: A' is the transpose matrix of A
 
 INFO Notation   Matrix: inv(A) is the inverse matrix of A
+
+INFO Notation   A /=> B: A does not implies B 
+
+
+##==============================================================================
+## 1.-   Types of Problems
+##==============================================================================
 
 
 ##------------------------------------------------------------------------------
@@ -114,9 +112,6 @@ INFO Notation   Matrix: inv(A) is the inverse matrix of A
 # 1.1.1. Linear Regression (one variable regression):  y = f(X)
 
 # 1.1.2. Multivariate Regression:                      y = f(X1, .., Xn)
-
-  	 n = 1: linear regression
-
 
 
 a) Model representation
@@ -153,17 +148,26 @@ b) Problem representation
 
 c) hypothesis representation
 
-   h_theta(x) = theta_0 + theta_1 * x  # linear regression (n=1)
+   # linear regression (particular case, n=1)
 
-   INFO h_theta(x) can be notated as h(x)
+   h_theta(x) = theta_0 + theta_1 * x
+
+
+   # multivariate regression (general case)
+
+   h_theta(x) = theta_0 + theta_1 * x + .. + theta_n * x  =
+   	      = SUM_i=1_to_n (theta_i * x_i)  ; x_0 = 1 
+
+
+   INFO h_theta(x) can be notated as h(x) or just h.
 
 
 d) Cost function 
 
-   # linear regression (particular case, n=1)
-   J(theta_0, theta_1) = 1/(2m) * SUM_i=1_to_m ( h( x((i)) ) - y((i)) ) **2
-
+   cost(h,y) = quadratic error = (h(x) - y)**2
+   
    # multivariate regression (general case)
+   J(theta) = (1/2m)*cost(h,y) =  (1/2m) SUM_i=1_to_m(h(x((i)) ) - y((i)))**2
 
 
 e) Schema
@@ -174,13 +178,16 @@ e) Schema
 
    - Cost Function:	J(theta)
 
-   - GOAL:		find theta values to minimize J(theta)
+   - Need: find the theta values to minimize J(theta), thus minimize the error
+     	   between the real solution (y) and the approximated solution (h)
+
+   - GOAL: use these values in h(x) to predict new solutions to new inputs.
 
 
-   The Problem is  How to get theta values?
+   The Problem we need to solve is:  How to get theta values?
 
    -> we want software that automatically find theta values that minimize J
-      (i.e) Gradient Descent algorithms
+      (i.e) Gradient Descent algorithms.
 
 
 ##------------------------------------------------------------------------------
@@ -190,6 +197,101 @@ e) Schema
   To predict the actual DISCRETE valued output (i.e. {yes, no})
 
 
+                                   | 0: negative class (non existence of)
+a) Problem solution  ≡  y ∈ {0,1} < 
+                                   | 1: positive class (existence of)
+
+
+          | y ∈ {0, 1} : binary classification problem
+b) Types < 
+          | y ∈ {0, 1, 2, ..} : multiclass c.p.
+
+
+c) hypothesis representation [2].11
+
+ PROBLEM   Gradient Descent is a BAD idea: y ∈ {0,1} ∀x  /=>  0 ≤ h(x) ≤ 1
+    |
+    v
+ SOLUTION  Sigmoid Function: "g(z) = 1 / (1 +  e**(-z))"   [2].ML.C5, [4.2]
+
+ 	   g(z) = 1 / (1 +  e**(-z))   (1)
+
+                            | ∈ [0, 0.5) if z<0
+	   g(z) ∈ [0, 1] = <  0.5        if z=0
+                            | ∈ (0.5, 1] if z>0
+
+
+           h_θ(x) = g(θ'x) = 1/(1+e(-(θ'x))) 
+
+
+HINT Logistic Regression Cost Function (sigma) is convex => Gradient Descent
+     algorithm ALWAYS converge to GLOBAL minimum
+
+
+WARNING case 'z -> ∞' (e.g. θ'x very big): logistic regression has no solution
+	Explanation: z -> ∞ => h=1 => log(1-h) = ∞
+	Solution: 1) try normalization on X; 2) try changing initial θ
+
+d) Cost function [2].13
+
+PROBLEM sigmoid is not a linear function => many local minimums => linear
+       Gradient Descent algorithm is not valid for logistic regression.
+
+
+                 | -log h(x)  if y=1 |
+   cost(h, y) = <                     > =  - y log(h) - (1-y)log(1-h)
+                 | -log (1-h) if y=0 |
+
+
+NOTICE linear vs logistic regression: the difference is only in h_θ(x)
+
+
+    J(0) = (1/m) * cost(h,y)
+
+
+1.2.1 Estimated (class) probabilities: how confident is a prediction?
+
+HINT class probabilities are extremely useful in a practice
+
+- Interpretation: h(x) = estimated prob. that y=1 on input x, given θ params.
+
+  		  h(x) = P(y=1/x ; θ)
+
+  Note: y ∈ {0, 1} => P(y=0/x; θ) = 1 - P(y=1/x; θ)
+ 
+
+1.2.2 Decision Boundary: What can h(x) represent?
+
+NOTICE  D.B. is a property of 'h_θ(x)' ; it is not a property of 'x'
+
+	First:  get θ |
+	               >  --> get decision boundaries
+	Second: get h |
+
+
+1.2.3 Multiclass Classification: one-vs-all algorithm (method)
+
+- Precondition: k-classes => k-logistic regression classification
+
+- step 1: train a logistic regression classifier 'h_θ((i)) (x)' for each class
+          'i' to predict p(y=i/x;θ)
+
+- step 2: Given an input X, how to make a prediction?
+       	  pick the class 'i' / max h_θ((i)) (x)
+                                i
+
+WARNING  ∑(h) > 1  is possible because different classes can intersect.
+
+
+1.2.4 Miss-classification error [2].29
+
+ Classification Error calculation for the test data set (X_test, y_test, m_test)
+
+                    | 1   if ((h>=0.5) ∧ (y==0)) # predicted y=1 but actual y=0
+		    |
+                    | 1   if ((h<0.5) ∧ (y==1))  # predicted y=0 but actual y=1
+  err(h_θ(x), y) = <
+                    | 0   otherwise
 
 
 ##==============================================================================
@@ -204,22 +306,25 @@ e) Schema
 
 - Resolution for:
   
-    > Multivariate Regression [2.3]
-    > Linear Regression with one variable (multivariate reg. where n=1) [2.1]
+  > Multivariate Regression [2].p5-6
+  > Linear Regression with one variable (multivariate reg. where n=1) [2].ML.C3
+  > Logistic Regression
 
 
   2.1.1 Equation
 
-  # Notation note.- theta = O
+  # Notation note.- theta = θ
   # Notation note.- h_theta = h
 
   REPEAT
   {
     grad = (1/m) * ( SUM_i=1_to_m ( h( x((i)) ) - y((i)) ) * x_j((i)) )
-    O_j = O_j - (alpha * grad)
+    θ_j = θ_j - (α * grad)
 
-    # Batch GD: updating O_j simultaneously# j = 0..n
-    # x_0((i)) = 1 for every i
+    # i = 1 .. m: training example
+    # j = 0 .. n: feature
+    # x_0((i)) = 1 ∀ i
+    # Batch GD: updating θ_j simultaneously# j = 0..n
     
   }
 
@@ -228,20 +333,33 @@ e) Schema
 
   	# INFO Notation in vectorized notation, uppercase means MATRIX &
   	# lowercase means scalar variable.
+	# Exception: y is the solution vector (vector == n x 1 matrix )
+
+  a) Linear Regression
+  
+     > h_theta(x) = X * θ
 
 
-	> h(x) = X * O
+     > J(θ) =  (1/2m) (Xθ-y)' (Xθ-y)
+
+       #INFO (Xθ-y)' * (Xθ-y) is just the error calculation, thus (h-y)**2,
+       #     in matrix notation (scalar product).
 
 
-	> J(O) =  (1/2m) (XO-y)' (XO-y)
-
-	  #INFO (XO-y)' * (XO-y) is just the error calculation, thus (h-y)**2,
-	  #     in matrix notation (scalar product).
+     > grad = (1/m) * X' * (Xθ-y)
+       θ = θ - (α * grad)
 
 
-	> O = O - (alpha * grad)
+  a) Logistic Regression
+  
+     > h_θ(x) = g(Xθ)
 
-	  # grad = (1/m) * X' * (XO-y)
+
+     > J(θ) = 1/m ( log(g(Xθ))'y + log(1-g(Xθ))'(1-y) )
+
+
+     > grad = (1/m) * X' * (g(Xθ)-y)  # logistic vs linear:  g(Xθ) vs Xθ
+       θ = θ - (α * grad)
 
 
   2.1.3 Speeding up Gradient Descent
@@ -251,16 +369,17 @@ e) Schema
 	 - Polynomial Regression technique (GOTO 4.3)
 
 
-  2.1.4 Debugging Gradient Descent [2.6]
+  2.1.4 Debugging Gradient Descent [2].p7
   
-  a) alpha selection for GD
+  a) α selection for GD
 
     > Goal is to get the convergence curve as expected (3.c.1)
-    > Proven: if alpha is small enough then J will decrease on every iteration
-    > NG suggestion: decreasing alpha by multiples of 3:
+
+    > Proven: if α is small enough then J will decrease on every iteration
+    > NG suggestion: decreasing α by multiples of 3:
       0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, ...
 
-  b) Numbers of iterations: it is hard to predict for every problem.
+  b) Numbers of iterations: it is hard to predict ∀ problem.
 
   c) Correct Convergence Detection
 
@@ -268,25 +387,25 @@ e) Schema
 
    	IF J(theta) <= Epsilon in one iteration THEN declare convergence
 
-    > Plot of convergence (the easy in practice)
+    > Plot of convergence (the easiest in practice)
 
-   	(OX = #iterations ; OY = J)
+   	(plot axis: θX = #iterations ; θY = J)
 	Convergence iff curve form is the expected (fast fall - medium fall -
 	almost flat)
 
 
 
 ##------------------------------------------------------------------------------
-# 2.2. Normal Equation Method [2.2]
+# 2.2. Normal Equation Method [2].p8
 ##------------------------------------------------------------------------------
 
-- Mathematical (not AI) method to solve linear regression: finding the optimal
+- Mathematical (not AI) method to solve linear regression: finding the OPTIMAL
   theta values without iterations.
 
 
-  O = inv(X' * X) * X' * y   #WARNING computation order is O(n**3)
+  θ = inv(X' * X) * X' * y   #WARNING computation order is θ(n**3)
 
-  #INFO Octave notation: O = pinv(X) * y 
+  #INFO Octave notation: θ = pinv(X) * y 
 
 
 - GD vs Normal Equation
@@ -295,7 +414,7 @@ e) Schema
           GD                vs        Normal Eq.
  ---------------------------|---------------------------
                             |
-      Needs alpha           |          No alpha
+      Needs α           |          No α
                             |
   Needs many iterations     |        No iterations
                             |
@@ -320,7 +439,7 @@ e) Schema
 ## 4.- Techniques
 ##==============================================================================
 
-4.1. Feature scaling [2.5]
+# 4.1 Feature scaling [2].p6
 
     Xi = Xi / S    ; S = range(X)
 
@@ -332,18 +451,18 @@ WARNING Feature scaling when S is close to 0
 	must be removed => PROBLEM: S does not exists anymore.
 
   
-4.2. Mean Normalization [2.5]
+# 4.2 Mean Normalization [2].p6
 
    Xi =  Xi / u   ; u =  mean(X)
 
    Used to speed up Gradient Descent Alg.
 
 
-4.3. Polynomial Regression [2.4]
+# 4.3 Polynomial Regression [2].p8
 
-   h(x) = O0 + O1(x1) ...  ==>  h(x) = O0 + O1(x1) +  O2 * sqrt(x1)
+   h(x) = θ0 + θ1(x1) ...  ==>  h(x) = θ0 + θ1(x1) +  θ2 * sqrt(x1)
 
-   	where (O2 * sqrt(x1) ) is created to change the behaviour of the curve
+   	where (θ2 * sqrt(x1) ) is created to change the behaviour of the curve
    	to get a bettet fit of the solution (y)
 
    Used to improve the hypothesis function (h)
@@ -351,11 +470,29 @@ WARNING Feature scaling when S is close to 0
    INFO    d: polynomial degree of h(x)
 
 
+# 4.4 Advanced Optimization [2].14, [3]video6.6_time=5:45
+
+  - GD, L-BFG [4.3], BFGS [4.4], Conjugate gradient method [4.5]
+
+  WARNING Used in [3] with Octave code
+
+  a) Input required for the algorithms: code for 'grad', and code for J(θ)
+
+  b) Plus 
+     - Not needed to understand how they work, just use it (Octave libs).
+     - α is calculated automatically.
+     - Faster than manual algorithms.
+
+  c) Minus
+     - Complex than  manual algorithms.
+     
+
+
 ##==============================================================================
 # 5.- Regularization (solving the over-fitting problem)
 ##==============================================================================
 
-# 5.1. Overfitting Problem (high variance - related to precision) [2.8]
+# 5.1. Overfitting Problem (high variance - related to precision) [2].p17
 
   - Detection: h(x) match the training set almost perfectly.
 
@@ -378,12 +515,15 @@ WARNING Feature scaling when S is close to 0
 
 
     WARNING First Mandatory action to get a solution: split the data set into:
-    	    - training set
-	    - cross validation set
-	    - test set
+
+    	    - training set (get Theta values)
+
+	    - cross validation set (get λ, α, d, ...)
+
+	    - test set (check the goodness of the algorithm)
 
 
-# 5.2. Underfitting Problem (high bias - related to exactitude) [2.8]
+# 5.2. Underfitting Problem (high bias - related to exactitude) [2].p17
 
   - Detection: h(x) does not fit the training set.
 
@@ -391,7 +531,7 @@ WARNING Feature scaling when S is close to 0
   
   - Causes & solutions:
 
-    i) Cause: too few features (n << m). 
+    i) Cause: very few features (n << m). 
 
        Solution (+ n): add features.
        
@@ -401,42 +541,66 @@ WARNING Feature scaling when S is close to 0
     	technique)
 
 
-# 5.3. Regularization [2.8]
+# 5.3. Regularization [2].p17-20
 
   WHY Solution to overfitting problem caused by an excesive complex cost
-      function, and when all the fer¡tures are usefull to find the solution.
+      function, and when all the features are usefull to find the solution.
 
   HOW keep all the features but reduce the weight of some/every feature by
       incresing their cost.
 
-  i) Decrease lambda -> to fix high bias problem
+  i) Decrease λ -> to fix high bias problem
   
-  ii) Increase lambda -> to fix high variance problem
+  ii) Increase λ -> to fix high variance problem
 
   
 
 ##==============================================================================
-# 6.- Advice for applying Machine Learning [2.9]
+# 6.- Advice for applying Machine Learning [2].page29-32
 ##==============================================================================
 
 #INFO Notation: 'd' is the polynomial degree of h(x)
 
 
-# 6.1 Is h(x) OK? - Evaluating the hypothesis function FIXME_TODO
+# 6.1 Is h(x) OK? - Evaluating the hypothesis function
 
-  Overfitting => split the data in different sets: training, cv, tesst
+  Overfitting => split the data in different sets: training, cv, test
+
+  a) Error sets:
+     - Training Error: X_train, y_train, m_train)
+     - Cross validation Error: X_cv, y_cv, m_cv)
+     - Test Error: X_test, y_test, m_test)
+
+  b) Test Steps:
+  
+     i) Learn θ
+
+     ii) Get J_train & J_vc (WITHOUT REGULARIZATION) to paint the learning
+     	 curves to detect bias/variance errors.
+
+     iii) Compute test set error (X_test, y_test, m_test), WITHOUT
+     	  REGULARIZATION.
+
+     	  Linear Error:   error(h,y) = 1/2m ∑((h-y)**2)
+
+	  Logistic Error: error(h,y) = 1/2m ∑((h-y)**2)
+	  	   	    OR
+	  	   	  error(h,y) = miss-classification error (GOTO 1.2.4)
+
+     iv) Compute the "Average Test Error" = 1/m ∑err(h,y)
+     	     (X_test, y_test, m_test)
 
 
 # 6.2 Are the data sets OK? - Model selection & train/cv/test sets
 
   We need to split the data set into three different sets:
-  
-  - training set (60%): used to optimize h(x)
-  
-  - cross validation set (20%): used to optimize other training parameters (d,
-    lambda, ...)
 
-  - test set (20%): used to check the resulting cost function.
+  - training set (60%): used to optimize h (get Theta values)
+  
+  - cross validation set (20%): used to optimize other training parameters
+    (λ, α, d, ...)
+
+  - test set (20%): used to check the goodness of the solution
   
 
   WHY? Because J_training has been optimized for the training set -> J_training
@@ -445,16 +609,17 @@ WARNING Feature scaling when S is close to 0
        And because J_cv has been optimized for (e.g.) 'd' -> J_cv bad
        generalization.
 
-       But the test set has not been used yet -> J_test good generalization
+       But the test set has not been used yet -> J_test good means that h(x)
+       will have good generalization
 
 
   Goal: selection of the best polynomial degree for h(x)
 
   Steps:
 
-  i)   Training set: for every 'd', min J_train = 1/2m SUM((h-y)**2)
+  i)   Training set: ∀ 'd', min J_train = 1/2m SUM((h-y)**2)
 
-  ii)  Cross Validation set:  for every 'd', min J_cv
+  ii)  Cross Validation set:  ∀ 'd', min J_cv
 
   iii) Pick 'd' where J_cv is minimum
 
@@ -481,7 +646,7 @@ WARNING Feature scaling when S is close to 0
      => low variance & high bias
 
 
-# 6.3.2 Is 'd' OK? -  Bias & Variance diagnosis : 'd' selection
+# 6.3.2 Is 'd' OK? - Learning curves: 'd' selection
 
   - Plot (OX is 'd'; OY is J(theta))
 
@@ -514,22 +679,29 @@ WARNING Feature scaling when S is close to 0
   case High variance: if (J_cv >> J_train ) and (J_train low)
 
 
-# 6.3.4 Is lambda OK? - Regularization & Bias/Variance: selecting lambda
+# 6.3.4 Is λ OK? - Regularization & Bias/Variance: selecting λ
 
 
 # 6.3.5 The decision process
 
   a) Fixing high variance problem (over-fitting)
 
-     i)   (+l) Increase lambda (in regularization).
+     ... by simplifying the model
+
+     i)   (+l) Increase λ (in regularization).
 
      ii)  (-n) Remove some (non representatives) features.
 
+     ... by adding training examples
+
      iii) (+m) Add training examples.
 
-  b) Fixing high bias problem (under-fitting)
 
-     i)   (-l) Decrease lambda (in regularization).
+  b) Fixing high bias problem (under-fitting)
+  
+     ... by increasing the complexity of the model
+
+     i)   (-l) Decrease λ (in regularization).
 
      ii)  (+n) Add features.
 
@@ -543,7 +715,7 @@ WARNING Feature scaling when S is close to 0
 
 
 ##==============================================================================
-# 7.- Machine Learning systems design [2.10] FIXME_TODO
+# 7.- Machine Learning systems design [2].page33 FIXME_TODO
 ##==============================================================================
 
 7.1 Error analysis:
@@ -551,7 +723,7 @@ WARNING Feature scaling when S is close to 0
 - Recommended approach to solve a ML problem
 
   a) Start with a quick and dirty algorithm.
-     Test this alg. on the cross validation (cv) data set
+     > Test this alg. on the cross validation (cv) data set
 
   b) Plot learning curves to decide:
      > more data (+m) ?
@@ -565,20 +737,56 @@ WARNING Feature scaling when S is close to 0
   ...), to see the results quickly.
 
 
-7.2 Error metrics for skewed classes:
+7.2 Error metrics for skewed classes: apply the Precision-Recall trade-off [4.1]
+
+    - (Type of) Error Matrix
+
+                                      True  class
+		
+                   |          1             |          0              |
+                ---|--------------------------------------------------| 
+                   |                        |                         |
+    Predicted   1  |      True Positive     |   (FP) False Positive   |
+                   |                        |                         |
+                ---|--------------------------------------------------|
+     class         |                        |                         |
+                0  |   (FN) False Negative  |      True Negative      |
+                   |                        |                         |
+                ---|--------------------------------------------------|
 
 
-7.3 Precision-Recall trade-off
+
+    a) Precision =  True Positive / (TP + FP)    # ( TP / ∑ predicted 1s)
+
+    b) Recall =   True Positive / (TP + FN)      # ( TP / ∑ true 1s)
+
+    c) Accuracy =  ∑ true / ∑ total = (TP + TN) / (TP + TN + FP + FN)
+
+    d) Numerical evaluation: f1score = (2 * P * R) / (P + R)
 
 
-7.4 How much data should we train?
+HINT    Train P & R on the cv_set
+                                          | inc threshold => inc P  &  dec R 
+                                          |
+HINT	Predict 1  if h(x) >= threshold  <
+                                          | 
+					  | dec theshold  => dec P  &  inc R
+					  
+
+WARNING If we want to assure recall (i.e. to detect the max. number of skewed),
+	then the precision tends to fall.
+
+WARNING Accuracy is a bad index to evaluate skewed classes (always high)
+
+
+7.3 How much data should we train?
 
     a) Choose the correct features (X set) to have enough information:
 
        Given X, would a human expert predict y?
 
-    b) Once having a low bias algorithm, then enlarge the training set to
-       reduce overfitting and increase the accuracy of the training set
+    b) First: get a low bias algorithm.
+       Second: reduce overfiting and increase the accuracy of the training set.
 
 
 
@@ -587,10 +795,19 @@ WARNING Feature scaling when S is close to 0
 ##==============================================================================
 
 HINT (Batch) Gradient Descent algorithm ALWAYS converge to GLOBAL minimum for
-     linear regression problems. [2.1]
+     linear regression problems. [2].ML.C3
+
 
 HINT (Batch) Gradient Descent algorithm scales better than the numerical method
-     (Normal Equations Method), for large training sets.
+     (Normal Equations Method), for large training sets (n>10000)
+
+
+HINT Logistic Regression Cost Function (sigma) is convex => Gradient Descent
+     algorithm ALWAYS converge to GLOBAL minimum
+
+HINT Logistic Regression: class probabilities are extremely useful in a practice
+
+HINT Why train/cv/test sets: (GOTO 6.2)
 
 
 ##==============================================================================
@@ -607,10 +824,16 @@ WARNING Multiple Regression vs Multivariate Regression
 	Multivariate Regression:  f(Y1, .., Yn) = f(X1, .., Xn)
 
 
+WARNING case 'z -> ∞' (e.g. θ'x very big): logistic regression has no solution
+	Explanation: z -> ∞ => h=1 => log(1-h) = ∞
+	Solution: 1) try normalization on X; 2) try changing initial θ
+
+
 
 ##==============================================================================
 ## Annex.- Maths Review
 ##==============================================================================
+
 
 
 ##==============================================================================
@@ -625,10 +848,12 @@ WARNING Multiple Regression vs Multivariate Regression
 
 A
 
+
 B
 
 - Batch Gradient Descent algorithm: for every iteration step of the GD
   algorithm, we SIMULTANEOUSLY use (update) the entire training set.
+
 
 C
 
@@ -640,9 +865,27 @@ C
 
 - cv: cross validation set
 
+
+G
+
+- Gaussian Distribution (Normal Distribution) [2].page.ML_C5
+
+  x ~ N(μ,σ2)
+
+  o: desviación típica
+  o**2: varianza
+
+
+L
+
+- Labeled data: data for which we know its value, thus, given a X data set, it
+  is labeled iff we also know Y.
+  Used to evaluate the system: cv_set and test_set.
+
+
 N
 
-- Non invertibility Problem [2.7]: Matrix non invertible -> can not be used to
+- Non invertibility Problem [2].p9: Matrix non invertible -> can not be used to
   GD calculation.
   Cause -> Solution: feature redundancy -> remove the dependent feature
   Cause -> Solution: (n >= m) -> remove some features or regularization.
@@ -658,15 +901,32 @@ O
   a (linear) regression problem
 
 
+P
+
+- Precision: see 4.4
+
+
 R
+
+- Recall: see 4.4
 
 - Regression Problem: predict the actual CONTINUOUS valued output.
 
 
 S
 
-- Sigmoid Function [2].ML.C5 : cost function used to solve logistic
-  (classification) regression problems.
+- Sigmoid Function: "g(z) = 1 / (1 +  e**(-z))"   [2].ML.C5, [4.2]
+  Cost function used to solve logistic (classification) regression problems.
+  WARNING case 'z -> ∞' (e.g. θ'x very big): logistic regression has no solution
+	Explanation: z -> ∞ => h=1 => log(1-h) = ∞
+	Solution: 1) try normalization on X; 2) try changing initial θ
+
+
+- Skewed classes: classes that are very rare in the data set.
+  (e.g) rain vs not rain -> 50% / 50% -> no skewed
+  	cancer vs not cancer -> 0.05% / 99.5% -> cancer is a skewed class
+  Skewed classes can be evaluated using the Precision/Recall technique (see 4.4)
+  WARNING Accuracy is a bad index to evaluate skewed classes (always high)
 
 - Supervised Learning (Algorithms): for every example of the data set, we are
   provided with the "correct answer" to predict. Thus, the training example
@@ -696,22 +956,54 @@ V
 
 [1] Machine Learning course - U. Stanford (Andrew Ng)
 
-[1.1] Using Python on a Macintosh - https://docs.python.org/3.3/using/mac.html
-
-
 [2] Notest at the ML (paper) notebook.
-
-[2.1] (Batch) Gradient Descent algorithm - page ML.C3
-[2.2] Normal Equation Method - page 8
-[2.3] Multivariate Regression - pages 5-6
-[2.4] Features and Polynomial Regression - page 8
-[2.5] Speeding up Gradient Descent - page 6
-[2.6] Debugging Gradient Descent - page 7
-[2.7] Non invertibility Problem - page 9
-[2.8] Regularization
-[2.9] Advice for applying Machine Learning - pages 29-32
-[2.10] Machine Learning systems design - pages 33
-
 
 [3] Machine Learning course - U.Washington
 
+
+[4] Other Web references
+
+[4.1] Precision/Recall - https://en.wikipedia.org/wiki/Precision_and_recall
+[4.2] Sigmoid function - https://en.wikipedia.org/wiki/Sigmoid_function
+[4.3] L-BFGS algorithm - https://es.wikipedia.org/wiki/L-BFGS
+[4.4] BFGS algorithm - https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm
+[4.5] Conjugate gradient method - https://en.wikipedia.org/wiki/Conjugate_gradient_method
+
+
+
+
+#######################################
+# http://www.rapidtables.com/math/symbols/Basic_Math_Symbols.htm
+#######################################
+# ∀
+# ∏
+# ∑
+#######################################
+# ∃
+# ∈
+# ∉
+# ∩
+# ∧
+# ε
+# ∇
+#######################################
+# α
+# β
+# λ
+# θ theta
+# δ delta
+# π
+# σ sigma
+# ∇ gradient
+# N(μ,σ2)
+#######################################
+# ∝
+# ∞
+# √
+# ≈
+# ≤
+# ≥
+# ±
+# ⊂
+# ≡
+#######################################
