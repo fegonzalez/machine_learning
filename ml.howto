@@ -4,15 +4,19 @@
 ## INDEX
 ##==============================================================================
 
-# 1.- Types of Problems
+# 1.- Machine Learning methods to solve problems
 #
-#     1.1 Regression Problems
-#     	   1.1.1 Linear Regression (one variable regression)
-# 	   1.1.2 Multivariate Regression
-#     1.2 Classification Problems
-#     	  1.2.1 Estimated (class) probabilities: how confident is a prediction?
-#     	  1.2.2 Decision Boundary: What can h(x) represent?
-#     	  1.2.3 Multiclass Classification: one-vs-all algorithm (method)
+#     1.1 Linear Regression
+#     	  1.1.1 Linear Regression basics
+# 	  1.1.2 Problem description
+#     1.2 Logistic Regression
+#     	  1.2.1 Logistic Regression basics
+# 	  1.2.2 Linear Classifiers
+# 	  1.2.3 Decision Boundary: What (classes) can h(x) represent?
+# 	  1.2.4 Estimated (class) probabilities: how confident is a prediction?
+# 	  1.2.5 Classification Problem description
+#     	  1.2.6 Multiclass Classification: one-vs-all algorithm (method)
+# 	  1.2.7 Miss-classification error
 
 # 2.- Supervised Learning Algorithms
 #
@@ -45,7 +49,7 @@
 #     	   5.4.6.1 Vectorized Logistic Regression with Regularization
 
 
-# 6.- Advice for applying Machine Learning FIXME_TODO
+# 6.- Advice for applying Machine Learning
 #
 #     6.1 Is h(x) OK? - evaluating the hypothesis function
 #     6.2 Are the data sets OK? - Model selection & train/cv/test sets
@@ -57,7 +61,7 @@
 # 	  6.3.5 The decision process
 #     6.4 Neural Networks Diagnosis FIXME_TODO
 
-# 7.- Machine Learning systems design [2].page33 FIXME_TODO
+# 7.- Machine Learning systems design [2].page33
 #
 #     7.1 Error analysis:
 #     7.2 Error metrics for skewed classes: apply the Precision-Recall trade-off
@@ -99,27 +103,31 @@ INFO Notation   A /=> B: A does not implies B
 
 
 ##==============================================================================
-## 1.-   Types of Problems
+## 1.- Machine Learning methods to solve problems
 ##==============================================================================
 
-
 ##------------------------------------------------------------------------------
-# 1.1. Regression Problems
+# 1.1. Linear Regression
 ##------------------------------------------------------------------------------
 
-  To predict the actual CONTINUOUS valued output.
+# 1.1.1 Linear Regression basics
 
-# 1.1.1. Linear Regression (one variable regression):  y = f(X)
+a) To predict the actual CONTINUOUS valued output ('y/x' is a Gaussian
+   distribution)
 
-# 1.1.2. Multivariate Regression:                      y = f(X1, .., Xn)
+b) Multiple Linear Regression:                    y = f(x_1, .., x_n)
 
+c) Simple Linear Regression (one variable l.r.):  y = f(x) ; M.L.R. where n=1
+
+
+# 1.1.2 Problem description
 
 a) Model representation
 
    Training set (x, y, m)   ->   i-th training example ( x(i), y(i) )
 
    m: number of examples
-   n: number of features (n=1 in linear regression)
+   n: number of features (n=1 in simple linear regression)
    x: inputs
    y: outputs
 
@@ -148,12 +156,12 @@ b) Problem representation
 
 c) hypothesis representation
 
-   # linear regression (particular case, n=1)
+   # simple linear regression (particular case, n=1)
 
    h_theta(x) = theta_0 + theta_1 * x
 
 
-   # multivariate regression (general case)
+   # multiple linear regression (general case)
 
    h_theta(x) = theta_0 + theta_1 * x + .. + theta_n * x  =
    	      = SUM_i=1_to_n (theta_i * x_i)  ; x_0 = 1 
@@ -166,7 +174,7 @@ d) Cost function
 
    cost(h,y) = quadratic error = (h(x) - y)**2
    
-   # multivariate regression (general case)
+   # multiple linear regression
    J(theta) = (1/2m)*cost(h,y) =  (1/2m) SUM_i=1_to_m(h(x((i)) ) - y((i)))**2
 
 
@@ -191,11 +199,71 @@ e) Schema
 
 
 ##------------------------------------------------------------------------------
-# 1.2. Classification Problems
+# 1.2. Logistic Regression
 ##------------------------------------------------------------------------------
 
-  To predict the actual DISCRETE valued output (i.e. {yes, no})
+# 1.2.1 Logistic Regression basics
 
+a) Regression model where the dependent variable (DV) is categorical.
+
+b) Logistic regression predicts the probability of particular outcomes -> to
+   predict the actual DISCRETE valued output (i.e. {yes, no})
+
+c) The conditional distribution 'y|x' is a Bernoulli distribution (y ∈ {0,1]),
+   rather than a Gaussian distribution.
+
+
+# 1.2.2 Linear Classifiers
+
+Def Given an input X, a linear classifier IDENTIFY THE CLASS (y) it belongs to
+    by making a classification decision based on the value of a LINEAR
+    COMBINATION of the features of the input [4.6]
+
+    y = f(θ . X)    # (scalar) dot product
+
+    (i.e. Sentiment Analysis Problems using a Threshold classifier [3.1].p16)
+     f(θ . X) >= threshold -> y = 1
+     f(θ . X)  < threshold -> y = 0
+     
+
+# 1.2.3 Decision Boundary: What (classes) can h(x) represent?
+
+Def A decision boundary is the region of a problem space in which the output
+    label of a classifier is ambiguous [4.7]
+
+- Decision boundary separates positive & negative predictions
+
+  For linear classifiers:
+   -> line: when 2 weights are non-zero
+   -> plane: when 3 weights are non-zero
+   -> hyperplane: when many weights are non-zero
+
+  For more general classifiers -> more complicated shapes
+
+
+NOTICE  D.B. is a property of 'h_θ(x)' ; it is not a property of 'x'
+
+	i)   step 1: get θ	              
+	ii)  step 2: get h
+	iii) step 3: paint the plot of 'h_θ(x)', for several features of 'x'
+	
+	-> get the decision boundary (line, plane, ...) that separates positive
+           & negative classes
+
+
+# 1.2.4 Estimated (class) probabilities: how confident is a prediction?
+
+HINT class probabilities are extremely useful in a practice
+
+- Interpretation: h(x) = estimated prob. that y=1 on input x, given θ params.
+
+  		  h(x) = P(y=1/x ; θ)
+
+  Note: y ∈ {0, 1} => P(y=0/x; θ) = 1 - P(y=1/x; θ)
+ 
+
+
+# 1.2.5 Classification Problem description
 
                                    | 0: negative class (non existence of)
 a) Problem solution  ≡  y ∈ {0,1} < 
@@ -209,7 +277,7 @@ b) Types <
 
 c) hypothesis representation [2].11
 
- PROBLEM   Gradient Descent is a BAD idea: y ∈ {0,1} ∀x  /=>  0 ≤ h(x) ≤ 1
+ PROBLEM   G.D. is a BAD idea (1.2.1.c): y ∈ {0,1} ∀x  /=>  0 ≤ h(x) ≤ 1
     |
     v
  SOLUTION  Sigmoid Function: "g(z) = 1 / (1 +  e**(-z))"   [2].ML.C5, [4.2]
@@ -217,11 +285,17 @@ c) hypothesis representation [2].11
  	   g(z) = 1 / (1 +  e**(-z))   (1)
 
                             | ∈ [0, 0.5) if z<0
-	   g(z) ∈ [0, 1] = <  0.5        if z=0
+	   g(z) ∈ [0, 1] = <  0.5        if z=0     THRESHOLD
                             | ∈ (0.5, 1] if z>0
 
 
-           h_θ(x) = g(θ'x) = 1/(1+e(-(θ'x))) 
+           h_θ(x) = g(θ'x) = 1/(1+e(-(θ'x)))
+
+
+                         | 1  if g(z) ≥ THRESHOLD) iff z≥0
+	   => h_θ(x) =  < 
+                         | 0  otherwise
+
 
 
 HINT Logistic Regression Cost Function (sigma) is convex => Gradient Descent
@@ -249,27 +323,7 @@ NOTICE linear vs logistic regression: the difference is only in h_θ(x)
     J(0) = (1/m) * cost(h,y)
 
 
-1.2.1 Estimated (class) probabilities: how confident is a prediction?
-
-HINT class probabilities are extremely useful in a practice
-
-- Interpretation: h(x) = estimated prob. that y=1 on input x, given θ params.
-
-  		  h(x) = P(y=1/x ; θ)
-
-  Note: y ∈ {0, 1} => P(y=0/x; θ) = 1 - P(y=1/x; θ)
- 
-
-1.2.2 Decision Boundary: What can h(x) represent?
-
-NOTICE  D.B. is a property of 'h_θ(x)' ; it is not a property of 'x'
-
-	First:  get θ |
-	               >  --> get decision boundaries
-	Second: get h |
-
-
-1.2.3 Multiclass Classification: one-vs-all algorithm (method)
+# 1.2.6 Multiclass Classification: one-vs-all algorithm (method)
 
 - Precondition: k-classes => k-logistic regression classification
 
@@ -283,7 +337,8 @@ NOTICE  D.B. is a property of 'h_θ(x)' ; it is not a property of 'x'
 WARNING  ∑(h) > 1  is possible because different classes can intersect.
 
 
-1.2.4 Miss-classification error [2].29
+
+# 1.2.7 Miss-classification error [2].29
 
  Classification Error calculation for the test data set (X_test, y_test, m_test)
 
@@ -292,6 +347,15 @@ WARNING  ∑(h) > 1  is possible because different classes can intersect.
                     | 1   if ((h<0.5) ∧ (y==1))  # predicted y=0 but actual y=1
   err(h_θ(x), y) = <
                     | 0   otherwise
+
+
+
+  error = #mistakes / #total values	 # the best possible is 0
+    
+  accuracy = #correct / #total values = 1-error	# best possible is 1
+
+  WARNING Accuracy is a bad index to evaluate skewed classes (always high)
+
 
 
 ##==============================================================================
@@ -306,8 +370,8 @@ WARNING  ∑(h) > 1  is possible because different classes can intersect.
 
 - Resolution for:
   
-  > Multivariate Regression [2].p5-6
-  > Linear Regression with one variable (multivariate reg. where n=1) [2].ML.C3
+  > Multiple Linear Regression [2].p5-6
+  > Simple Linear Regression (multiple l. reg. where n=1) [2].ML.C3
   > Logistic Regression
 
 
@@ -350,7 +414,7 @@ WARNING  ∑(h) > 1  is possible because different classes can intersect.
        θ = θ - (α * grad)
 
 
-  a) Logistic Regression
+  b) Logistic Regression
   
      > h_θ(x) = g(Xθ)
 
@@ -640,10 +704,15 @@ WARNING Feature scaling when S is close to 0
 
      => high variance & low bias
 
-
   i) Simple Model -> rigid -> lowly affected by changes in X (input)
 
      => low variance & high bias
+
+
+HINT Models with less bias need more data to learn (initially slow learning ->
+     curve slope linear instead of logarithmic), but do better with sufficient
+     data (train-cv gap smaller)
+
 
 
 # 6.3.2 Is 'd' OK? - Learning curves: 'd' selection
@@ -715,7 +784,7 @@ WARNING Feature scaling when S is close to 0
 
 
 ##==============================================================================
-# 7.- Machine Learning systems design [2].page33 FIXME_TODO
+# 7.- Machine Learning systems design [2].page33
 ##==============================================================================
 
 7.1 Error analysis:
@@ -758,11 +827,14 @@ WARNING Feature scaling when S is close to 0
 
     a) Precision =  True Positive / (TP + FP)    # ( TP / ∑ predicted 1s)
 
-    b) Recall =   True Positive / (TP + FN)      # ( TP / ∑ true 1s)
+    b) Recall =     True Positive / (TP + FN)    # ( TP / ∑ true 1s)
 
-    c) Accuracy =  ∑ true / ∑ total = (TP + TN) / (TP + TN + FP + FN)
+    c) error =      #mistakes / #total values	 # the best possible is 0
+    
+    d) Accuracy =   ∑ true / ∑ total = (TP + TN) / (TP + TN + FP + FN)
+       		=   #correct / #total values = 1-error	# best possible is 1
 
-    d) Numerical evaluation: f1score = (2 * P * R) / (P + R)
+    e) Numerical evaluation: f1score = (2 * P * R) / (P + R)
 
 
 HINT    Train P & R on the cv_set
@@ -771,7 +843,7 @@ HINT    Train P & R on the cv_set
 HINT	Predict 1  if h(x) >= threshold  <
                                           | 
 					  | dec theshold  => dec P  &  inc R
-					  
+
 
 WARNING If we want to assure recall (i.e. to detect the max. number of skewed),
 	then the precision tends to fall.
@@ -808,6 +880,11 @@ HINT Logistic Regression Cost Function (sigma) is convex => Gradient Descent
 HINT Logistic Regression: class probabilities are extremely useful in a practice
 
 HINT Why train/cv/test sets: (GOTO 6.2)
+
+
+HINT Models with less bias need more data to learn (initially slow learning ->
+     curve slope linear instead of logarithmic), but do better with sufficient
+     data (train-cv gap smaller)
 
 
 ##==============================================================================
@@ -915,6 +992,11 @@ R
 
 S
 
+- Sentiment analysis (also known as opinion mining) refers to the use of
+  natural language processing, text analysis and computational linguistics to
+  identify and extract subjective information in source materials. (wiki)
+  Logistic Regression is used to solve sentiment analysis.
+
 - Sigmoid Function: "g(z) = 1 / (1 +  e**(-z))"   [2].ML.C5, [4.2]
   Cost function used to solve logistic (classification) regression problems.
   WARNING case 'z -> ∞' (e.g. θ'x very big): logistic regression has no solution
@@ -959,7 +1041,7 @@ V
 [2] Notest at the ML (paper) notebook.
 
 [3] Machine Learning course - U.Washington
-
+[3.1] classification problems - 2.classification-annotated.pdf
 
 [4] Other Web references
 
@@ -968,8 +1050,8 @@ V
 [4.3] L-BFGS algorithm - https://es.wikipedia.org/wiki/L-BFGS
 [4.4] BFGS algorithm - https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm
 [4.5] Conjugate gradient method - https://en.wikipedia.org/wiki/Conjugate_gradient_method
-
-
+[4.6] Linear classifier - https://en.wikipedia.org/wiki/Linear_classifier
+[4.7] Decision boundary - https://en.wikipedia.org/wiki/Decision_boundary
 
 
 #######################################
