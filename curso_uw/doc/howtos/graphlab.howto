@@ -24,6 +24,9 @@
 
 # 2) SFrame Regression
 
+# 3) graphlab.text_analytics
+
+## References
 
 
 # ==============================================================================
@@ -53,8 +56,9 @@ c) Data manipulation
 
    > map(lambda x: x*x, sf['age'])
 
-   # Create new columns
-   > sf['Full Name'] = sf['First Name'] + ' ' + sf['Last Name']
+   > sf['Full Name'] = sf['First Name'] + ' ' + sf['Last Name'] # Create columns
+
+   > sf.  sort / filter ( group_bu / ...
 
 
    ii) Use the 'apply' function to do a advance transformation of our data
@@ -110,27 +114,29 @@ d) Canvas
 #     You can install it with: 'pip install matplotlib'
 
 
+## STEP 1.- Get the proper data set
+
+
+## STEP 2.- Training the data set
+
 a) split data sets
 
   > train_data,test_data = sales.random_split(.8,seed=0)
 
 
-b) Build the regression model
+b) train the data set
 
-  # graphlab.linear_regression.create: will create AND TRAIN the algorithm
-
-
-# WARNING graphlab.linear_regression.create: set 'validation_set=None' when no 
-# cv set is needed, otherwise the algorithm will create one by itself that 
-# could have different size each execution -> non-repeatable results.
-# This has been empirically tested.
+# graphlab.linear_regression.create:   create AND TRAIN the linear algorithm
+# graphlab.logistic_classifier.create: create AND TRAIN the logistic algorithm
 
 
-# WARNING 'graphlab.linear_regression.create' output: check the output messages,
-# it gives information related to learning errors (i.e. useless features)
+# WARNING 'validation_set=None' when no cv set is needed, otherwise the
+# algorithm will create one by itself that could have different size each
+# execution -> non-repeatable results.  This has been empirically tested.
+# Other option is to use the test_set (see logistic regression example bellow)
 
 
-  # (e.g. linear regression)
+  # (e.g. simple linear regression)
   
   > sqft_model = graphlab.linear_regression.create
     	            (train_data,                       # data source
@@ -139,13 +145,39 @@ b) Build the regression model
 	             features=['sqft_living'])         # 1 feature
 
 
-  # (e.g. multivariate regression)
+  # (e.g. multiple linear regression)
   > my_features = ['bedrooms', 'sqft_living', 'sqft_lot', 'floors', 'zipcode']
   > my_features_model = graphlab.linear_regression.create
-    		           (train_data, target='price', features=my_features)
+    		           (train_data,
+			   validation_set=None,
+			   target='price',
+			   features=my_features)      # >1 features
 
 
-c) View the learned regression coefficients: theta
+
+  # (e.g. logistic regression)
+
+  > sentiment_model = graphlab.logistic_classifier.create
+    		      (train_data,
+		      target=sentiment_target,
+		      features=sentiment_features,
+		      validation_set=test_data)
+
+
+
+# NOTICE Input / output for/of the sframes's algorithms [1], [2]
+#
+# Input: there are several other options available: feature_rescaling, ...
+#
+# Output: "PROGRESS" useful info is shown after the execution, includes:
+#         Algorithm used: i.e. "Starting L-BFGS"
+#         #iterations, Step size (α), Training-accuracy, Validation-accuracy, ..
+#
+#         "ERRORS" inf related to learning errors (i.e. useless features)
+
+
+
+c) (optional) View the learned regression coefficients: theta
 
   > sqft_model.get('coefficients')
 
@@ -157,15 +189,73 @@ c) View the learned regression coefficients: theta
   # sqft_living   None 	  282.066576944	      # theta_1
 
 
-d) Evaluate the regression algorithm
 
-  > sqft_model.evaluate(test_data)  # e.g. evaluating the X_test
+## STEP 3.- Evaluate the regression algorithm (test set)
 
-    # Result example: rmse has order of millions -> bad generalization
-    {'max_error': 4141991.878006587, 'rmse': 255183.70971457666}
+
+  a) evaluate the test set
   
+  > sqft_model.evaluate(test_data,            
+    		        metric='roc_curve')  # optional parameter
 
-e) Predict new solutions: apply the regression model to predict new values.
+
+   # regression metrics
+   # rmse 	Compute the root mean squared error between two SArrays.
+   # max_error 	Compute the maximum absolute deviation between two SArrays.
+
+   # classifier metrics
+   # confusion_matrix 	Compute the confusion matrix for classifier predictions.
+   # accuracy 	Compute the proportion of correct predictions.
+
+
+    # Result example -  linear regression:
+    #
+    # rmse has order of millions -> bad generalization
+    {'max_error': 4141991.878006587, 'rmse': 255183.70971457666}
+
+
+    # Result example -  logistic regression:
+    #
+    #   {'accuracy': 0.916256305548883, 'confusion_matrix': Columns:
+    # 	target_label	int
+    # 	predicted_label	int
+    # 	count	int
+    #
+    # Data:
+    # +--------------+-----------------+-------+
+    # | target_label | predicted_label | count |
+    # +--------------+-----------------+-------+
+    # |      0       |        1        |  1328 |
+    # |      0       |        0        |  4000 |
+    # |      1       |        1        | 26515 |
+    # |      1       |        0        |  1461 |
+    # +--------------+-----------------+-------+
+
+
+    # b) Examine the results of the evaluation
+    
+    > sentiment_model.show()
+    
+      - Schema: number of coefficients, n. of examples, ...
+      
+      - Training summary: iterations, status (i.e. iteration limit reached),
+        training time
+
+      - High / Low coefficients info
+    
+
+    > sentiment_model.show(view='Evaluation')
+
+      - if evaluate(test_data): confusion matrix + accuracy
+
+      - if evaluate(test_data, metric='roc_curve'): interactive threshold
+        update to show changes in curve TPvsFP & error metrics (precision,
+        recall, f1score, ...)
+
+      	
+
+## STEP 4.- Predict new solutions: apply the regression model to predict new
+## 	    values.
 
  > house1 = sales[sales['id']=='5309101200'] # data for a db ...
  
@@ -192,3 +282,30 @@ e) Predict new solutions: apply the regression model to predict new values.
               'sqft_lot15':[40000]}
  > print my_features_model.predict(graphlab.SFrame(bill_gates))	      
  
+
+
+
+# ==============================================================================
+# 3) graphlab.text_analytics
+# ==============================================================================
+
+# Count words of a text string
+#
+# input: products['review']: a column of a sframe; type str.
+#
+# output: products['rword_count']: NEW column in the sframe; type dictionary
+#                                  {'and': 5, 'then': 1, ...}
+
+> products['word_count']=graphlab.text_analytics.count_words(products['review'])
+
+
+
+
+
+##==============================================================================
+## References
+##==============================================================================
+
+[1] graphlab.linear_regression.create - https://dato.com/products/create/docs/generated/graphlab.linear_regression.create.html
+
+[2] graphlab.logistic_classifier.create - https://dato.com/products/create/docs/generated/graphlab.logistic_classifier.create.html
