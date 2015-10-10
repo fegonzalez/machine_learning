@@ -63,7 +63,7 @@
 
 # 7.- Machine Learning systems design [2].page33
 #
-#     7.1 Error analysis:
+#     7.1 Error analysis
 #     7.2 Error metrics for skewed classes: apply the Precision-Recall trade-off
 #     7.3 How much data should we train?. Learning curves
 
@@ -241,7 +241,7 @@ Def A decision boundary is the region of a problem space in which the output
   For more general classifiers -> more complicated shapes
 
 
-NOTICE  D.B. is a property of 'h_θ(x)' ; it is not a property of 'x'
+HINT  Decicion boundary is a property of 'h_θ(x)',  it is not a property of 'X'
 
 	i)   step 1: get θ	              
 	ii)  step 2: get h
@@ -277,10 +277,10 @@ b) Types <
 
 c) hypothesis representation [2].11
 
- PROBLEM   G.D. is a BAD idea (1.2.1.c): y ∈ {0,1} ∀x  /=>  0 ≤ h(x) ≤ 1
+ PROBLEM   h=θ.X is a BAD idea (1.2.1.c): y ∈ {0,1} ∀x  /=>  0 ≤ h(x) ≤ 1
     |
     v
- SOLUTION  Sigmoid Function: "g(z) = 1 / (1 +  e**(-z))"   [2].ML.C5, [4.2]
+ SOLUTION  h = Sigmoid Function: "g(z) = 1 / (1 +  e**(-z))"   [2].ML.C5, [4.2]
 
  	   g(z) = 1 / (1 +  e**(-z))   (1)
 
@@ -536,11 +536,14 @@ WARNING Feature scaling when S is close to 0
 
 # 4.4 Advanced Optimization [2].14, [3]video6.6_time=5:45
 
-  - GD, L-BFG [4.3], BFGS [4.4], Conjugate gradient method [4.5]
+  - Using already known (libraries) learning algorithms: GD, L-BFG [4.3], BFGS
+    [4.4], Conjugate gradient method [4.5], instead of programming one.
 
   WARNING Used in [3] with Octave code
+  WARNING Used in [4] within the GraphLab tool.
 
-  a) Input required for the algorithms: code for 'grad', and code for J(θ)
+  a) Input required for the algorithms: depends on the library / tool
+     (i.e. Octave: code for 'grad', and code for J(θ))
 
   b) Plus 
      - Not needed to understand how they work, just use it (Octave libs).
@@ -886,6 +889,8 @@ HINT Models with less bias need more data to learn (initially slow learning ->
      curve slope linear instead of logarithmic), but do better with sufficient
      data (train-cv gap smaller)
 
+HINT  Decicion boundary is a property of 'h_θ(x)',  it is not a property of 'X'
+
 
 ##==============================================================================
 ## Warnings
@@ -988,6 +993,9 @@ R
 - Recall: see 4.4
 
 - Regression Problem: predict the actual CONTINUOUS valued output.
+
+- RMSE: Root-mean-square error (or r-m-s deviation) -
+  https://en.wikipedia.org/wiki/Root-mean-square_deviation
 
 
 S
