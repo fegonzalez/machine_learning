@@ -33,6 +33,7 @@ linear_regression/*
 neural_networks/*
 SVMs/*
 
+
 ################################################################################
 # Courses
 ################################################################################
@@ -57,10 +58,19 @@ curso_stanford/*
 curso_uw/tools/sframe/doc/*
 
 # programming_exercices
+# 1
 curso_uw/programming_exercices/1.predicting_house_prices/statement/local_copy/*
 curso_uw/programming_exercices/1.predicting_house_prices/enunciado
 curso_uw/programming_exercices/1.predicting_house_prices/sframe_doc
+curso_uw/programming_exercices/1.predicting_house_prices/home_data.gl/*
+# 2
+curso_uw/programming_exercices/2.analyzing_product_sentiment/amazon_baby.gl/*
+# 3
+curso_uw/programming_exercices/3.retrieving_wikipedia_articles/people_wiki.gl/*
+
+# quizzes
 curso_uw/quizzes/*
+
 
 #===============================================================================
 
