@@ -83,6 +83,11 @@ c) Data manipulation
      type: list
      
 
+WARNING How to pass a function with arguments to apply:
+	sf['Country'] = sf['Country'].apply(lambda x: transform_country(x,
+	param_2, .., param_n)
+	
+
 d) Canvas
 
    # If you want Canvas visualization to show up on this notebook, 
@@ -179,7 +184,7 @@ b) train the data set
 
 c) (optional) View the learned regression coefficients: theta
 
-  > sqft_model.get('coefficients')
+  > sqft_model.get('coefficients')	  
 
   # Result example: table
   #
@@ -257,12 +262,17 @@ c) (optional) View the learned regression coefficients: theta
 ## STEP 4.- Predict new solutions: apply the regression model to predict new
 ## 	    values.
 
- > house1 = sales[sales['id']=='5309101200'] # data for a db ...
- 
+
+ > house1 = sales[sales['id']=='5309101200'] # one only record in a dataset...
  > my_features_model.predict(house1)
 
 
- >  bill_gates = {'bedrooms':[8],                  # or a python data
+ > giraffe_reviews = products[products['name'] == 'Vulli'] # ... data subset
+ > giraffe_reviews['predicted_sentiment'] =
+        sentiment_model.predict(giraffe_reviews, output_type='probability')
+
+
+ >  bill_gates = {'bedrooms':[8],            # ... or a python data
               'bathrooms':[25], 
               'sqft_living':[50000], 
               'sqft_lot':[225000],
@@ -281,7 +291,10 @@ c) (optional) View the learned regression coefficients: theta
               'sqft_living15':[5000],
               'sqft_lot15':[40000]}
  > print my_features_model.predict(graphlab.SFrame(bill_gates))	      
- 
+
+
+ # Just see a subset of predictions (i.e. one record of data)
+ > sentiment_model.predict(giraffe_reviews[0:1], output_type='probability')
 
 
 

@@ -1,0 +1,1 @@
+"use strict";define("pages/open-course/item/views/nls/es/header",{"Navigation closed":"Navegación cerrada","Navigation open":"Navegación abierta","Toggle navigation":"Cambiar Modo de Navegación"});
