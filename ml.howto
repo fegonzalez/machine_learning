@@ -17,10 +17,26 @@
 # 	  1.2.5 Classification Problem description
 #     	  1.2.6 Multiclass Classification: one-vs-all algorithm (method)
 # 	  1.2.7 Miss-classification error
+#
+#     1.3 Clustering [2].41-42
+#
+#     1.? Dimensionality Reduction [2].43-46
+#
+#     1.? Anomaly Detection  [2].47-53
+#
+#     1.? Neural Networks [2].21-27 & [2].31  NOTICE Super/Unsup/Reinforc model
+#
+#     1.? Support Vector Machines [2].35-38   NOTICE  Supervised learning model
+#
+#     1.? Recomender Systems [2].55-59
+#
+#     1.? Large Scale Machine Learning [2].61-64
+
+
 
 # 2.- Supervised Learning Algorithms
 #
-#     2.1. Gradient Descent Algorithm
+#     2.1 Gradient Descent Algorithm
 #     	   2.1.1 Equation
 #     	   2.1.2 Vectorized Notation
 #     	   2.1.3 Speeding up Gradient Descent
@@ -28,6 +44,11 @@
 
 # 3.- Unsupervised Learning Algorithms
 #
+#     3.1 k-means algorithm
+#     	  3.1.1 k-means for non-separated clusters
+# 	  3.1.2 Optimization objective
+# 	  3.1.3 Random initialization of the centroids [e1]
+# 	  3.1.4 Choosing the number of clusters
 
 
 # 4.- Techniques
@@ -36,6 +57,7 @@
 #     4.2 Mean Normalization
 #     4.3 Polynomial Regression
 #     4.4 Advanced Optimization
+
 
 # 5.- Regularization (solving the over-fitting problem)
 #
@@ -47,7 +69,6 @@
 #     5.5 Regularized Normal Equation
 #     5.6 Regularized Logistic Regression
 #     	   5.4.6.1 Vectorized Logistic Regression with Regularization
-
 
 # 6.- Advice for applying Machine Learning
 #
@@ -80,11 +101,14 @@
 
 # References
 
+# Code examples
+
+
 ##==============================================================================
 
 INFO notation   x sub i represented as  'x_i'
 
-INFO notation   x super i represented as  'x((i))'
+INFO notation   x super i represented as  'x^i'
 
 INFO notation	Summation from i=1 to m represented as 'SUM_i=1_to_m'
 
@@ -107,10 +131,14 @@ INFO Notation   A /=> B: A does not implies B
 ##==============================================================================
 
 ##------------------------------------------------------------------------------
-# 1.1. Linear Regression
+# 1.1 Linear Regression
 ##------------------------------------------------------------------------------
 
 # 1.1.1 Linear Regression basics
+
+
+NOTICE  Supervised learning model
+
 
 a) To predict the actual CONTINUOUS valued output ('y/x' is a Gaussian
    distribution)
@@ -131,11 +159,11 @@ a) Model representation
    x: inputs
    y: outputs
 
-   X((i)): i-th training example input
+   X^i: i-th training example input
 
-   X_j((i)): i-th training example value of feature j
+   X_j^i: i-th training example value of feature j
 
-   Y((i)): i-th training example output
+   Y^i: i-th training example output
 
 
 b) Problem representation
@@ -175,7 +203,7 @@ d) Cost function
    cost(h,y) = quadratic error = (h(x) - y)**2
    
    # multiple linear regression
-   J(theta) = (1/2m)*cost(h,y) =  (1/2m) SUM_i=1_to_m(h(x((i)) ) - y((i)))**2
+   J(theta) = (1/2m)*cost(h,y) =  (1/2m) SUM_i=1_to_m(h(x^i ) - y^i)**2
 
 
 e) Schema
@@ -201,6 +229,10 @@ e) Schema
 ##------------------------------------------------------------------------------
 # 1.2. Logistic Regression
 ##------------------------------------------------------------------------------
+
+
+NOTICE  Supervised learning model
+
 
 # 1.2.1 Logistic Regression basics
 
@@ -327,11 +359,11 @@ NOTICE linear vs logistic regression: the difference is only in h_θ(x)
 
 - Precondition: k-classes => k-logistic regression classification
 
-- step 1: train a logistic regression classifier 'h_θ((i)) (x)' for each class
+- step 1: train a logistic regression classifier 'h_θ^i (x)' for each class
           'i' to predict p(y=i/x;θ)
 
 - step 2: Given an input X, how to make a prediction?
-       	  pick the class 'i' / max h_θ((i)) (x)
+       	  pick the class 'i' / max h_θ^i (x)
                                 i
 
 WARNING  ∑(h) > 1  is possible because different classes can intersect.
@@ -358,12 +390,31 @@ WARNING  ∑(h) > 1  is possible because different classes can intersect.
 
 
 
+
+##------------------------------------------------------------------------------
+# 1.3 Clustering [2].41-42
+##------------------------------------------------------------------------------
+
+
+NOTICE  Unsupervised learning model
+
+def (GOTO Glossary.Clustering)
+
+- Main idea: instances in the same cluster are more similar to each other than
+  those in others.
+
+- Cluster analysis itself is not one specific algorithm, but the general task
+  to be solved.
+
+- Algorithm: k-means algorithm (GOTO 3.1)
+
+
 ##==============================================================================
 ## 2.- Supervised Learning Algorithms
 ##==============================================================================
 
 ##------------------------------------------------------------------------------
-# 2.1. Gradient Descent Algorithm
+# 2.1 Gradient Descent Algorithm
 ##------------------------------------------------------------------------------
 
   NOTICE always using Batch G.D. (See Glossary)
@@ -382,12 +433,12 @@ WARNING  ∑(h) > 1  is possible because different classes can intersect.
 
   REPEAT
   {
-    grad = (1/m) * ( SUM_i=1_to_m ( h( x((i)) ) - y((i)) ) * x_j((i)) )
+    grad = (1/m) * ( SUM_i=1_to_m ( h( x^i ) - y^i ) * x_j^i )
     θ_j = θ_j - (α * grad)
 
     # i = 1 .. m: training example
     # j = 0 .. n: feature
-    # x_0((i)) = 1 ∀ i
+    # x_0^i = 1 ∀ i
     # Batch GD: updating θ_j simultaneously# j = 0..n
     
   }
@@ -497,6 +548,107 @@ WARNING  ∑(h) > 1  is possible because different classes can intersect.
 ## 3.- Unsupervised Learning Algorithms
 ##==============================================================================
 
+##------------------------------------------------------------------------------
+# 3.1 k-means algorithm  [2].41-42
+##------------------------------------------------------------------------------
+
+a) Algorithm notes
+
+   - μ_k: k-th centroid ; 1 ≤ k ≤ K
+
+   - x^i: i-th example ; 1 ≤ i ≤ m
+
+   - 'closest' ≡ norm(x-μ)^2 ≡    min  || x^i - μ_k ||^2   ~(Voronoi diagram)
+                                 k=c^i
+
+   - Convergence reached => after several iterations the clusters not affected
+				
+
+b) Steps
+
+STEP_1	!Randomly! initiate K cluster centroids μ_1, μ_K ∈ R
+
+STEP_2	REPEAT until Convergence{
+
+  STEP_2_a "cluster assignment step": find closest centroid to each input var.
+
+	  FOR i=1 TO m   // of the x-examples
+	     c^i:= index (from 1 to k) of cluster centroids closest to x^i
+	  END_FOR
+
+
+  STEP_2_b "move centroids step"
+
+	  FOR k=1 TO K   // of the K centroids 
+	      IF k has zero points assigned
+	      	 THEN remove k of random re-initiate it.
+	      ELSE
+		μ_k := average (mean) of the points assigned to cluster k
+	      END_IF
+	  END_FOR
+
+	} # end_repeat
+
+
+# 3.1.1 k-means for non-separated clusters
+
+  a) Separated clusters: normal mode
+
+  b) Non-separated clusters: i.e. t-shirts sizes: small, medium, large -> the
+  clusters are contiguous.
+
+
+# 3.1.2 Optimization objective
+
+
+a) Cost function = J(c^1, c^m, μ_1, μ_k) = 1/m SUM_i=1_to_m || x^i - μ_c^i ||^2
+
+ - Meaning: x^i has the c-kernel assigned
+
+ - e.g.
+   X set = {x_1, x_2, x_3} ; centroids = {μ_1, μ_2, μ_3}
+   {x_1 -> μ_2 ; x_2 -> μ_2 ; x_3 -> μ_1
+   then J = 1/3 ((x_1-μ_2)^2 + (x_2-μ_2)^2 + (x_3-μ_1)^2)
+
+
+                                   | cluster assignment step: min J(x^1,.., x^m)
+                                   |                          (μ fixed)
+   min J(c, μ) = exec. k-mean alg.< 
+   c,μ                             | 
+                                   | move centroids step: min J(μ_1,.., μ_k)
+
+
+HINT k-means ALWAYS converge (global or local minimum) [2].42
+
+     - Using k-means J never can increase, although IT CAN FALL TO A LOCAL
+       MINIMUM => apply random init. to reduce the probability of local min.
+
+
+# 3.1.3 Random initialization of the centroids [e1]
+
+  i)   Having k<m centroids
+  ii)  RANDOMLY pick k training examples
+  iii) Set μ_1, μ_2, μ_3 equal to theses examples
+
+PROBLEM   How to avoid some (high) percentage of local minimum ?
+
+SOLUTION i) run ONE ITERATION of the algorithm on many (50 to 100) random
+	    initializations ...
+	 ii) ... and then pick the one with min J(c, μ)
+
+
+# 3.1.4 Choosing the number of clusters
+
+HINT Too many clusters will over-fit the data (i.e. k==m)
+
+* Usually k is selected by hand.
+
+* automatic modes: "THE ELBOW METHOD"
+  Fact: as k increase, J will always decrease
+  - Ideal elbow evolution: linear fall + ~horiz fall => elbow point = k value
+  - Actual elbow evolution: log. => no clear elbow
+  
+HINT Empirically tested that k must be ∈ [2-10]  [2].42
 
 
 ##==============================================================================
@@ -559,7 +711,7 @@ WARNING Feature scaling when S is close to 0
 # 5.- Regularization (solving the over-fitting problem)
 ##==============================================================================
 
-# 5.1. Overfitting Problem (high variance - related to precision) [2].p17
+# 5.1 Overfitting Problem (high variance - related to precision) [2].p17
 
   - Detection: h(x) match the training set almost perfectly.
 
@@ -590,7 +742,7 @@ WARNING Feature scaling when S is close to 0
 	    - test set (check the goodness of the algorithm)
 
 
-# 5.2. Underfitting Problem (high bias - related to exactitude) [2].p17
+# 5.2 Underfitting Problem (high bias - related to exactitude) [2].p17
 
   - Detection: h(x) does not fit the training set.
 
@@ -608,7 +760,7 @@ WARNING Feature scaling when S is close to 0
     	technique)
 
 
-# 5.3. Regularization [2].p17-20
+# 5.3 Regularization [2].p17-20
 
   WHY Solution to overfitting problem caused by an excesive complex cost
       function, and when all the features are usefull to find the solution.
@@ -616,7 +768,7 @@ WARNING Feature scaling when S is close to 0
   HOW keep all the features but reduce the weight of some/every feature by
       incresing their cost.
 
-  i) Decrease λ -> to fix high bias problem
+  i) Decrease λ -> to fix0' high bias problem
   
   ii) Increase λ -> to fix high variance problem
 
@@ -690,7 +842,7 @@ WARNING Feature scaling when S is close to 0
 
   iii) Pick 'd' where J_cv is minimum
 
-  iv)  Estimate generalization error for the test set: J_test(O((d_min)))
+  iv)  Estimate generalization error for the test set: J_test(O^d_min)
 
 
 # 6.3 Bias/Variance
@@ -854,6 +1006,11 @@ WARNING If we want to assure recall (i.e. to detect the max. number of skewed),
 WARNING Accuracy is a bad index to evaluate skewed classes (always high)
 
 
+HINT what accuracy does my application need?
+     - What is good enough for my user’s experience?
+     - What is the impact of the mistakes we make?
+
+
 7.3 How much data should we train?
 
     a) Choose the correct features (X set) to have enough information:
@@ -869,18 +1026,28 @@ WARNING Accuracy is a bad index to evaluate skewed classes (always high)
 ## Hints
 ##==============================================================================
 
+
+# convergence
+
 HINT (Batch) Gradient Descent algorithm ALWAYS converge to GLOBAL minimum for
      linear regression problems. [2].ML.C3
-
-
-HINT (Batch) Gradient Descent algorithm scales better than the numerical method
-     (Normal Equations Method), for large training sets (n>10000)
 
 
 HINT Logistic Regression Cost Function (sigma) is convex => Gradient Descent
      algorithm ALWAYS converge to GLOBAL minimum
 
+
+HINT k-means ALWAYS converge, BUT not always to a global minimum. [2].42
+
+
+# others
+
+HINT (Batch) Gradient Descent algorithm scales better than the numerical method
+     (Normal Equations Method), for large training sets (n>10000)
+
+
 HINT Logistic Regression: class probabilities are extremely useful in a practice
+
 
 HINT Why train/cv/test sets: (GOTO 6.2)
 
@@ -889,12 +1056,17 @@ HINT Models with less bias need more data to learn (initially slow learning ->
      curve slope linear instead of logarithmic), but do better with sufficient
      data (train-cv gap smaller)
 
+
 HINT  Decicion boundary is a property of 'h_θ(x)',  it is not a property of 'X'
 
 
 ##==============================================================================
 ## Warnings
 ##==============================================================================
+
+
+WARNING Accuracy is a bad index to evaluate skewed classes (always high)
+
 
 WARNING Feature scaling when S is close to 0
 	(S ~= 0) iff vector feature ~= constant => bad feature => the feature
@@ -942,6 +1114,13 @@ C
 - Classification Problem: to predict the actual DISCRETE valued output
   (i.e. {yes, no})
   
+- Clustering (Cluster analysis): cluster analysis or clustering is the task of
+  grouping a set of objects in such a way that objects in the same group
+  (called a cluster) are more similar (in some sense or another) to each other
+  than to those in other groups (clusters). Cluster analysis itself is not one
+  specific algorithm, but the general task to be solved. [4.8]
+
+
 - Cost function: function to get the learning algorithm result.
   i.e. in linear regression this is the function to minimize
 
@@ -1051,8 +1230,7 @@ V
 [3] Machine Learning course - U.Washington
 [3.1] classification problems - 2.classification-annotated.pdf
 
-[4] Other Web references
-
+[4] Wikipedia
 [4.1] Precision/Recall - https://en.wikipedia.org/wiki/Precision_and_recall
 [4.2] Sigmoid function - https://en.wikipedia.org/wiki/Sigmoid_function
 [4.3] L-BFGS algorithm - https://es.wikipedia.org/wiki/L-BFGS
@@ -1060,6 +1238,19 @@ V
 [4.5] Conjugate gradient method - https://en.wikipedia.org/wiki/Conjugate_gradient_method
 [4.6] Linear classifier - https://en.wikipedia.org/wiki/Linear_classifier
 [4.7] Decision boundary - https://en.wikipedia.org/wiki/Decision_boundary
+[4.8] Clustering - https://en.wikipedia.org/wiki/Cluster_analysis
+
+[5] Other Web references
+
+
+##==============================================================================
+## Code examples
+##==============================================================================
+
+[e1] k-means random initialization - /curso_stanford/programming_exercices/ex7.week8/mlclass-ex7/kMeansInitCentroids.m
+
+
+
 
 
 #######################################
@@ -1086,6 +1277,7 @@ V
 # σ sigma
 # ∇ gradient
 # N(μ,σ2)
+# μ mu
 #######################################
 # ∝
 # ∞
@@ -1096,4 +1288,6 @@ V
 # ±
 # ⊂
 # ≡
+# ±
+# ∓
 #######################################
