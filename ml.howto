@@ -33,7 +33,6 @@
 #     1.? Large Scale Machine Learning [2].61-64
 
 
-
 # 2.- Supervised Learning Algorithms
 #
 #     2.1 Gradient Descent Algorithm
@@ -51,7 +50,7 @@
 # 	  3.1.4 Choosing the number of clusters
 
 
-# 4.- Techniques
+# 4.- Auxiliar techniques
 #
 #     4.1 Feature scaling  
 #     4.2 Mean Normalization
@@ -87,6 +86,13 @@
 #     7.1 Error analysis
 #     7.2 Error metrics for skewed classes: apply the Precision-Recall trade-off
 #     7.3 How much data should we train?. Learning curves
+
+
+# 8.- Some Machine Learning Problems 
+#
+#     8.1 Document Retrieval: similarity & clustering
+#     	  8.1.1 How to measure similarity? - Bag of words model
+# 	  8.1.2 Retrieving similar documents
 
 
 # Hints
@@ -395,7 +401,6 @@ WARNING  ∑(h) > 1  is possible because different classes can intersect.
 # 1.3 Clustering [2].41-42
 ##------------------------------------------------------------------------------
 
-
 NOTICE  Unsupervised learning model
 
 def (GOTO Glossary.Clustering)
@@ -408,10 +413,49 @@ def (GOTO Glossary.Clustering)
 
 - Algorithm: k-means algorithm (GOTO 3.1)
 
+- Problem application: DETECT SIMILARITIES (documents, images, illness, ...) ->
+  structured search, product recommendation, grouping, ...
+
+- Work-flow (unsupervised)
+  - Training data = table(doc id, doc text)
+  - Feature extraction = apply tf-idf(Training data) -> X = tf-idf
+  - θ = cluster centers
+  - h = estimated cluster label
+  - ML model = clustering
+  - ML algorithm = k-means
+  - Quality metric = distance to cluster centers?
+
+
 
 ##==============================================================================
 ## 2.- Supervised Learning Algorithms
 ##==============================================================================
+
+
+   Supervised Learning work-flow
+
+
+  +---------------+   +--------------------+  X  +----------+  h
+  | Training data |-->| Feature extraction |---->| ML model |-------->
+  +---------------+   +--------------------+     +----------+    |
+         |                                            ^          |
+         | y                                          |          |
+         |                                                       |
+         |                                            θ          |
+         |                                                       |
+         |                                            ^          |
+         |                                            |          |
+         |                                    +--------------+   |
+         |      		              | ML algorithm |   |
+         |                                    +--------------+   |
+         |                                            ^          |
+         |                                            |          |
+         |                                            |          |
+         |                                  +----------------+   |
+         +--------------------------------->| Quality Metric |<--+
+                                            +----------------+   
+
+
 
 ##------------------------------------------------------------------------------
 # 2.1 Gradient Descent Algorithm
@@ -548,6 +592,32 @@ def (GOTO Glossary.Clustering)
 ## 3.- Unsupervised Learning Algorithms
 ##==============================================================================
 
+
+   Unupervised Learning work-flow
+
+
+  +---------------+   +--------------------+  X  +----------+  h
+  | Training data |-->| Feature extraction |---->| ML model |-------->
+  +---------------+   +--------------------+     +----------+    |
+                                                    ^            |
+                                                    |            |
+                                                                 |
+                                                    θ            |
+                                                                 |
+                                                    ^            |
+                                                    |            |
+                                              +--------------+   |
+      		                              | ML algorithm |   |
+                                              +--------------+   |
+                                                    ^            |
+                                                    |            |
+                                                    |            |
+                                            +----------------+   |
+      		                            | Quality Metric |<--+
+                                            +----------------+   
+
+
+
 ##------------------------------------------------------------------------------
 # 3.1 k-means algorithm  [2].41-42
 ##------------------------------------------------------------------------------
@@ -652,7 +722,7 @@ HINT Empirically tested that k must be ∈ [2-10]  [2].42
 
 
 ##==============================================================================
-## 4.- Techniques
+## 4.- Auxiliar techniques
 ##==============================================================================
 
 # 4.1 Feature scaling [2].p6
@@ -942,7 +1012,7 @@ HINT Models with less bias need more data to learn (initially slow learning ->
 # 7.- Machine Learning systems design [2].page33
 ##==============================================================================
 
-7.1 Error analysis:
+# 7.1 Error analysis:
 
 - Recommended approach to solve a ML problem
 
@@ -961,7 +1031,7 @@ HINT Models with less bias need more data to learn (initially slow learning ->
   ...), to see the results quickly.
 
 
-7.2 Error metrics for skewed classes: apply the Precision-Recall trade-off [4.1]
+# 7.2 Error metrics for skewed classes: apply Precision-Recall trade-off [4.1]
 
     - (Type of) Error Matrix
 
@@ -1011,7 +1081,7 @@ HINT what accuracy does my application need?
      - What is the impact of the mistakes we make?
 
 
-7.3 How much data should we train?
+# 7.3 How much data should we train?
 
     a) Choose the correct features (X set) to have enough information:
 
@@ -1019,6 +1089,123 @@ HINT what accuracy does my application need?
 
     b) First: get a low bias algorithm.
        Second: reduce overfiting and increase the accuracy of the training set.
+
+
+
+##==============================================================================
+# 8.- Some Machine Learning Problems 
+##==============================================================================
+
+
+##------------------------------------------------------------------------------
+# 8.1 Document Retrieval: similarity & clustering
+##------------------------------------------------------------------------------
+
+Note.- corpus: large set of documents (i.e. library)
+
+
+Issue_1 How to determine that two documents are similar? -> similarity 
+
+Issue_2 How to retrieve similar documents -> clustering
+
+
+# 8.1.1 How to measure similarity? - Bag of words model
+
+  - Ignore order of words
+  
+  - Count # of instances of each word in vocabulary
+
+
+ a) Problem representation
+
+    + vector of words:
+      - index i: i-th word of the document
+      - v[i]: Count # of instances of each word
+
+    + Measure similarity of 2 documents = similarity of the two vectors of
+      words  v, w = ∑(v[i] * w[j])
+
+      (e.g) v [1|0|0|5|3|0|0|1|0]
+            w [3|0|0|2|0|0|1|0|0]   = 1*3 + 5*2 = 13
+
+
+ b) Issues with words counts - Doc Length
+
+      (i.e.) doc1 & doc2 with 2 pages / similarity = 1*3 + 5*2 = 13
+      	     doc3=doc1 twice & doc4=doc2 twice:
+	     	 -> expected similarity = 13 * 2 = 26
+		 -> obtained similarity = 2*6 + 10*4 = 52
+
+     SOLUTION = normalize => norm(vector) = vector / norm(vector)
+
+      (e.g) v [1|0|0|5|3|0|0|1|0]  => v_norm [1/6|0|0|5/6|3/6|0|0|1/6|0]
+            w [3|0|0|2|0|0|1|0|1]  => w_norm [3/√15|0|0|2/√15|0|0|1/√15|0|1/√15]
+
+	    norm(v) = √(1^2 + 5^2 + 3^2 + 1^2) = 6
+	    norm(w) = √(3^2 + 2^2 + 1^2 + 1^2) = √15
+
+	    similarity (v_norm, w_norm) = 1/6*3/√15 + 5/6*2/√15 = 0.559
+
+
+ c) Issues with words counts - rare words
+
+    Note.- Rare globally: appears rarely in corpus
+
+    Note.- Common locally:  appears frequently in document.
+
+    - Rare word: rarely globally
+
+    - Important word: common locally but rare globally.
+
+    - We need to increase the importance of the rare words  to avoid loosing
+      them.
+
+    - Trade off between local frequency and global rarity => tf_idf
+    
+    
+    c.1) tf_idf: Term frequency – inverse document frequency
+
+    	 • tf[i]  = count # of instances of each word
+    	 • udf[i] = log (#docs / (1 + #docs_using_word))
+
+
+    	 (e.g)
+	 Term frequency vector      tf = [ | |1000| | | |5| | ]
+	 Inv doc frequency vector  idf = [ | | 0  | | | |4| | ]
+
+	 tf-idf = ∏(tf*idf) = ∏ (tf[i] * idf[j]) = [ | | 0  | | | |20| | ]
+	 
+
+# 8.1.2 Retrieving similar documents
+
+ a) Algorithm - Nearest neighbor search
+
+    Problem representation
+
+    + Input: Query article (a document)
+    + Corpus: set of docs.
+    + Specify: distance metric
+    + Output: (list of k) most similar articles
+
+    k - Nearest neighbor (k=1)
+
+      	FOR each article 'a' in corpus
+	    Compute s = similarity(query, a)
+	    IF (s > best_s) THEN
+	       add a to output
+	       best_s = s
+	    END_IF
+	END_FOR
+
+	return output
+
+
+ b)  Algorithm - Clustering
+
+    case 1: some classes are known ->  (supervised learning ) multiclass
+    	    classification problem.
+
+    case 2: unlabeled classes -> (unsupervised learning ) k-means algorithm.
 
 
 
@@ -1290,4 +1477,6 @@ V
 # ≡
 # ±
 # ∓
+#######################################
+# •
 #######################################
