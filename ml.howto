@@ -1159,22 +1159,42 @@ Issue_2 How to retrieve similar documents -> clustering
 
     - We need to increase the importance of the rare words  to avoid loosing
       them.
+   
 
-    - Trade off between local frequency and global rarity => tf_idf
+   c.1) tf_idf: Term frequency – inverse document frequency
+
+   	- (Measure) Trade off between local frequency and global rarity.
+
+	- Common terms tend to disappear (tf-idf = 0)
+
+   	- Important words tend to have a high tf-idf
+
+	  => Words with highest TF-IDF are much more informative.
+
+
+    (Equation)
     
-    
-    c.1) tf_idf: Term frequency – inverse document frequency
+    w: word
+    d: doc
+    D: corpus
+    N: total number of documents in the corpus N = {|D|}
+    |{d ∈ D: t ∈ d}|: number of documents where the term w appears
 
-    	 • tf[i]  = count # of instances of each word
-    	 • udf[i] = log (#docs / (1 + #docs_using_word))
-
-
-    	 (e.g)
-	 Term frequency vector      tf = [ | |1000| | | |5| | ]
-	 Inv doc frequency vector  idf = [ | | 0  | | | |4| | ]
-
-	 tf-idf = ∏(tf*idf) = ∏ (tf[i] * idf[j]) = [ | | 0  | | | |20| | ]
+    • tf(w, d) = number of times word 'w' appeared in document 'd'
 	 
+    • idf(w, D) = log (N / (1 + |{d ∈ D: t ∈ d}|))
+      #WARNING (1 + ...) to avoid division by zero if w ∉ D
+      #INFO idf(Common words) tend to 0 because (log -> 0)
+
+    • tf-idf(w, d, D) = tf(w.d) * idf(w,D)
+
+
+   (e.g)
+   Term frequency vector      tf = [ | |1000| | | |5 | | ]
+   Inv doc frequency vector  idf = [ | | 0  | | | |4 | | ]
+         tf-idf(w,d) = ∏(tf*idf) = [ | | 0  | | | |20| | ]
+
+
 
 # 8.1.2 Retrieving similar documents
 

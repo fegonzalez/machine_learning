@@ -26,7 +26,17 @@
 
 # 3) graphlab.text_analytics
 
+# 4) graphlab.distances
+#    4.1) Standard distance functions
+
+# 5) nearest_neighbors algorithm
+#    5.1) graphlab.nearest_neighbors.create
+
+
+
 ## References
+
+## Code examples
 
 
 # ==============================================================================
@@ -60,6 +70,18 @@ c) Data manipulation
 
    > sf.  sort / filter ( group_bu / ...
 
+     SFrame.sort('tfidf',ascending=False)
+
+   > graphlab.SFrame.stack
+
+     SFrame.stack(column_name, new_column_name=None, drop_na=False,
+                  new_column_type=None)
+
+    Convert a “wide” column of an SFrame to one or two “tall” columns by
+    stacking all values.
+
+       table = src[['tfidf']].stack('tfidf', new_column_name=['word', 'tfidf'])
+
 
    ii) Use the 'apply' function to do a advance transformation of our data
 
@@ -81,7 +103,6 @@ c) Data manipulation
      > map_vs_apply = map(transform_country, sf['Country'])
      ['United States', 'Canada', 'England', 'United States', 'Poland']
      type: list
-     
 
 WARNING How to pass a function with arguments to apply:
 	sf['Country'] = sf['Country'].apply(lambda x: transform_country(x,
@@ -302,16 +323,104 @@ c) (optional) View the learned regression coefficients: theta
 # 3) graphlab.text_analytics
 # ==============================================================================
 
-# Count words of a text string
-#
-# input: products['review']: a column of a sframe; type str.
-#
-# output: products['rword_count']: NEW column in the sframe; type dictionary
-#                                  {'and': 5, 'then': 1, ...}
+> graphlab.text_analytics.count_words
 
-> products['word_count']=graphlab.text_analytics.count_words(products['review'])
+  # Count words of a text string
+  #
+  # input: products['review']: a column of a sframe; type str.
+  #
+  # output: products['rword_count']: NEW column in the sframe; type dictionary
+  #                                  {'and': 5, 'then': 1, ...}
+
+  products['word_count']=graphlab.text_analytics.count_words(products['review'])
 
 
+> graphlab.text_analytics.tf_idf(dataset)
+
+  # \param dataset : SArray of type dict, SFrame with columns of type dict
+  #
+  #
+  # \return out : SArray of type dict. The same document corpus where each
+  #               score has been replaced by the TF-IDF transformed.
+
+  tfidf = graphlab.text_analytics.tf_idf(people['word_count'])
+
+
+##==============================================================================
+## 4) graphlab.distances
+##==============================================================================
+
+The GraphLab Create distances module provides access to the standard distance
+functions and utilities for working with composite distances.
+
+Distance functions are used in all toolkits based on a nearest neighbors
+search, including:
+
+	- nearest_neighbors
+	- nearest_neighbor_classifier
+	- nearest_neighbor_deduplication
+
+# 4.1) Standard distance functions
+
+  Measure the dissimilarity between two data points consisting of only a single
+  type.
+
+> cosine(x, y) Compute the cosine distance between between two dictionaries or
+  two lists of equal length.
+
+  HINT Document similarity (manual calculation) = cosine distances dictionary
+       of tfidf [e1]
+
+
+##==============================================================================
+# 5) nearest_neighbors algorithm
+##==============================================================================
+
+The GraphLab Create nearest neighbors toolkit finds the rows in a tabular
+reference dataset that are most similar to a set of queries with the same
+schema.
+
+
+# 5.1) graphlab.nearest_neighbors.create [3] [e1] 
+
+ > graphlab.nearest_neighbors.create(dataset, label=None, features=None,
+   					      distance=None, method='auto',
+					      verbose=True, **kwargs)
+
+  # \param dataset: SFrame. Reference data
+  #
+  # \param label: string, optional. Name of the SFrame column with row labels.
+  #
+  # \param features: list[string], optional
+  #
+  #   Name of the columns with features to use in computing distances between
+  #   observations and the query points. 
+  #
+  # \return NearestNeighborsModel: a structure for efficiently computing the
+  # nearest neighbors in ‘dataset’ of new query points.
+
+  knn_model = graphlab.nearest_neighbors.create(dataset = people,
+  	      					features=['tfidf'],
+						label='name')
+
+
+ # 5.2) NearestNeighborsModel [4] [e1]
+
+  Data structure returned by graphlab.nearest_neighbors.create.
+
+  > NearestNeighborsModel.query(dataset[, ...])
+
+    For each row of the input ‘dataset’, RETRIEVE THE NEAREST NEIGHBORS from
+    the model’s stored data.
+
+    (e.g) [e1]
+    	  knn_model.query(obama)
+	  # [Out]
+	  query_label 	reference_label 	distance 	rank
+	  0 		Barack Obama 		0.0 		1
+	  0 		Joe Biden 		0.794117647059 	2
+	  0 		Joe Lieberman 		0.794685990338 	3
+	  0 		Kelly Ayotte 		0.811989100817 	4
 
 
 
@@ -322,3 +431,15 @@ c) (optional) View the learned regression coefficients: theta
 [1] graphlab.linear_regression.create - https://dato.com/products/create/docs/generated/graphlab.linear_regression.create.html
 
 [2] graphlab.logistic_classifier.create - https://dato.com/products/create/docs/generated/graphlab.logistic_classifier.create.html
+
+[3] graphlab.nearest_neighbors.create - https://dato.com/products/create/docs/generated/graphlab.nearest_neighbors.create.html#graphlab.nearest_neighbors.create
+
+[4] graphlab.nearest_neighbors.NearestNeighborsModel - https://dato.com/products/create/docs/generated/graphlab.nearest_neighbors.NearestNeighborsModel.html#graphlab.nearest_neighbors.NearestNeighborsModel
+
+
+
+##==============================================================================
+## Code examples
+##==============================================================================
+
+[e1] document_retrieval - /curso_uw/programming_exercices/3.retrieving_wikipedia_articles/document_retrieval.ipynb
