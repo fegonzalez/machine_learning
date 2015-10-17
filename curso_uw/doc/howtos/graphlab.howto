@@ -365,8 +365,8 @@ search, including:
   Measure the dissimilarity between two data points consisting of only a single
   type.
 
-> cosine(x, y) Compute the cosine distance between between two dictionaries or
-  two lists of equal length.
+> cosine(x, y) Compute the cosine distance between two dictionaries or two
+  lists of equal length.
 
   HINT Document similarity (manual calculation) = cosine distances dictionary
        of tfidf [e1]
@@ -394,14 +394,21 @@ schema.
   # \param features: list[string], optional
   #
   #   Name of the columns with features to use in computing distances between
-  #   observations and the query points. 
+  #   observations and the query points.
+  #
+  # distance : string, function, or list[list], optional
+  #
+  #   Function to measure the distance between any two input data rows. 
+  #	String: the name of a standard distance function. One of ‘euclidean’,
+  # 	..., ‘cosine’, ...
   #
   # \return NearestNeighborsModel: a structure for efficiently computing the
   # nearest neighbors in ‘dataset’ of new query points.
 
   knn_model = graphlab.nearest_neighbors.create(dataset = people,
   	      					features=['tfidf'],
-						label='name')
+						label='name',
+						distance='cosine')
 
 
  # 5.2) NearestNeighborsModel [4] [e1]
@@ -443,3 +450,26 @@ schema.
 ##==============================================================================
 
 [e1] document_retrieval - /curso_uw/programming_exercices/3.retrieving_wikipedia_articles/document_retrieval.ipynb
+
+
+
+What's the most similar article, other than itself, to the one on 'Victoria Beckham' using word count features?  =  name = Mary Fitzgerald (artist), distance = 0.207307036115 
+
+Which one of the two is closest to Elton John,'Victoria Beckham' or 'Paul McCartney'  =  Paul McCartney 
+
+elton john: 3 words in his articles with highest word counts  =  {18: 'in', 27: 'the', 15: 'and'} 
+
+What's the most similar article, other than itself, to the one on 'Victoria Beckham' using TF-IDF features?  =  name = David Beckham, distance = 0.548169610263 
+
+elton john: 3 words in his articles with highest TF-IDF  =  {18.38947183999428: 'furnish', 17.30368095754203: 'billboard', 17.482320270031995: 'elton'} 
+
+cosine distance between the articles on 'Elton John' and 'Paul McCartney'  =  0.825031002922 
+
+cosine distance between the articles on 'Elton John' and 'Victoria Beckham'  =  0.956700637666 
+
+What's the most similar article, other than itself, to the one on 'Elton John' using word count features?  =  name = Cliff Richard, distance = 0.16142415259 
+
+What's the most similar article, other than itself, to the one on 'Elton John' using TF-IDF features?  =  name = Rod Stewart, distance = 0.717219667893 
+
+Which one of the two is closest to Elton John, Does this result make sense to you?  =  Yes. They two have simlilar ages, and they are in music during the same period of history)
+

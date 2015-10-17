@@ -1184,7 +1184,7 @@ Issue_2 How to retrieve similar documents -> clustering
 	 
     • idf(w, D) = log (N / (1 + |{d ∈ D: t ∈ d}|))
       #WARNING (1 + ...) to avoid division by zero if w ∉ D
-      #INFO idf(Common words) tend to 0 because (log -> 0)
+      #INFO idf(Common words) tend to 0 because (log -> log 1 -> 0)
 
     • tf-idf(w, d, D) = tf(w.d) * idf(w,D)
 
