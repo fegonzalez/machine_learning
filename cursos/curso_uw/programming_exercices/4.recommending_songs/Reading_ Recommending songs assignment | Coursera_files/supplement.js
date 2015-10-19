@@ -1,0 +1,1 @@
+"use strict";define("pages/open-course/supplement/views/nls/supplement",{});

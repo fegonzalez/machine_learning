@@ -1,1 +1,0 @@
-"use strict";define("pages/open-course/video/util/nls/es/autoNextOverlay",{"#{seconds} sec":"#{seconds} seg","NEXT UP:":"A  CONTINUACIÓN:","Navigation closed":"Navegación cerrada","Navigation open":"Navegación abierta","Starting in":"Comienza en","Toggle navigation":"Cambiar Modo de Navegación"});

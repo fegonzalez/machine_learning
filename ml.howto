@@ -20,6 +20,8 @@
 #
 #     1.3 Clustering [2].41-42
 #
+#     1.4 Recommender Systems
+#
 #     1.? Dimensionality Reduction [2].43-46
 #
 #     1.? Anomaly Detection  [2].47-53
@@ -27,8 +29,6 @@
 #     1.? Neural Networks [2].21-27 & [2].31  NOTICE Super/Unsup/Reinforc model
 #
 #     1.? Support Vector Machines [2].35-38   NOTICE  Supervised learning model
-#
-#     1.? Recomender Systems [2].55-59
 #
 #     1.? Large Scale Machine Learning [2].61-64
 
@@ -259,7 +259,7 @@ Def Given an input X, a linear classifier IDENTIFY THE CLASS (y) it belongs to
 
     y = f(θ . X)    # (scalar) dot product
 
-    (i.e. Sentiment Analysis Problems using a Threshold classifier [3.1].p16)
+    (i.e. Sentiment Analysis Problems using a Threshold classifier [3.2].p16)
      f(θ . X) >= threshold -> y = 1
      f(θ . X)  < threshold -> y = 0
      
@@ -424,6 +424,41 @@ def (GOTO Glossary.Clustering)
   - ML model = clustering
   - ML algorithm = k-means
   - Quality metric = distance to cluster centers?
+
+
+
+##------------------------------------------------------------------------------
+# 1.4 Recommender Systems [3.4] [2].55-59
+##------------------------------------------------------------------------------
+
+
+NOTICE  Supervised learning model
+
+
+# 1.4.1 Building a recommender system
+
+
+
+1.4.?? Collaborative Filtering [2].57
+
+Matrix factorization model
+
+
+# 1.4.END Performance metric for recommender systems
+
+  - Use precision & recall (GOTO 7.2): recommender systems only cares of the
+    very few liked items -> skewed cases -> accuracy is a bad measure (GOTO
+    warnings)
+
+
+  a) Precision = True Pos. / (TP + FP)   # ( liked & recommended / recommended)
+
+  b) Recall =    True Pos. / (TP + FN)   # ( liked & recommended / liked)
+
+
+  Optimal recommender => precision = recall = 1
+  
+  
 
 
 
@@ -1435,7 +1470,10 @@ V
 [2] Notest at the ML (paper) notebook.
 
 [3] Machine Learning course - U.Washington
-[3.1] classification problems - 2.classification-annotated.pdf
+[3.1] regression problems - 1.regression-intro-annotated.pdf 
+[3.2] classification problems - 2.classification-annotated.pdf
+[3.3] clustering problems - 3.clustering-intro-annotated.pdf
+[3.4] recommender systems - 4.recommenders-intro-annotated.pdf
 
 [4] Wikipedia
 [4.1] Precision/Recall - https://en.wikipedia.org/wiki/Precision_and_recall

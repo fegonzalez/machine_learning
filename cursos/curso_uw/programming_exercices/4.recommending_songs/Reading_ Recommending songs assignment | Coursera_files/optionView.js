@@ -1,0 +1,1 @@
+"use strict";define("bundles/assess/questionTypes/optionBase/student/nls/es/optionView",{"Sorry, that's incorrect.&nbsp;":"Lo sentimos, eso es incorrecto.&nbsp;","Well done!&nbsp;":"¡Bien hecho!&nbsp;"});

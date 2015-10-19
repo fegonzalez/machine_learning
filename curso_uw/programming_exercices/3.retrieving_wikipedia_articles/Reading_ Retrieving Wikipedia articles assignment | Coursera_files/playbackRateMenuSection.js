@@ -1,1 +1,0 @@
-"use strict";define("bundles/videojs/layout/nls/es/playbackRateMenuSection",{"Playback Rate":"Velocidad de Reproducción"});

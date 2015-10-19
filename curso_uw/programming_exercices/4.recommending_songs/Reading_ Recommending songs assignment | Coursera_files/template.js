@@ -1,1 +1,0 @@
-"use strict";define("bundles/assess/questionTypes/optionBase/student/nls/es/template",{});

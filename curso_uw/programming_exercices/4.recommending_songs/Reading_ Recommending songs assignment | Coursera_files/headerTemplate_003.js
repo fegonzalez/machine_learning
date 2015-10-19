@@ -1,1 +1,0 @@
-"use strict";define("bundles/assess/questionTypes/radioPoll/student/nls/es/headerTemplate",{Poll:"Encuesta"});

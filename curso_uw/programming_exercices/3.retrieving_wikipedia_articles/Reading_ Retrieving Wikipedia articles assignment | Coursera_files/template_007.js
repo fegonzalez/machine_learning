@@ -1,1 +1,0 @@
-"use strict";define("bundles/assess/assessmentTypes/videoQuiz/nls/es/template",{Continue:"Continuar","Continuing...":"Continuando..",Skip:"Saltar",Submit:"Enviar","Submit error. Please try again.":"Error de envío. Por favor, vuelve a intentarlo.","Submitting...":"Enviando.."});

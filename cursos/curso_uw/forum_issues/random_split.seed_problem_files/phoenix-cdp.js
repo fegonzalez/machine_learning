@@ -1,0 +1,1 @@
+"use strict";define("nls/es/phoenix-cdp",{"About this Course":"Acerca de este curso","Related Courses":"Cursos Relacionados",Share:"Compartir","Subtitles available in <strong>{subtitleLanguages}</strong>":"Subtítulos disponibles en <strong>{subtitleLanguages}</strong>"});

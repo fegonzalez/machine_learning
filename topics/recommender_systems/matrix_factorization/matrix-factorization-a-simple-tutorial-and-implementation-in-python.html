@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="google-site-verification" content="2x0oeMtscBxyXEHlhiof7-Tj5RJVtM1tWuluamdtfsE">
+<title>Matrix Factorization: A Simple Tutorial and Implementation in Python @ quuxlabs</title>
+<link rel="shortcut icon" href="http://www.quuxlabs.com/favicon.ico">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="all" href="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/style.css">
+<link rel="pingback" href="http://www.quuxlabs.com/xmlrpc.php">
+<link rel="alternate" type="application/rss+xml" title="quuxlabs » Feed" href="http://www.quuxlabs.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="quuxlabs » Comments Feed" href="http://www.quuxlabs.com/comments/feed/">
+				
+	<script src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ga.js" async="" type="text/javascript"></script><script type="text/javascript">//<![CDATA[
+	// Google Analytics for WordPress by Yoast v4.1.3 | http://yoast.com/wordpress/google-analytics/
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount','UA-17486653-1']);
+	_gaq.push(['_setAllowAnchor',true],['_setCustomVar',2,'author','albert-au-yeung',3],['_setCustomVar',3,'year','2010',3],['_setCustomVar',4,'categories','research tutorials',3],['_trackPageview'],['_trackPageLoadTime']);
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	//]]></script>
+<link rel="alternate" type="application/rss+xml" title="quuxlabs » Matrix Factorization: A Simple Tutorial and Implementation in Python Comments Feed" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/feed/">
+<link rel="stylesheet" id="contact-form-7-css" href="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/styles.css" type="text/css" media="all">
+<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/l10n.html"></script>
+<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/jquery.html"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.quuxlabs.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.quuxlabs.com/wp-includes/wlwmanifest.xml"> 
+<link rel="index" title="quuxlabs" href="http://www.quuxlabs.com/">
+<link rel="start" title="Reference implementation of SPEAR ranking algorithm released" href="http://www.quuxlabs.com/blog/2010/07/reference-implementation-of-spear-ranking-algorithm-released/">
+<link rel="prev" title="Location and Friendship: Data Mining in Facebook" href="http://www.quuxlabs.com/blog/2010/09/location-and-friendship-data-mining-in-facebook/">
+<link rel="next" title="Paper Token: Gutenberg’s version of One Time Passwords" href="http://www.quuxlabs.com/blog/2010/09/paper-token-gutenbergs-version-of-one-time-passwords/">
+<meta name="generator" content="WordPress 3.2.1">
+<link rel="canonical" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/">
+<link rel="shortlink" href="http://www.quuxlabs.com/?p=641">
+<script type="text/javascript">
+//<![CDATA[
+var _wpcf7 = { cached: 1 };
+//]]>
+</script>
+	<link type="text/css" rel="stylesheet" href="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shCore.css">
+	<link type="text/css" rel="stylesheet" href="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shThemeDefault.css">
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shCore.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushBash.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushCpp.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushCSharp.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushCss.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushDelphi.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushDiff.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushGroovy.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushJava.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushJScript.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushPerl.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushPhp.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushPlain.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushPython.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushRuby.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushScala.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushSql.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushVb.js"></script>
+	<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/shBrushXml.js"></script>
+	<script type="text/javascript">		
+		SyntaxHighlighter.config.clipboardSwf = 'http://www.quuxlabs.com/wp-content/plugins/syntax-highlighter-and-code-prettifier/scripts/clipboard.swf';
+		SyntaxHighlighter.all();
+	</script>
+	<style type="text/css">
+/* <![CDATA[ */
+img.latex { vertical-align: middle; border: none; }
+/* ]]> */
+</style>
+<script src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/button.js" async="" charset="utf-8" type="text/javascript"></script></head>
+
+<body class="single single-post postid-641 single-format-standard">
+<div id="wrapper" class="hfeed">
+	<div id="header">
+		<div id="masthead">
+			<div id="branding" role="banner">
+								<div id="site-title">
+					<span>
+                        <a href="http://www.quuxlabs.com/" title="quuxlabs" rel="home"><img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/quuxlabs-logo_250x100.png" height="100" width="250"></a>
+					</span>
+				</div>
+				<div id="site-description"><form role="search" method="get" accept-charset="utf-8" id="searchform" action="http://www.quuxlabs.com"> 
+    <div><label class="screen-reader-text" for="s">Search for:</label> 
+    <input name="s" id="s" type="text"> 
+    <input id="searchsubmit" value="Search" type="submit"> 
+    </div> 
+</form>
+</div>
+
+            <div id="ql-navigation" role="navigation">
+			  				<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+                <div class="ql-nav-col1">
+                    <div class="ql-nav-col-heading">
+                        About
+                    </div>
+                    <ul class="ql-nav-list">
+                        <li><a href="http://www.quuxlabs.com/profile/">Profile</a></li>
+                        <li><a href="http://www.quuxlabs.com/team/">Team</a></li>
+                        <li><a href="http://www.quuxlabs.com/vision/">Vision</a></li>
+                    </ul>
+                </div>
+                <div class="ql-nav-col2">
+                    <div class="ql-nav-col-heading">
+                        Portfolio
+                    </div>
+                    <ul class="ql-nav-list">
+                        <li><a href="http://www.quuxlabs.com/conferences/">Conferences</a></li>
+                        <li><a href="http://www.quuxlabs.com/research/">Research</a></li>
+                        <li><a href="http://www.quuxlabs.com/software/">Software</a></li>
+                        <li><a href="http://www.quuxlabs.com/online-services/">Online Services</a></li>
+                    </ul>
+                </div>
+                <div class="ql-nav-col3">
+                    <div class="ql-nav-col-heading">
+                        Publications
+                    </div>
+                    <ul class="ql-nav-list">
+                        <li><a href="http://www.quuxlabs.com/blog/">Blog Posts</a></li>
+                        <li><a href="http://www.quuxlabs.com/tutorials/">Tutorials</a></li>
+                        <li><a href="http://www.quuxlabs.com/presentations/">Presentations</a></li>
+                        <li><a href="http://www.quuxlabs.com/scientific-articles/">Scientific Articles</a></li>
+                    </ul>
+                </div>
+                <div class="ql-nav-col4">
+                    <div class="ql-nav-col-heading">
+                        Get in touch
+                    </div>
+                    <ul class="ql-nav-list">
+                        <li><a href="http://www.quuxlabs.com/contact/">Contact</a></li>
+                        <li><a href="http://www.quuxlabs.com/facebook/">Facebook</a></li>
+                        <li><a href="http://www.quuxlabs.com/github/">GitHub</a></li>
+                        <li><a href="http://www.quuxlabs.com/twitter/">Twitter</a></li>
+                    </ul>
+                </div>
+		    </div><!-- #ql-navigation -->
+		</div><!-- #masthead -->
+	</div><!-- #header -->
+
+	<div id="main">
+
+		<div id="container">
+			<div id="content" role="main">
+
+
+				<div id="post-641" class="post-641 post type-post status-publish format-standard hentry category-research category-tutorials tag-algorithms-2 tag-matrix-factorization tag-python tag-recommendation-system-2 tag-tutorial">
+                    <div>
+                        <div class="entry-edit">
+						                            </div>
+					    <div class="entry-blog">
+                            Blog post
+					    </div><!-- .entry-blog -->
+                    </div>
+					<h1 class="entry-title">Matrix Factorization: A Simple Tutorial and Implementation in Python</h1>
+
+					<div class="entry-meta">
+						<span class="meta-prep meta-prep-author">By</span> <span class="author vcard"><a class="url fn n" href="http://www.quuxlabs.com/blog/author/albert/" title="View all posts by Albert Au Yeung">Albert Au Yeung</a></span> <span class="meta-sep">on</span> <span class="entry-date">September 16, 2010</span>					</div><!-- .entry-meta -->
+
+					<div class="entry-content">
+						<p>There is probably no need to say that there is too much 
+information on the Web nowadays. Search engines help us a little bit. 
+What is better is to have something interesting recommended to us 
+automatically without asking. Indeed, from as simple as a list of the 
+most popular bookmarks on <a href="http://delicious.com/" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://delicious.com']);">Delicious</a>, to some more personalized recommendations we received on <a href="http://www.amazon.com/" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://www.amazon.com']);">Amazon</a>, we are usually offered recommendations on the Web. </p>
+<p>Recommendations can be generated by a wide range of algorithms. While user-based or item-based <a href="http://en.wikipedia.org/wiki/Collaborative_filtering" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://en.wikipedia.org']);">collaborative filtering</a>
+ methods are simple and intuitive, matrix factorization techniques are 
+usually more effective because they allow us to discover the latent 
+features underlying the interactions between users and items. Of course,
+ matrix factorization is simply a mathematical tool for playing around 
+with matrices, and is therefore applicable in many scenarios where one 
+would like to find out something hidden under the data. </p>
+<p>In this tutorial, we will go through the basic ideas and the 
+mathematics of matrix factorization, and then we will present a simple 
+implementation in <a href="http://www.python.org/" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://www.python.org']);">Python</a>.
+ We will proceed with the assumption that we are dealing with user 
+ratings (e.g. an integer score from the range of 1 to 5) of items in a 
+recommendation system. </p>
+<p><span id="more-641"></span></p>
+<div id="toc-641-1-box" class="toc toc-left"><a class="toc-header" href="javascript:;" title="table of contents" onclick="tocToggle('#toc-641-1', '#toc-641-1-box')">Table of Contents:</a><ul id="toc-641-1"><li class="toc-level-1 active"><a rel="bookmark nofollow" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/#basic-ideas" title="Basic Ideas">Basic Ideas</a></li><li class="toc-level-1 active"><a rel="bookmark nofollow" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/#the-mathematics-of-matrix-factorization" title="The mathematics of matrix factorization">The mathematics of matrix factorization</a></li><li class="toc-level-1 active"><a rel="bookmark nofollow" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/#regularization" title="Regularization">Regularization</a></li><li class="toc-level-1 active"><a rel="bookmark nofollow" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/#implementation-in-python" title="Implementation in Python">Implementation in Python</a></li><li class="toc-level-1 active"><a rel="bookmark nofollow" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/#further-information" title="Further Information">Further Information</a></li><li class="toc-level-1 active"><a rel="bookmark nofollow" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/#source-code" title="Source Code">Source Code</a></li><li class="toc-level-1 active"><a rel="bookmark nofollow" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/#references" title="References">References</a></li></ul></div>
+<a class="toc-anchor" name="basic-ideas"></a><a class="toc-anchor" name="toc-anchor-641-1"></a><h1>Basic Ideas</h1>
+<p>Just as its name suggests, matrix factorization is to, obviously, 
+factorize a matrix, i.e. to find out two (or more) matrices such that 
+when you multiply them you will get back the original matrix. </p>
+<p>As I have mentioned above, from an application point of view, matrix 
+factorization can be used to discover latent features underlying the 
+interactions between two different kinds of entities. (Of course, you 
+can consider more than two kinds of entities and you will be dealing 
+with tensor factorization, which would be more complicated.) And one 
+obvious application is to predict ratings in collaborative filtering. </p>
+<p>In a recommendation system such as <a href="http://www.netflix.com/" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://www.netflix.com']);">Netflix</a> or <a href="http://movielens.umn.edu/" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://movielens.umn.edu']);">MovieLens</a>,
+ there is a group of users and a set of items (movies for the above two 
+systems). Given that each users have rated some items in the system, we 
+would like to predict how the users would rate the items that they have 
+not yet rated, such that we can make recommendations to the users. In 
+this case, all the information we have about the existing ratings can be
+ represented in a matrix. Assume now we have 5 users and 10 items, and 
+ratings are integers ranging from 1 to 5, the matrix may look something 
+like this (a hyphen means that the user has not yet rated the movie):</p>
+<table>
+<tbody>
+<tr>
+<td></td>
+<td><strong>D1</strong></td>
+<td><strong>D2</strong></td>
+<td><strong>D3</strong></td>
+<td><strong>D4</strong></td>
+</tr>
+<tr>
+<td><strong>U1</strong></td>
+<td>5</td>
+<td>3</td>
+<td>-</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>U2</strong></td>
+<td>4</td>
+<td>-</td>
+<td>-</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>U3</strong></td>
+<td>1</td>
+<td>1</td>
+<td>-</td>
+<td>5</td>
+</tr>
+<tr>
+<td><strong>U4</strong></td>
+<td>1</td>
+<td>-</td>
+<td>-</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>U5</strong></td>
+<td>-</td>
+<td>1</td>
+<td>5</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>Hence, the task of predicting the missing ratings can be considered 
+as filling in the blanks (the hyphens in the matrix) such that the 
+values would be consistent with the existing ratings in the matrix. </p>
+<p>The intuition behind using matrix factorization to solve this problem
+ is that there should be some latent features that determine how a user 
+rates an item. For example, two users would give high ratings to a 
+certain movie if they both like the actors/actresses of the movie, or if
+ the movie is an action movie, which is a genre preferred by both users.
+ Hence, if we can discover these latent features, we should be able to 
+predict a rating with respect to a certain user and a certain item, 
+because the features associated with the user should match with the 
+features associated with the item. </p>
+<p>In trying to discover the different features, we also make the 
+assumption that the number of features would be smaller than the number 
+of users and the number of items. It should not be difficult to 
+understand this assumption because clearly it would not be reasonable to
+ assume that each user is associated with a unique feature (although 
+this is not impossible). And anyway if this is the case there would be 
+no point in making recommendations, because each of these users would 
+not be interested in the items rated by other users. Similarly, the same
+ argument applies to the items. </p>
+<a class="toc-anchor" name="the-mathematics-of-matrix-factorization"></a><a class="toc-anchor" name="toc-anchor-641-2"></a><h1>The mathematics of matrix factorization</h1>
+<p>Having discussed the intuition behind matrix factorization, we can now go on to work on the mathematics. Firstly, we have a set <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/4c614360da93c0a041b22e537de151eb-ffffff-000000-0.png" alt="U" title="U" class="latex"> of users, and a set <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/f623e75af30e62bbd73d6df5b50bb7b5-ffffff-000000-0.png" alt="D" title="D" class="latex"> of items. Let <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/e1fd601dbae82a538d518550acb1af19-ffffff-000000-0.png" alt="\mathbf{R}" title="\mathbf{R}" class="latex"> of size <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/c664f3d3a2c99618e6cd3586e9bd3ce9-ffffff-000000-0.png" alt="|U| \times |D|" title="|U| \times |D|" class="latex">
+ be the matrix that contains all the ratings that the users have 
+assigned to the items. Also, we assume that we would like to discover 
+$K$ latent features. Our task, then, is to find two matrics matrices <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ccf6cb7a07e53d6a5c3e8449ae73d371-ffffff-000000-0.png" alt="\mathbf{P}" title="\mathbf{P}" class="latex"> (a <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/b6124fad67425b33363bd7ef9d4fe920-ffffff-000000-0.png" alt="|U| \times K" title="|U| \times K" class="latex"> matrix) and <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/5e1ad0579fc06ddcbda6abaa092b7382-ffffff-000000-0.png" alt="\mathbf{Q}" title="\mathbf{Q}" class="latex"> (a <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ebb59df8dc321a9ddfc458db87dfb839-ffffff-000000-0.png" alt="|D| \times K" title="|D| \times K" class="latex"> matrix) such that their product approximates <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/e1fd601dbae82a538d518550acb1af19-ffffff-000000-0.png" alt="\mathbf{R}" title="\mathbf{R}" class="latex">:<br>
+</p><center><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/1dcf596ef3cc5025b124812d0382659c-ffffff-000000-1.png" alt="\mathbf{R} \approx \mathbf{P} \times \mathbf{Q}^T = \hat{\mathbf{R}}" title="\mathbf{R} \approx \mathbf{P} \times \mathbf{Q}^T = \hat{\mathbf{R}}" class="latex"><br>
+</center><br> <p></p>
+<p>In this way, each row of <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ccf6cb7a07e53d6a5c3e8449ae73d371-ffffff-000000-0.png" alt="\mathbf{P}" title="\mathbf{P}" class="latex"> would represent the strength of the associations between a user and the features. Similarly, each row of <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/5e1ad0579fc06ddcbda6abaa092b7382-ffffff-000000-0.png" alt="\mathbf{Q}" title="\mathbf{Q}" class="latex">
+ would represent the strength of the associations between an item and 
+the features. To get the prediction of a rating of an item <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/fb1793a0a1f0a7f569eaaceb6bd6e7ff-ffffff-000000-0.png" alt="d_j" title="d_j" class="latex"> by <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/eb00a04135562ae6f74786f084f54327-ffffff-000000-0.png" alt="u_i" title="u_i" class="latex">, we can calculate the dot product of the two vectors corresponding to <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/eb00a04135562ae6f74786f084f54327-ffffff-000000-0.png" alt="u_i" title="u_i" class="latex"> and <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/fb1793a0a1f0a7f569eaaceb6bd6e7ff-ffffff-000000-0.png" alt="d_j" title="d_j" class="latex">:<br>
+</p><center><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/864245053b03c6e746cbe83922746032-ffffff-000000-1.png" alt="\hat{r}_{ij} = p_i^T q_j = \sum_{k=1}^k{p_{ik}q_{kj}}" title="\hat{r}_{ij} = p_i^T q_j = \sum_{k=1}^k{p_{ik}q_{kj}}" class="latex"><br>
+</center><br> <p></p>
+<p>Now, we have to find a way to obtain <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ccf6cb7a07e53d6a5c3e8449ae73d371-ffffff-000000-0.png" alt="\mathbf{P}" title="\mathbf{P}" class="latex"> and <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/5e1ad0579fc06ddcbda6abaa092b7382-ffffff-000000-0.png" alt="\mathbf{Q}" title="\mathbf{Q}" class="latex">.
+ One way to approach this problem is the first intialize the two 
+matrices with some values, calculate how `different’ their product is to
+ <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/1a0fa318ebc1b3fa6ffac01d86c286ce-ffffff-000000-0.png" alt="\mathbf{M}" title="\mathbf{M}" class="latex">,
+ and then try to minimize this difference iteratively. Such a method is 
+called gradient descent, aiming at finding a local minimum of the 
+difference. </p>
+<p>The difference here, usually called the error between the estimated 
+rating and the real rating, can be calculated by the following equation 
+for each user-item pair: </p>
+<p></p><center><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/09b9fe29e79709943fbe8abc12d41025-ffffff-000000-1.png" alt="e_{ij}^2 = (r_{ij} - \hat{r}_{ij})^2 = (r_{ij} - \sum_{k=1}^K{p_{ik}q_{kj}})^2" title="e_{ij}^2 = (r_{ij} - \hat{r}_{ij})^2 = (r_{ij} - \sum_{k=1}^K{p_{ik}q_{kj}})^2" class="latex"><br>
+</center><br><p></p>
+<p>Here we consider the squared error because the estimated rating can be either higher or lower than the real rating. </p>
+<p>To minimize the error, we have to know in which direction we have to modify the values of <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/dec680a5862b2125d6c2757ace17beba-ffffff-000000-0.png" alt="p_{ik}" title="p_{ik}" class="latex"> and <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ed970bb4b6c725588b409188d7170f92-ffffff-000000-0.png" alt="q_{kj}" title="q_{kj}" class="latex">.
+ In other words, we need to know the gradient at the current values, and
+ therefore we differentiate the above equation with respect to these two
+ variables separately:<br>
+</p><center><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ef6ddecfa568a7882395b03d9a43b98e-ffffff-000000-1.png" alt="\frac{\partial}{\partial p_{ik}}e_{ij}^2 = -2(r_{ij} - \hat{r}_{ij})(q_{kj}) = -2 e_{ij} q_{kj}" title="\frac{\partial}{\partial p_{ik}}e_{ij}^2 = -2(r_{ij} - \hat{r}_{ij})(q_{kj}) = -2 e_{ij} q_{kj}" class="latex"><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/dcf543615b34c3c92c52ac570697ddb1-ffffff-000000-1.png" alt="  \frac{\partial}{\partial q_{ik}}e_{ij}^2 = -2(r_{ij} - \hat{r}_{ij})(p_{ik}) = -2 e_{ij} p_{ik}" title="  \frac{\partial}{\partial q_{ik}}e_{ij}^2 = -2(r_{ij} - \hat{r}_{ij})(p_{ik}) = -2 e_{ij} p_{ik}" class="latex"><br>
+</center><br> <p></p>
+<p>Having obtained the gradient, we can now formulate the update rules for both <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/dec680a5862b2125d6c2757ace17beba-ffffff-000000-0.png" alt="p_{ik}" title="p_{ik}" class="latex"> and <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ed970bb4b6c725588b409188d7170f92-ffffff-000000-0.png" alt="q_{kj}" title="q_{kj}" class="latex">:<br>
+</p><center><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/d8a4070c59529c9e13036a6bafaabdf8-ffffff-000000-1.png" alt="p'_{ik} = p_{ik} + \alpha \frac{\partial}{\partial p_{ik}}e_{ij}^2 = p_{ik} + 2\alpha e_{ij} q_{kj} " title="p'_{ik} = p_{ik} + \alpha \frac{\partial}{\partial p_{ik}}e_{ij}^2 = p_{ik} + 2\alpha e_{ij} q_{kj} " class="latex"><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/c8c559c69dab539af106d84538f27a4f-ffffff-000000-1.png" alt="q'_{kj} = q_{kj} + \alpha \frac{\partial}{\partial q_{kj}}e_{ij}^2 = q_{kj} + 2\alpha e_{ij} p_{ik} " title="q'_{kj} = q_{kj} + \alpha \frac{\partial}{\partial q_{kj}}e_{ij}^2 = q_{kj} + 2\alpha e_{ij} p_{ik} " class="latex"><br>
+</center><br><p></p>
+<p>Here, <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/7b7f9dbfea05c83784f8b85149852f08-ffffff-000000-0.png" alt="\alpha" title="\alpha" class="latex"> is a constant whose value determines the rate of approaching the minimum. Usually we will choose a small value for <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/7b7f9dbfea05c83784f8b85149852f08-ffffff-000000-0.png" alt="\alpha" title="\alpha" class="latex">,
+ say 0.0002. This is because if we make too large a step towards the 
+minimum we may run into the risk of missing the minimum and end up 
+oscillating around the minimum. </p>
+<p>A question might have come to your mind by now: if we find two matrices <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ccf6cb7a07e53d6a5c3e8449ae73d371-ffffff-000000-0.png" alt="\mathbf{P}" title="\mathbf{P}" class="latex"> and <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/5e1ad0579fc06ddcbda6abaa092b7382-ffffff-000000-0.png" alt="\mathbf{Q}" title="\mathbf{Q}" class="latex"> such that <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/4e37888e71add225aafff9e943e66b88-ffffff-000000-0.png" alt="\mathbf{P} \times \mathbf{Q}" title="\mathbf{P} \times \mathbf{Q}" class="latex"> approximates <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/e1fd601dbae82a538d518550acb1af19-ffffff-000000-0.png" alt="\mathbf{R}" title="\mathbf{R}" class="latex">, isn’t that our predictions of all the unseen ratings will all be zeros? In fact, we are not really trying to come up with <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ccf6cb7a07e53d6a5c3e8449ae73d371-ffffff-000000-0.png" alt="\mathbf{P}" title="\mathbf{P}" class="latex"> and <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/5e1ad0579fc06ddcbda6abaa092b7382-ffffff-000000-0.png" alt="\mathbf{Q}" title="\mathbf{Q}" class="latex"> such that we can reproduce <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/e1fd601dbae82a538d518550acb1af19-ffffff-000000-0.png" alt="\mathbf{R}" title="\mathbf{R}" class="latex"> exactly. Instead, we will only try to minimise the errors of the observed user-item pairs. In other words, if we let <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/b9ece18c950afbfa6b0fdbfa4ff731d3-ffffff-000000-0.png" alt="T" title="T" class="latex"> be a set of tuples, each of which is in the form of <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/40fa271aa4127b967a42623c68e9aeed-ffffff-000000-0.png" alt="(u_i, d_j, r_{ij})" title="(u_i, d_j, r_{ij})" class="latex">, such that <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/b9ece18c950afbfa6b0fdbfa4ff731d3-ffffff-000000-0.png" alt="T" title="T" class="latex"> contains all the observed user-item pairs together with the associated ratings, we are only trying to minimise every <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/6fd64a8eafc5224488e3523dd225bb7b-ffffff-000000-0.png" alt="e_{ij}" title="e_{ij}" class="latex"> for <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/11e227a7d100c0128a184cf35b74bfe1-ffffff-000000-0.png" alt="(u_i, d_j, r_{ij}) \in T" title="(u_i, d_j, r_{ij}) \in T" class="latex">. (In other words, <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/b9ece18c950afbfa6b0fdbfa4ff731d3-ffffff-000000-0.png" alt="T" title="T" class="latex">
+ is our set of training data.) As for the rest of the unknowns, we will 
+be able to determine their values once the associations between the 
+users, items and features have been learnt. </p>
+<p>Using the above update rules, we can then iteratively perform the 
+operation until the error converges to its minimum. We can check the 
+overall error as calculated using the following equation and determine 
+when we should stop the process.<br>
+</p><center><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/4afb50f23cb174de170269a10d246862-ffffff-000000-1.png" alt="E = \sum_{(u_i,d_j,r_{ij}) \in T}{e_{ij}} = \sum_{(u_i,d_j,r_{ij}) \in T}{(r_{ij} - \sum_{k=1}^K{p_{ik}q_{kj}})^2} " title="E = \sum_{(u_i,d_j,r_{ij}) \in T}{e_{ij}} = \sum_{(u_i,d_j,r_{ij}) \in T}{(r_{ij} - \sum_{k=1}^K{p_{ik}q_{kj}})^2} " class="latex"><br>
+</center><br><p></p>
+<a class="toc-anchor" name="regularization"></a><a class="toc-anchor" name="toc-anchor-641-3"></a><h1>Regularization</h1>
+<p>The above algorithm is a very basic algorithm for factorizing a 
+matrix. There are a lot of methods to make things look more complicated.
+ A common extension to this basic algorithm is to introduce 
+regularization to avoid overfitting. This is done by adding a parameter <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/b0603860fcffe94e5b8eec59ed813421-ffffff-000000-0.png" alt="\beta" title="\beta" class="latex"> and modify the squared error as follows:<br>
+</p><center><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/7175fabccdf1a9df3a07f261fc6d9364-ffffff-000000-1.png" alt="e_{ij}^2 = (r_{ij} - \sum_{k=1}^K{p_{ik}q_{kj}})^2 + \frac{\beta}{2} \sum_{k=1}^K{(||P||^2 + ||Q||^2)}" title="e_{ij}^2 = (r_{ij} - \sum_{k=1}^K{p_{ik}q_{kj}})^2 + \frac{\beta}{2} \sum_{k=1}^K{(||P||^2 + ||Q||^2)}" class="latex"><br>
+</center><br><p></p>
+<p>In other words, the new parameter <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/b0603860fcffe94e5b8eec59ed813421-ffffff-000000-0.png" alt="\beta" title="\beta" class="latex"> is used to control the magnitudes of the user-feature and item-feature vectors such that <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/44c29edb103a2872f519ad0c9a0fdaaa-ffffff-000000-0.png" alt="P" title="P" class="latex"> and <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/f09564c9ca56850d4cd6b3319e541aee-ffffff-000000-0.png" alt="Q" title="Q" class="latex"> would give a good approximation of <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/e1e1d3d40573127e9ee0480caf1283d6-ffffff-000000-0.png" alt="R" title="R" class="latex"> without having to contain large numbers. In practice, <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/b0603860fcffe94e5b8eec59ed813421-ffffff-000000-0.png" alt="\beta" title="\beta" class="latex">
+ is set to some values in the range of 0.02. The new update rules for 
+this squared error can be obtained by a procedure similar to the one 
+described above. The new update rules are as follows.<br>
+</p><center><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/7086061148d1ca3ff05059c7495b97ed-ffffff-000000-1.png" alt="p'_{ik} = p_{ik} + \alpha \frac{\partial}{\partial p_{ik}}e_{ij}^2 = p_{ik} + \alpha(2 e_{ij} q_{kj} - \beta p_{ik} )" title="p'_{ik} = p_{ik} + \alpha \frac{\partial}{\partial p_{ik}}e_{ij}^2 = p_{ik} + \alpha(2 e_{ij} q_{kj} - \beta p_{ik} )" class="latex"><br>
+<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/bbe62a8a7756fb7654415747ac2eea3d-ffffff-000000-1.png" alt="q'_{kj} = q_{kj} + \alpha \frac{\partial}{\partial q_{kj}}e_{ij}^2 = q_{kj} + \alpha(2 e_{ij} p_{ik} - \beta q_{kj} )" title="q'_{kj} = q_{kj} + \alpha \frac{\partial}{\partial q_{kj}}e_{ij}^2 = q_{kj} + \alpha(2 e_{ij} p_{ik} - \beta q_{kj} )" class="latex"><br>
+</center><br><p></p>
+<a class="toc-anchor" name="implementation-in-python"></a><a class="toc-anchor" name="toc-anchor-641-4"></a><h1>Implementation in Python</h1>
+<p>Once we have derived the update rules as described above, it actually
+ becomes very straightforward to implement the algorithm. The following 
+is a function that implements the algorithm in Python (note that this 
+implementation requires the <a href="http://numpy.scipy.org/" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://numpy.scipy.org']);">numpy</a> module).</p>
+<div class="software-link">Note: The complete Python code is available for download in section <a href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/#source-code">Source Code</a> at the end of this post.</div>
+<div class="syntaxhighlighter  " id="highlighter_346755"><div class="bar"><div class="toolbar"><a class="item viewSource" style="width: 16px; height: 16px;" title="view source" href="#viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_346755_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_346755" menu="false" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/clipboard.swf" height="16" width="16"></div><a class="item printSource" style="width: 16px; height: 16px;" title="print" href="#printSource">print</a><a class="item about" style="width: 16px; height: 16px;" title="?" href="#about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="keyword">import</code> <code class="plain">numpy</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="keyword">def</code> <code class="plain">matrix_factorization(R, P, Q, K, steps</code><code class="keyword">=</code><code class="value">5000</code><code class="plain">, alpha</code><code class="keyword">=</code><code class="value">0.0002</code><code class="plain">, beta</code><code class="keyword">=</code><code class="value">0.02</code><code class="plain">):</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">Q </code><code class="keyword">=</code> <code class="plain">Q.T</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">for</code> <code class="plain">step </code><code class="keyword">in</code> <code class="functions">xrange</code><code class="plain">(steps):</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">for</code> <code class="plain">i </code><code class="keyword">in</code> <code class="functions">xrange</code><code class="plain">(</code><code class="functions">len</code><code class="plain">(R)):</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">for</code> <code class="plain">j </code><code class="keyword">in</code> <code class="functions">xrange</code><code class="plain">(</code><code class="functions">len</code><code class="plain">(R[i])):</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">R[i][j] &gt; </code><code class="value">0</code><code class="plain">:</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">eij </code><code class="keyword">=</code> <code class="plain">R[i][j] </code><code class="keyword">-</code> <code class="plain">numpy.dot(P[i,:],Q[:,j])</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">for</code> <code class="plain">k </code><code class="keyword">in</code> <code class="functions">xrange</code><code class="plain">(K):</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">P[i][k] </code><code class="keyword">=</code> <code class="plain">P[i][k] </code><code class="keyword">+</code> <code class="plain">alpha </code><code class="keyword">*</code> <code class="plain">(</code><code class="value">2</code> <code class="keyword">*</code> <code class="plain">eij </code><code class="keyword">*</code> <code class="plain">Q[k][j] </code><code class="keyword">-</code> <code class="plain">beta </code><code class="keyword">*</code> <code class="plain">P[i][k])</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">Q[k][j] </code><code class="keyword">=</code> <code class="plain">Q[k][j] </code><code class="keyword">+</code> <code class="plain">alpha </code><code class="keyword">*</code> <code class="plain">(</code><code class="value">2</code> <code class="keyword">*</code> <code class="plain">eij </code><code class="keyword">*</code> <code class="plain">P[i][k] </code><code class="keyword">-</code> <code class="plain">beta </code><code class="keyword">*</code> <code class="plain">Q[k][j])</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">eR </code><code class="keyword">=</code> <code class="plain">numpy.dot(P,Q)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">e </code><code class="keyword">=</code> <code class="value">0</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">for</code> <code class="plain">i </code><code class="keyword">in</code> <code class="functions">xrange</code><code class="plain">(</code><code class="functions">len</code><code class="plain">(R)):</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>16</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">for</code> <code class="plain">j </code><code class="keyword">in</code> <code class="functions">xrange</code><code class="plain">(</code><code class="functions">len</code><code class="plain">(R[i])):</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>17</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">R[i][j] &gt; </code><code class="value">0</code><code class="plain">:</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>18</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">e </code><code class="keyword">=</code> <code class="plain">e </code><code class="keyword">+</code> <code class="functions">pow</code><code class="plain">(R[i][j] </code><code class="keyword">-</code> <code class="plain">numpy.dot(P[i,:],Q[:,j]), </code><code class="value">2</code><code class="plain">)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>19</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">for</code> <code class="plain">k </code><code class="keyword">in</code> <code class="functions">xrange</code><code class="plain">(K):</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>20</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">e </code><code class="keyword">=</code> <code class="plain">e </code><code class="keyword">+</code> <code class="plain">(beta</code><code class="keyword">/</code><code class="value">2</code><code class="plain">) </code><code class="keyword">*</code> <code class="plain">(</code><code class="functions">pow</code><code class="plain">(P[i][k],</code><code class="value">2</code><code class="plain">) </code><code class="keyword">+</code> <code class="functions">pow</code><code class="plain">(Q[k][j],</code><code class="value">2</code><code class="plain">))</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>21</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">if</code> <code class="plain">e &lt; </code><code class="value">0.001</code><code class="plain">:</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>22</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">break</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>23</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword">return</code> <code class="plain">P, Q.T</code></td></tr></tbody></table></div></div></div>
+<p>We can try to apply it to our example mentioned above and see what we
+ would get. Below is a code snippet in Python for running the example. </p>
+<div class="syntaxhighlighter  " id="highlighter_674145"><div class="bar"><div class="toolbar"><a class="item viewSource" style="width: 16px; height: 16px;" title="view source" href="#viewSource">view source</a><div class="item copyToClipboard"><embed id="highlighter_674145_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_674145" menu="false" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/clipboard.swf" height="16" width="16"></div><a class="item printSource" style="width: 16px; height: 16px;" title="print" href="#printSource">print</a><a class="item about" style="width: 16px; height: 16px;" title="?" href="#about">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="plain">R </code><code class="keyword">=</code> <code class="plain">[</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">[</code><code class="value">5</code><code class="plain">,</code><code class="value">3</code><code class="plain">,</code><code class="value">0</code><code class="plain">,</code><code class="value">1</code><code class="plain">],</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">[</code><code class="value">4</code><code class="plain">,</code><code class="value">0</code><code class="plain">,</code><code class="value">0</code><code class="plain">,</code><code class="value">1</code><code class="plain">],</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">[</code><code class="value">1</code><code class="plain">,</code><code class="value">1</code><code class="plain">,</code><code class="value">0</code><code class="plain">,</code><code class="value">5</code><code class="plain">],</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">[</code><code class="value">1</code><code class="plain">,</code><code class="value">0</code><code class="plain">,</code><code class="value">0</code><code class="plain">,</code><code class="value">4</code><code class="plain">],</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">[</code><code class="value">0</code><code class="plain">,</code><code class="value">1</code><code class="plain">,</code><code class="value">5</code><code class="plain">,</code><code class="value">4</code><code class="plain">],</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">]</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="plain">R </code><code class="keyword">=</code> <code class="plain">numpy.array(R)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="plain">N </code><code class="keyword">=</code> <code class="functions">len</code><code class="plain">(R)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="plain">M </code><code class="keyword">=</code> <code class="functions">len</code><code class="plain">(R[</code><code class="value">0</code><code class="plain">])</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>13</code></td><td class="content"><code class="plain">K </code><code class="keyword">=</code> <code class="value">2</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>14</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>15</code></td><td class="content"><code class="plain">P </code><code class="keyword">=</code> <code class="plain">numpy.random.rand(N,K)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>16</code></td><td class="content"><code class="plain">Q </code><code class="keyword">=</code> <code class="plain">numpy.random.rand(M,K)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>17</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>18</code></td><td class="content"><code class="plain">nP, nQ </code><code class="keyword">=</code> <code class="plain">matrix_factorization(R, P, Q, K)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>19</code></td><td class="content"><code class="plain">nR </code><code class="keyword">=</code> <code class="plain">numpy.dot(nP, nQ.T)</code></td></tr></tbody></table></div></div></div>
+<p>And the matrix obtained from the above process would look something like this:</p>
+<p></p><center><p></p>
+<table width="250">
+<tbody><tr>
+<td></td>
+<td><b>D1</b></td>
+<td><b>D2</b></td>
+<td><b>D3</b></td>
+<td><b>D4</b></td>
+</tr>
+<tr>
+<td><b>U1</b></td>
+<td>  4.97</td>
+<td> 2.98</td>
+<td> 2.18</td>
+<td> 0.98</td>
+</tr>
+<tr>
+<td><b>U2</b></td>
+<td> 3.97</td>
+<td> 2.40</td>
+<td> 1.97</td>
+<td> 0.99</td>
+</tr>
+<tr>
+<td><b>U3</b></td>
+<td> 1.02</td>
+<td> 0.93</td>
+<td> 5.32</td>
+<td> 4.93</td>
+</tr>
+<tr>
+<td><b>U4</b></td>
+<td> 1.00</td>
+<td> 0.85</td>
+<td> 4.59</td>
+<td> 3.93</td>
+</tr>
+<tr>
+<td><b>U5</b></td>
+<td> 1.36</td>
+<td> 1.07</td>
+<td> 4.89</td>
+<td> 4.12</td>
+</tr>
+</tbody></table>
+<p></p></center> <p></p>
+<p>We can see that for existing ratings we have the approximations very 
+close to the true values, and we also get some 'predictions' of the 
+unknown values. In this simple example, we can easily see that U1 and U2
+ have similar taste and they both rated D1 and D2 high, while the rest 
+of the users preferred D3, D4 and D5. When the number of features (K in 
+the Python code) is 2, the algorithm is able to associate the users and 
+items to two different features, and the predictions also follow these 
+associations. For example, we can see that the predicted rating of U4 on
+ D3 is 4.59, because U4 and U5 both rated D4 high. </p>
+<a class="toc-anchor" name="further-information"></a><a class="toc-anchor" name="toc-anchor-641-5"></a><h1>Further Information</h1>
+<p>We have discussed the intuitive meaning of the technique of matrix 
+factorization and its use in collaborative filtering. In fact, there are
+ many different extensions to the above technique. An important 
+extension is the requirement that all the elements of the factor 
+matrices (<img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/ccf6cb7a07e53d6a5c3e8449ae73d371-ffffff-000000-0.png" alt="\mathbf{P}" title="\mathbf{P}" class="latex"> and <img src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/5e1ad0579fc06ddcbda6abaa092b7382-ffffff-000000-0.png" alt="\mathbf{Q}" title="\mathbf{Q}" class="latex">
+ in the above example) should be non-negative. In this case it is called
+ non-negative matrix factorization (NMF). One advantage of NMF is that 
+it results in intuitive meanings of the resultant matrices. Since no 
+elements are negative, the process of multiplying the resultant matrices
+ to get back the original matrix would not involve subtraction, and can 
+be considered as a process of generating the original data by linear 
+combinations of the latent features. </p>
+<p><a name="source-code"></a></p><a name="source-code">
+</a><a class="toc-anchor" name="source-code"></a><a class="toc-anchor" name="toc-anchor-641-6"></a><h1>Source Code</h1>
+<p>The full Python source code of this tutorial is available for download at:</p>
+<ul>
+<li><a href="http://www.quuxlabs.com/wp-content/uploads/2010/09/mf.py_.txt">mf.py</a></li>
+</ul>
+<a class="toc-anchor" name="references"></a><a class="toc-anchor" name="toc-anchor-641-7"></a><h1>References</h1>
+<p>There have been quite a lot of references on matrix factorization. Below are some of the related papers.</p>
+<ul>
+<li>Gábor Takács et al (2008). <a href="http://portal.acm.org/citation.cfm?id=1454049" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://portal.acm.org']);">Matrix factorization and neighbor based algorithms for the Netflix prize problem</a>. In: Proceedings of the 2008 ACM Conference on Recommender Systems, Lausanne, Switzerland, October 23 - 25, 267-274.</li>
+<li>Patrick Ott (2008). <a href="http://www.comp.leeds.ac.uk/ott/dl/mf_ott.pdf" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://www.comp.leeds.ac.uk']);">Incremental Matrix Factorization for Collaborative Filtering</a>. Science, Technology and Design 01/2008, Anhalt University of Applied Sciences.</li>
+<li>Daniel D. Lee and H. Sebastian Seung (2001). <a href="http://hebb.mit.edu/people/seung/papers/nmfconverge.pdf" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://hebb.mit.edu']);">Algorithms for Non-negative Matrix Factorization</a>. Advances in Neural Information Processing Systems 13: Proceedings of the 2000 Conference. MIT Press. pp. 556–562.</li>
+<li>Daniel D. Lee and H. Sebastian Seung (1999). <a href="http://www.nature.com/nature/journal/v401/n6755/abs/401788a0.html" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://www.nature.com']);">Learning the parts of objects by non-negative matrix factorization</a>. Nature, Vol. 401, No. 6755. (21 October 1999), pp. 788-791.</li>
+</ul>
+
+                    <div class="share-buttons">
+                        <iframe src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/tweet_button.html" title="Twitter Tweet Button" style="position: static; visibility: visible; width: 80px; height: 20px;" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" allowtransparency="true" scrolling="no" id="twitter-widget-0" frameborder="0"></iframe><script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/widgets.js"></script>
+                        <br>
+
+                        <iframe src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/like.html" scrolling="no" style="border:none; overflow:hidden; width:450px; height:25px;" allowtransparency="true" frameborder="0"></iframe>
+                    </div>
+
+
+											</div><!-- .entry-content -->
+
+
+					<div class="entry-utility">
+						This blog post was filed under <a href="http://www.quuxlabs.com/topics/research/" title="View all posts in Research" rel="category tag">Research</a>, <a href="http://www.quuxlabs.com/topics/tutorials/" title="View all posts in Tutorials" rel="category tag">Tutorials</a> and tagged <a href="http://www.quuxlabs.com/tags/algorithms-2/" rel="tag">algorithms</a>, <a href="http://www.quuxlabs.com/tags/matrix-factorization/" rel="tag">matrix factorization</a>, <a href="http://www.quuxlabs.com/tags/python/" rel="tag">python</a>, <a href="http://www.quuxlabs.com/tags/recommendation-system-2/" rel="tag">recommendation system</a>, <a href="http://www.quuxlabs.com/tags/tutorial/" rel="tag">tutorial</a>.					</div><!-- .entry-utility -->
+				</div><!-- #post-## -->
+
+				
+			<div id="comments">
+
+
+
+
+								<div id="respond">
+				<h3 id="reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://www.quuxlabs.com/wp-comments-post.php" method="post" id="commentform">
+																			<p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name</label> <span class="required">*</span><input id="author" name="author" size="30" aria-required="true" type="text"></p>
+<p class="comment-form-email"><label for="email">Email</label> <span class="required">*</span><input id="email" name="email" size="30" aria-required="true" type="text"></p>
+<p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" size="30" type="text"></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label><textarea id="comment" name="comment-85b03282" cols="45" rows="8" aria-required="true"></textarea><textarea name="comment" style="display:none" rows="1" cols="1"></textarea></p>						<p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a
+ href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; 
+&lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del 
+datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; 
+&lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" id="submit" value="Post Comment" type="submit">
+							<input name="comment_post_ID" value="641" id="comment_post_ID" type="hidden">
+<input name="comment_parent" id="comment_parent" value="0" type="hidden">
+						</p>
+											</form>
+							</div><!-- #respond -->
+			<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery('#commentform').submit(function() {
+            _gaq.push(
+                ['_setAccount','UA-17486653-1'],
+                ['_trackEvent','comment']
+            );
+        });
+    });    
+</script>
+			
+</div><!-- #comments -->
+
+
+			</div><!-- #content -->
+		</div><!-- #container -->
+
+
+		<div id="primary" class="widget-area" role="complementary">
+			<ul class="xoxo">
+
+		<li id="recent-posts-2" class="widget-container widget_recent_entries">		<h3 class="widget-title">Recent blog posts</h3>		<ul>
+				<li><a href="http://www.quuxlabs.com/blog/2010/09/paper-token-gutenbergs-version-of-one-time-passwords/" title="Paper Token: Gutenberg’s version of One Time Passwords">Paper Token: Gutenberg’s version of One Time Passwords</a></li>
+				<li><a href="http://www.quuxlabs.com/blog/2010/09/matrix-factorization-a-simple-tutorial-and-implementation-in-python/" title="Matrix Factorization: A Simple Tutorial and Implementation in Python">Matrix Factorization: A Simple Tutorial and Implementation in Python</a></li>
+				<li><a href="http://www.quuxlabs.com/blog/2010/09/location-and-friendship-data-mining-in-facebook/" title="Location and Friendship: Data Mining in Facebook">Location and Friendship: Data Mining in Facebook</a></li>
+				<li><a href="http://www.quuxlabs.com/blog/2010/09/hadoop-tutorials-available/" title="Hadoop tutorials available">Hadoop tutorials available</a></li>
+				<li><a href="http://www.quuxlabs.com/blog/2010/07/reference-implementation-of-spear-ranking-algorithm-released/" title="Reference implementation of SPEAR ranking algorithm released">Reference implementation of SPEAR ranking algorithm released</a></li>
+				</ul>
+		</li>			</ul>
+		</div><!-- #primary .widget-area -->
+
+	</div><!-- #main -->
+
+	<div id="footer" role="contentinfo">
+		<div id="colophon">
+
+
+
+			<div id="site-info">
+                <div>
+                    © 2011                    quuxlabs.
+                    All rights reserved. |
+                    <a href="http://www.quuxlabs.com/legal/terms/">Terms of Service</a> |
+                    <a href="http://www.quuxlabs.com/legal/privacy/">Privacy Policy</a>
+                </div>
+                <div style="margin-top: 5px;">
+                    Write us to <a href="mailto:team@quuxlabs.com">team@quuxlabs.com</a>.
+                    Subscribe to our <a href="http://www.quuxlabs.com/feed/atom/">news feed</a>.
+                </div>
+			</div><!-- #site-info -->
+
+			<div id="site-generator">
+			</div><!-- #site-generator -->
+
+		</div><!-- #colophon -->
+	</div><!-- #footer -->
+
+</div><!-- #wrapper -->
+
+<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/jquery.js"></script>
+<script type="text/javascript" src="matrix-factorization-a-simple-tutorial-and-implementation-in-python_files/scripts.js"></script>
+<script type="text/javascript">
+function tocToggle(toc, box) {
+	var q = jQuery(toc);
+	if (!q) return;
+	q.slideToggle('fast', function() {
+		jQuery(box).toggleClass('toc-collapsed', q.css('display') == 'none');
+	});
+}
+</script>
+
+
+
+
+
+</div></body></html>
+<!-- Dynamic page generated in 0.576 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2011-09-16 06:30:47 -->
+<!-- Compression = gzip -->

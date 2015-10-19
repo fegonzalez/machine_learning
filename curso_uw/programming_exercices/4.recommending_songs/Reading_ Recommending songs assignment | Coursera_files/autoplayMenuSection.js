@@ -1,1 +1,0 @@
-"use strict";define("bundles/videojs/layout/nls/es/autoplayMenuSection",{Autoplay:"Reproducción automática",Off:"Apagada",On:"Activada"});

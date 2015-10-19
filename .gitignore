@@ -27,11 +27,11 @@
 #ipython stuff
 .ipynb_checkpoints
 
-# concepts
-linear_algebra/*
-linear_regression/*
-neural_networks/*
-SVMs/*
+# topics
+topics/linear_algebra/*
+topics/linear_regression/*
+topics/neural_networks/*
+topics/SVMs/*
 
 
 ################################################################################
@@ -39,37 +39,37 @@ SVMs/*
 ################################################################################
 
 #===============================================================================
-## curso_stanford/
+## cursos/curso_stanford/
 #===============================================================================
 
-curso_stanford/*
+cursos/curso_stanford/*
 
 #===============================================================================
-## curso_uw/
+## cursos/curso_uw/
 #===============================================================================
 
 # avoid local links
-!curso_uw/ipython_books/ipython2
-!curso_uw/ipython_books/launcher_ipython2
+!cursos/curso_uw/ipython_books/ipython2
+!cursos/curso_uw/ipython_books/launcher_ipython2
 
 # notebooks
 
 # tools
-curso_uw/tools/sframe/doc/*
+cursos/curso_uw/tools/sframe/doc/*
 
 # programming_exercices
 # 1
-curso_uw/programming_exercices/1.predicting_house_prices/statement/local_copy/*
-curso_uw/programming_exercices/1.predicting_house_prices/enunciado
-curso_uw/programming_exercices/1.predicting_house_prices/sframe_doc
-curso_uw/programming_exercices/1.predicting_house_prices/home_data.gl/*
+cursos/curso_uw/programming_exercices/1.predicting_house_prices/statement/local_copy/*
+cursos/curso_uw/programming_exercices/1.predicting_house_prices/enunciado
+cursos/curso_uw/programming_exercices/1.predicting_house_prices/sframe_doc
+cursos/curso_uw/programming_exercices/1.predicting_house_prices/home_data.gl/*
 # 2
-curso_uw/programming_exercices/2.analyzing_product_sentiment/amazon_baby.gl/*
+cursos/curso_uw/programming_exercices/2.analyzing_product_sentiment/amazon_baby.gl/*
 # 3
-curso_uw/programming_exercices/3.retrieving_wikipedia_articles/people_wiki.gl/*
+cursos/curso_uw/programming_exercices/3.retrieving_wikipedia_articles/people_wiki.gl/*
 
 # quizzes
-curso_uw/quizzes/*
+cursos/curso_uw/quizzes/*
 
 
 #===============================================================================

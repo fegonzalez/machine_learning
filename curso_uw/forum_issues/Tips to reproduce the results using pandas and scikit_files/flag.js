@@ -1,1 +1,0 @@
-"use strict";define("bundles/phoenix/components/flagging/views/nls/es/flag",{"Report this":"Denunciar esto","Resolve report":"Resolver denuncia"});

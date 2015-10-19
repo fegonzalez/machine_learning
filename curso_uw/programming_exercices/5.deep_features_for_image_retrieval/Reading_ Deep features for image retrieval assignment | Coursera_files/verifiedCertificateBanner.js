@@ -1,1 +1,0 @@
-"use strict";define("pages/open-course/item/views/nls/es/verifiedCertificateBanner",{"- Get your Course Certificate!":"¡Obtén tu Certificado de curso!","GET CERTIFIED":"CONSEGUIR UN CERTIFICADO","Link your coursework to your identity&nbsp;":"Vincula tu curso a tu identidad&nbsp;"});

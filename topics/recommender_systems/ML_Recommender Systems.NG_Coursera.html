@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html dir="ltr" class="client-js" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>ML:Recommender Systems - Coursera</title>
+<meta charset="UTF-8">
+<meta name="generator" content="MediaWiki 1.18.1">
+<link rel="alternate" type="application/x-wiki" title="Edit" href="https://share.coursera.org/wiki/index.php?title=ML:Recommender_Systems&amp;action=edit">
+<link rel="edit" title="Edit" href="https://share.coursera.org/wiki/index.php?title=ML:Recommender_Systems&amp;action=edit">
+<link rel="shortcut icon" href="https://share.coursera.org/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="https://share.coursera.org/wiki/opensearch_desc.php" title="Coursera (en)">
+<link rel="EditURI" type="application/rsd+xml" href="https://share.coursera.org/wiki/api.php?action=rsd">
+<link rel="alternate" type="application/atom+xml" title="Coursera Atom feed" href="https://share.coursera.org/wiki/index.php?title=Special:RecentChanges&amp;feed=atom">
+<link rel="stylesheet" href="ML_Recommender%20Systems.NG_Coursera_files/load.css">
+<link rel="stylesheet" href="ML_Recommender%20Systems.NG_Coursera_files/load_002.css">
+<link rel="stylesheet" href="ML_Recommender%20Systems.NG_Coursera_files/print.css" media="print">
+<link rel="stylesheet" href="ML_Recommender%20Systems.NG_Coursera_files/cavendish.css" media="screen">
+<!--[if lt IE 5.5000]><link rel="stylesheet" href="/wiki/skins/cavendish/IE50Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 5.5000]><link rel="stylesheet" href="/wiki/skins/cavendish/IE55Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 6]><link rel="stylesheet" href="/wiki/skins/cavendish/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/wiki/skins/cavendish/IE70Fixes.css?303" media="screen" /><![endif]-->
+<link rel="stylesheet" href="ML_Recommender%20Systems.NG_Coursera_files/bootstrap-wrapped.css" media="screen"><style>#header h6 a { background: transparent no-repeat; width:322px;height:53px;}</style><link type="text/css" media="all" rel="stylesheet" href="ML_Recommender%20Systems.NG_Coursera_files/jquery.css"><link type="text/css" media="all" rel="stylesheet" href="ML_Recommender%20Systems.NG_Coursera_files/jquery_002.css"><link type="text/css" media="all" rel="stylesheet" href="ML_Recommender%20Systems.NG_Coursera_files/jquery_003.css"><link type="text/css" media="all" rel="stylesheet" href="ML_Recommender%20Systems.NG_Coursera_files/jquery_004.css"><meta name="ResourceLoaderDynamicStyles" content="">
+<style>a:lang(ar), a:lang(ckb), a:lang(fa),a:lang(kk-arab), a:lang(mzn), a:lang(ps), a:lang(ur) { text-decoration: none; }
+a.new, #quickbar a.new { color: #ba0000; }
+
+</style>
+<script src="ML_Recommender%20Systems.NG_Coursera_files/load_003.js"></script><script src="ML_Recommender%20Systems.NG_Coursera_files/load_003.php"></script><script src="ML_Recommender%20Systems.NG_Coursera_files/load_004.js"></script>
+<script>if(window.mw){
+	mw.config.set({"wgCanonicalNamespace": "ML", "wgCanonicalSpecialPageName": false, "wgNamespaceNumber": 518, "wgPageName": "ML:Recommender_Systems", "wgTitle": "Recommender Systems", "wgCurRevisionId": 26291, "wgArticleId": 118, "wgIsArticle": true, "wgAction": "view", "wgUserName": "00ac1b051c7e0902985a4c6e69c23e4c", "wgUserGroups": ["*", "user", "autoconfirmed"], "wgCategories": ["ML:Lecture Notes"], "wgBreakFrames": false, "wgRestrictionEdit": [], "wgRestrictionMove": []});
+}
+</script><script>if(window.mw){
+	mw.loader.load(["mediawiki.page.startup"]);
+}
+</script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/load_002.php"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/load.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_014.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_008.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_006.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_002.js"></script>
+<style type="text/css">.clear { /* generic container (i.e. div) for floating buttons */
+	overflow: hidden !important;
+	width: 100% !important;
+}
+
+a.fantasybutton {
+	background: transparent url("chrome://aimersoft/content/img/button_normal.png") no-repeat !important;
+	color: #444 !important;
+	display: block !important;
+	float: left !important;
+	font: normal 12px arial, sans-serif !important;
+	height: 29px !important;
+	width: 112px !important;
+    
+}
+
+a.fantasybutton:active {
+	background: transparent url("chrome://aimersoft/content/img/button_down.png") no-repeat !important;
+	background-position: bottom right !important;
+	color: #000 !important;
+	outline: none !important; /* hide dotted outline in Firefox */
+}
+
+a.playlistbutton{
+    background: transparent url("chrome://aimersoft/content/img/down_all_normal.png") no-repeat !important;
+	color: #444 !important;
+	display: block !important;
+	float: left !important;
+	font: normal 12px arial, sans-serif !important;
+	height: 28px !important;
+	width: 124px !important;
+    margin-left:8px !important;
+    margin-top:2px !important;
+}
+
+a.playlistbutton:active{
+    background: transparent url("chrome://aimersoft/content/img/down_all_down.png") no-repeat !important;
+
+}
+
+button.wsplaylist {
+	background: transparent url("chrome://aimersoft/content/img/down_all_normal.png") no-repeat !important;
+	height: 28px !important;
+	width: 124px !important;
+    margin-left: 10px !important;
+    margin-top: 0px !important;
+    padding-left:1px !important;
+    padding-right:4px !important;
+    padding-top:6px !important;
+
+}
+
+button.wsplaylist:active {
+	background: transparent url("chrome://aimersoft/content/img/down_all_down.png") no-repeat !important;
+}
+
+#mytubem {
+	margin: 0 !important;
+	padding: 0 !important;
+	z-index: 30 !important;
+}
+
+#mytubem li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	float: left;
+	font: bold 11px arial
+}
+
+#mytubem div {
+	position: absolute;
+	top: 28px;
+	width: 110px;
+	visibility: hidden;
+	margin: 0;
+	padding: 0;
+	background: #9CC02B;
+	border: 1px solid #4C4C4C !important
+}
+
+#mytubem div a {
+	position: relative !important;
+	display: block !important;
+	margin: 0 !important;
+	padding: 5px 10px !important;
+	width: auto;
+	white-space: nowrap !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	background: #000000 !important;
+	color: #FFFFFF !important;
+	font: 12px arial, sans-serif !important
+}
+
+#mytubem div a:hover {
+	background: rgb(135,10,10) !important;
+	color: #FFFFFF !important
+}</style><style type="text/css">#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">DIV.MathJax_MathML {text-align: center; margin: .75em 0px}
+[mathvariant="double-struck"] {font-family: MathJax_AMS}
+[mathvariant="script"] {font-family: MathJax_Script}
+[mathvariant="fraktur"] {font-family: MathJax_Fraktur}
+[mathvariant="-tex-oldstyle"] {font-family: MathJax_Caligraphic}
+[mathvariant="-tex-oldstyle-bold"] {font-family: MathJax_Caligraphic; font-weight: bold}
+[mathvariant="-tex-caligraphic"] {font-family: MathJax_Caligraphic}
+[mathvariant="-tex-caligraphic-bold"] {font-family: MathJax_Caligraphic; font-weight: bold}
+[mathvariant="bold-script"] {font-family: MathJax_Script; font-weight: bold}
+[mathvariant="bold-fraktur"] {font-family: MathJax_Fraktur; font-weight: bold}
+[mathvariant="monospace"] {font-family: monospace}
+[mathvariant="sans-serif"] {font-family: sansserif}
+[mathvariant="bold-sans-serif"] {font-family: sansserif; font-weight: bold}
+[mathvariant="sans-serif-italic"] {font-family: sansserif; font-style: italic}
+[mathvariant="sans-serif-bold-italic"] {font-family: sansserif; font-style: italic; font-weight: bold}
+@font-face /*1*/ {font-family: MathJax_AMS; src: local('MathJax_AMS'), url('https://d2265nx4vomwra.cloudfront.net/MathJax/fonts/HTML-CSS/TeX/otf/MathJax_AMS-Regular.otf')}
+@font-face /*2*/ {font-family: MathJax_Script; src: local('MathJax_Script'), url('https://d2265nx4vomwra.cloudfront.net/MathJax/fonts/HTML-CSS/TeX/otf/MathJax_Script-Regular.otf')}
+@font-face /*3*/ {font-family: MathJax_Fraktur; src: local('MathJax_Fraktur'), url('https://d2265nx4vomwra.cloudfront.net/MathJax/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Regular.otf')}
+@font-face /*4*/ {font-family: MathJax_Caligraphic; src: local('MathJax_Caligraphic'), url('https://d2265nx4vomwra.cloudfront.net/MathJax/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf')}
+@font-face /*5*/ {font-family: MathJax_Fraktur; font-weight: bold; src: local('MathJax_Fraktur-Bold'), url('https://d2265nx4vomwra.cloudfront.net/MathJax/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Bold.otf')}
+@font-face /*6*/ {font-family: MathJax_Caligraphic; font-weight: bold; src: local('MathJax_Caligraphic-Bold'), url('https://d2265nx4vomwra.cloudfront.net/MathJax/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Bold.otf')}
+</style><style type="text/css">#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style></head>
+<body class="mediawiki ltr sitedir-ltr ns-518 ns-subject page-ML_Recommender_Systems action-view skin-cavendish"><div style="display: none;" id="MathJax_Message"></div><div style="display: none;" id="MathJax_Message"></div>
+<div id="topbar">
+    <div class="topbar-inner">
+        <div class="container-fluid">
+            <a target="_new" href="http://www.coursera.org/" class="brand">Coursera <span style="background-color:#387690;padding-top:100px" class="label warning">Beta</span></a>
+            <ul class="nav secondary-nav">
+                <li style="padding: 10px 10px 11px; color:#BFBFBF; font-size:14px; border-right: solid 1px #333">FERNANDO GONZALEZ RODRIGUEZ </li>
+                <li><a href="https://www.coursera.org/landing/contact.php">Contact Us</a></li>
+                <li><a href="https://share.coursera.org/wiki/index.php/Special:Contributions/00ac1b051c7e0902985a4c6e69c23e4c">
+		             My Contributions</a></li>
+                <li><a href="https://share.coursera.org/wiki/index.php?title=Special:UserLogout&amp;returnto=ML%3ARecommender+Systems">
+		             Log Out</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="internal"></div>
+<!-- Skin-Version: 1.2.0 + Coursera -->
+<div id="globalWrapper">
+
+	<div id="p-personal" class="portlet">
+		<h5>Personal tools</h5>
+		<div class="pBody">
+			<ul>
+                        			
+			</ul>
+		</div>
+	</div>
+
+	<div id="header">
+		<a name="top" id="contentTop"></a>
+		<h6>
+		<a href="https://share.coursera.org/wiki/index.php/Main_Page" title="Main Page">ML:Recommender Systems - Coursera</a></h6>
+		<div id="p-cactions" class="portlet"><ul>
+    
+                 <li id="ca-nstab-ml" class="selected"><a href="https://share.coursera.org/wiki/index.php/ML:Recommender_Systems">ML</a></li>
+                 <li id="ca-edit"><a href="https://share.coursera.org/wiki/index.php?title=ML:Recommender_Systems&amp;action=edit" title="You can edit this page. Please use the preview button before saving">Edit</a></li>
+                 <li id="ca-history"><a href="https://share.coursera.org/wiki/index.php?title=ML:Recommender_Systems&amp;action=history" title="Past revisions of this page">History</a></li>            </ul></div>
+				<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Search</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="/wiki/index.php" id="searchform">
+				<input name="title" value="Special:Search" type="hidden">
+				<input name="search" title="Search Coursera [ctrl-f]" accesskey="f" id="searchInput" type="search">
+				<input name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" type="submit">&nbsp;
+				<input name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" type="submit">
+			</form>
+		</div>
+	</div>
+	</div>
+
+	<div id="mBody">
+	
+		<div id="side">
+			<div id="nav">
+	<div class="generated-sidebar portlet" id="p-Navigation">
+		<h5>Navigation</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-mainpage-description"><a href="https://share.coursera.org/wiki/index.php/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+				<li id="n-recentchanges"><a href="https://share.coursera.org/wiki/index.php/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+				<li id="n-help"><a href="https://share.coursera.org/wiki/index.php/Help:Editing" title="The place to find out">Help</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="generated-sidebar portlet" id="p-Courses">
+		<h5>Courses</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-List-of-courses"><a href="https://share.coursera.org/wiki/index.php/Courses">List of courses</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="generated-sidebar portlet" id="p-Contribute">
+		<h5>Contribute</h5>
+		<div class="pBody">
+			<ul>
+				<li id="n-Video-Subtitles"><a href="https://share.coursera.org/wiki/index.php/Video_Subtitles">Video Subtitles</a></li>
+				<li id="n-Third-party-Tools"><a href="https://share.coursera.org/wiki/index.php/Third-party_Tools">Third-party Tools</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Toolbox</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-upload"><a href="https://share.coursera.org/wiki/index.php/Special:Upload" title="Upload files [u]" accesskey="u">Upload file</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+		</div><!-- end of SIDE div -->
+		<div id="column-content">
+			<div id="content"><div style="display: none;" class="js-messagebox" id="mw-js-message"></div>
+				<a id="top"></a>
+	        		        	<h1 id="firstHeading" class="firstHeading">ML:Recommender Systems</h1>
+				<div id="bodyContent">
+		            <h3 id="siteSub">From Coursera</h3>
+		            <div id="contentSub"></div>
+		            		            		            <div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>					<!-- start content -->
+					<div dir="ltr" class="mw-content-ltr" lang="en"><table id="toc" class="toc"><tbody><tr><td><div id="toctitle"><h2>Contents</h2><span class="toctoggle">&nbsp;[<a href="#" class="internal" id="togglelink">hide</a>]&nbsp;</span></div>
+<ul>
+<li class="toclevel-1"><a href="#Problem_Formulation"><span class="tocnumber">1</span> <span class="toctext">Problem Formulation</span></a></li>
+<li class="toclevel-1"><a href="#Content_Based_Recommendations"><span class="tocnumber">2</span> <span class="toctext">Content Based Recommendations</span></a></li>
+<li class="toclevel-1"><a href="#Collaborative_Filtering"><span class="tocnumber">3</span> <span class="toctext">Collaborative Filtering</span></a></li>
+<li class="toclevel-1"><a href="#Collaborative_Filtering_Algorithm"><span class="tocnumber">4</span> <span class="toctext">Collaborative Filtering Algorithm</span></a></li>
+<li class="toclevel-1"><a href="#Vectorization:_Low_Rank_Matrix_Factorization"><span class="tocnumber">5</span> <span class="toctext">Vectorization: Low Rank Matrix Factorization</span></a></li>
+<li class="toclevel-1"><a href="#Implementation_Detail:_Mean_Normalization"><span class="tocnumber">6</span> <span class="toctext">Implementation Detail: Mean Normalization</span></a></li>
+</ul>
+</td></tr></tbody></table>
+<h1> <span class="mw-headline" id="Problem_Formulation">Problem Formulation</span></h1>
+<p>Recommendation is currently a very popular application of machine learning.</p>
+<p>Say we are trying to recommend movies to customers. We can use the following definitions</p>
+<blockquote>
+  <p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msub><mi>n</mi><mi>u</mi></msub><mo stretchy="false">=</mo></math></span><script id="MathJax-Element-1" type="math/tex">n_u = </script> number of users</p>
+  <p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msub><mi>n</mi><mi>m</mi></msub><mo stretchy="false">=</mo></math></span><script id="MathJax-Element-2" type="math/tex">n_m = </script> number of movies</p>
+  <p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>r</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mn>1</mn></math></span><script id="MathJax-Element-3" type="math/tex">r(i,j) = 1</script> if user <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>j</mi></math></span><script id="MathJax-Element-4" type="math/tex">j</script> has rated movie <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>i</mi></math></span><script id="MathJax-Element-5" type="math/tex">i</script></p>
+  <p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>y</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo></math></span><script id="MathJax-Element-6" type="math/tex">y(i,j) = </script> rating given by user <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>j</mi></math></span><script id="MathJax-Element-7" type="math/tex">j</script> to movie <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>i</mi></math></span><script id="MathJax-Element-8" type="math/tex">i</script> (defined only if <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>r</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mn>1</mn></math></span><script id="MathJax-Element-9" type="math/tex">r(i,j) = 1</script>)</p>
+</blockquote>
+<h1> <span class="mw-headline" id="Content_Based_Recommendations">Content Based Recommendations</span></h1>
+<p>We can introduce two features, <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msub><mi>x</mi><mn>1</mn></msub></math></span><script id="MathJax-Element-10" type="math/tex">x_1</script> and <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msub><mi>x</mi><mn>2</mn></msub></math></span><script id="MathJax-Element-11" type="math/tex">x_2</script> which represents how much romance or how much action a movie may have (on a scale of <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mn>0</mn><mo stretchy="false">−</mo><mn>1</mn></math></span><script id="MathJax-Element-12" type="math/tex">0 - 1</script>). </p>
+<p>One approach is that we could do linear regression for every single user. For each user <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>j</mi></math></span><script id="MathJax-Element-13" type="math/tex">j</script>, learn a parameter <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">∈</mo><msup><mrow><mi mathvariant="double-struck">R</mi></mrow><mn>3</mn></msup></math></span><script id="MathJax-Element-14" type="math/tex">\theta^{(j)} \in \mathbb{R}^3</script>. Predict user <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>j</mi></math></span><script id="MathJax-Element-15" type="math/tex">j</script> as rating movie <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>i</mi></math></span><script id="MathJax-Element-16" type="math/tex">i</script> with <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mo stretchy="false">(</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mi>T</mi></msup></mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup></math></span><script id="MathJax-Element-17" type="math/tex">(\theta^{(j)})^Tx^{(i)}</script> stars.</p>
+<blockquote>
+  <p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">=</mo></math></span><script id="MathJax-Element-18" type="math/tex">\theta^{(j)} = </script> parameter vector for user <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>j</mi></math></span><script id="MathJax-Element-19" type="math/tex">j</script></p>
+  <p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">=</mo></math></span><script id="MathJax-Element-20" type="math/tex">x^{(i)} = </script> feature vector for movie <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>i</mi></math></span><script id="MathJax-Element-21" type="math/tex">i</script></p>
+  <p>For user <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>j</mi></math></span><script id="MathJax-Element-22" type="math/tex">j</script>, movie <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>i</mi></math></span><script id="MathJax-Element-23" type="math/tex">i</script>, predicted rating: <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mo stretchy="false">(</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mi>T</mi></msup></mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></math></span><script id="MathJax-Element-24" type="math/tex">(\theta^{(j)})^T(x^{(i)})</script></p>
+  <p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msup><mi>m</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">=</mo></math></span><script id="MathJax-Element-25" type="math/tex">m^{(j)} = </script> number of movies rated by user <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>j</mi></math></span><script id="MathJax-Element-26" type="math/tex">j</script></p>
+</blockquote>
+<p>To learn <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup></math></span><script id="MathJax-Element-27" type="math/tex">\theta^{(j)}</script>, we do the following</p>
+<p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>m</mi><mi>i</mi><msub><mi>n</mi><mrow><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup></mrow></msub><mo stretchy="false">=</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mrow><munder><mo stretchy="false">∑</mo><mrow><mi>i</mi><mo stretchy="false">:</mo><mi>r</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mn>1</mn></mrow></munder></mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mi>T</mi></msup></mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo><mo stretchy="false">−</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><mo stretchy="false">+</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mi mathvariant="italic">λ</mi><mn>2</mn></mfrac></mstyle><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>k</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mrow><mo stretchy="false">(</mo><msubsup><mi mathvariant="italic">θ</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msubsup><mrow><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></math></span><script id="MathJax-Element-28" type="math/tex">min_{\theta^{(j)}} = \dfrac{1}{2}\sum_{i:r(i,j)=1} ((\theta^{(j)})^T(x^{(i)}) - y^{(i,j)})^2 + \dfrac{\lambda}{2} \sum_{k=1}^n(\theta_k^{(j)})^2</script></p>
+<p>This is our familiar linear regression. The base of the first summation is choosing all <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>i</mi></math></span><script id="MathJax-Element-29" type="math/tex">i</script> such that <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>r</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mn>1</mn></math></span><script id="MathJax-Element-30" type="math/tex">r(i,j) = 1</script>.</p>
+<p>To get the parameters for all our users, we do the following:</p>
+<p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>m</mi><mi>i</mi><msub><mi>n</mi><mrow><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">,</mo><mo stretchy="false">…</mo><mo stretchy="false">,</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><msub><mi>n</mi><mi>u</mi></msub><mo stretchy="false">)</mo></mrow></msup></mrow></msub><mo stretchy="false">=</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>j</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mrow><msub><mi>n</mi><mi>u</mi></msub></mrow></munderover></mrow><mrow><munder><mo stretchy="false">∑</mo><mrow><mi>i</mi><mo stretchy="false">:</mo><mi>r</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mn>1</mn></mrow></munder></mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mi>T</mi></msup></mrow><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo><mo stretchy="false">−</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><mo stretchy="false">+</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mi mathvariant="italic">λ</mi><mn>2</mn></mfrac></mstyle><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>j</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mrow><msub><mi>n</mi><mi>u</mi></msub></mrow></munderover></mrow><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>k</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mrow><mo stretchy="false">(</mo><msubsup><mi mathvariant="italic">θ</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msubsup><mrow><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></math></span><script id="MathJax-Element-31" type="math/tex">min_{\theta^{(1)},\dots,\theta^{(n_u)}} = \dfrac{1}{2}\sum_{j=1}^{n_u}\sum_{i:r(i,j)=1} ((\theta^{(j)})^T(x^{(i)}) - y^{(i,j)})^2 + \dfrac{\lambda}{2} \sum_{j=1}^{n_u} \sum_{k=1}^n(\theta_k^{(j)})^2</script></p>
+<p>We can apply our linear regression gradient descent update using the above cost function.</p>
+<p>The only real difference is that we <strong>eliminate the constant <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mstyle displaystyle="true" scriptlevel="0"><mfrac><mn>1</mn><mi>m</mi></mfrac></mstyle></math></span><script id="MathJax-Element-32" type="math/tex">\dfrac{1}{m}</script></strong>.</p>
+<h1> <span class="mw-headline" id="Collaborative_Filtering">Collaborative Filtering</span></h1>
+<p>It can be very difficult to find features such as "amount of romance"
+ or "amount of action" in a movie. To figure this out, we can use <em>feature finders</em>.</p>
+<p>We can let the users tell us how much they like the different genres, providing their parameter vector immediately for us.</p>
+<p>To infer the features from given parameters, we use the squared error function with regularization over all the users:</p>
+<p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>m</mi><mi>i</mi><msub><mi>n</mi><mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">,</mo><mo stretchy="false">…</mo><mo stretchy="false">,</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><msub><mi>n</mi><mi>m</mi></msub><mo stretchy="false">)</mo></mrow></msup></mrow></msub><mstyle displaystyle="true" scriptlevel="0"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>i</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mrow><msub><mi>n</mi><mi>m</mi></msub></mrow></munderover></mrow><mrow><munder><mo stretchy="false">∑</mo><mrow><mi>j</mi><mo stretchy="false">:</mo><mi>r</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mn>1</mn></mrow></munder></mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mi>T</mi></msup></mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">−</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><mo stretchy="false">+</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mi mathvariant="italic">λ</mi><mn>2</mn></mfrac></mstyle><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>i</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mrow><msub><mi>n</mi><mi>m</mi></msub></mrow></munderover></mrow><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>k</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover></mrow><mo stretchy="false">(</mo><msubsup><mi>x</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msubsup><mrow><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></math></span><script id="MathJax-Element-33" type="math/tex">min_{x^{(1)},\dots,x^{(n_m)}} \dfrac{1}{2} \sum_{i=1}^{n_m} \sum_{j:r(i,j)=1} ((\theta^{(j)})^T x^{(i)} - y^{(i,j)})^2 + \dfrac{\lambda}{2}\sum_{i=1}^{n_m} \sum_{k=1}^{n} (x_k^{(i)})^2</script></p>
+<p>You can also <strong>randomly guess</strong> the values for theta to guess the features repeatedly. You will actually converge to a good set of features.</p>
+<h1> <span class="mw-headline" id="Collaborative_Filtering_Algorithm">Collaborative Filtering Algorithm</span></h1>
+<p>To speed things up, we can simultaneously minimize our features and our parameters:</p>
+<p><span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mstyle mathsize="1.2em"><mi>J</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">,</mo><mi mathvariant="italic">θ</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mrow><munder><mo stretchy="false">∑</mo><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">:</mo><mi>r</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mn>1</mn></mrow></munder></mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mi>T</mi></msup></mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">−</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><mo stretchy="false">+</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mi mathvariant="italic">λ</mi><mn>2</mn></mfrac></mstyle><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>i</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mrow><msub><mi>n</mi><mi>m</mi></msub></mrow></munderover></mrow><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>k</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover></mrow><mo stretchy="false">(</mo><msubsup><mi>x</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msubsup><mrow><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><mo stretchy="false">+</mo><mstyle displaystyle="true" scriptlevel="0"><mfrac><mi mathvariant="italic">λ</mi><mn>2</mn></mfrac></mstyle><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>j</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mrow><msub><mi>n</mi><mi>u</mi></msub></mrow></munderover></mrow><mrow><munderover><mo stretchy="false">∑</mo><mrow><mi>k</mi><mo stretchy="false">=</mo><mn>1</mn></mrow><mrow><mi>n</mi></mrow></munderover></mrow><mo stretchy="false">(</mo><msubsup><mi mathvariant="italic">θ</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msubsup><mrow><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow></mstyle></math></span><script id="MathJax-Element-34" type="math/tex">
+\large
+J(x,\theta) = \dfrac{1}{2} \sum_{(i,j):r(i,j)=1}((\theta^{(j)})^Tx^{(i)} - y^{(i,j)})^2 + \dfrac{\lambda}{2}\sum_{i=1}^{n_m} \sum_{k=1}^{n} (x_k^{(i)})^2 + \dfrac{\lambda}{2}\sum_{j=1}^{n_u} \sum_{k=1}^{n} (\theta_k^{(j)})^2</script></p>
+<p>It looks very complicated, but we've only combined the cost function for theta and the cost function for x.</p>
+<p>Because the algorithm can learn them itself, the bias units where <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false">=</mo><mn>1</mn></math></span><script id="MathJax-Element-35" type="math/tex">x_0 = 1</script> have been removed, therefore <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>x</mi><mo stretchy="false">∈</mo><msup><mrow><mi mathvariant="double-struck">R</mi></mrow><mi>n</mi></msup></math></span><script id="MathJax-Element-36" type="math/tex">x \in \mathbb{R}^n</script> and <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi mathvariant="italic">θ</mi><mo stretchy="false">∈</mo><msup><mrow><mi mathvariant="double-struck">R</mi></mrow><mi>n</mi></msup></math></span><script id="MathJax-Element-37" type="math/tex">\theta \in \mathbb{R}^n</script>.</p>
+<p>These are the steps in the algorithm:</p>
+<ol>
+<li>Initialize <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo stretchy="false">,</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><msub><mi>n</mi><mi>m</mi></msub><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">,</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo stretchy="false">,</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><msub><mi>n</mi><mi>u</mi></msub><mo stretchy="false">)</mo></mrow></msup></math></span><script id="MathJax-Element-38" type="math/tex">x^{(i)},...,x^{(n_m)},\theta^{(1)},...,\theta^{(n_u)}</script> to small random values. This serves to break symmetry and ensures that the algorithm learns features <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo stretchy="false">,</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><msub><mi>n</mi><mi>m</mi></msub><mo stretchy="false">)</mo></mrow></msup></math></span><script id="MathJax-Element-39" type="math/tex">x^{(i)},...,x^{(n_m)}</script> that are different from each other.</li>
+<li>Minimize <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>J</mi><mo stretchy="false">(</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo stretchy="false">,</mo><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><msub><mi>n</mi><mi>m</mi></msub><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">,</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo stretchy="false">,</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><msub><mi>n</mi><mi>u</mi></msub><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></math></span><script id="MathJax-Element-40" type="math/tex">J(x^{(i)},...,x^{(n_m)},\theta^{(1)},...,\theta^{(n_u)})</script> using gradient descent (or an advanced optimization algorithm).<br>
+E.g. for every <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>j</mi><mo stretchy="false">=</mo><mn>1</mn><mo stretchy="false">,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo stretchy="false">,</mo><msub><mi>n</mi><mi>u</mi></msub><mo stretchy="false">,</mo><mi>i</mi><mo stretchy="false">=</mo><mn>1</mn><mo stretchy="false">,</mo><mo>.</mo><mo>.</mo><mo>.</mo><msub><mi>n</mi><mi>m</mi></msub></math></span><script id="MathJax-Element-41" type="math/tex">j=1,...,n_u,i=1,...n_m</script>:<br>
+<span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msubsup><mi>x</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msubsup><mrow><mo>&nbsp;</mo></mrow><mo stretchy="false">:=</mo><msubsup><mi>x</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msubsup><mo stretchy="false">−</mo><mi mathvariant="italic">α</mi><mfenced close=")" open="("><mrow><mrow><munder><mo stretchy="false">∑</mo><mrow><mi>j</mi><mo stretchy="false">:</mo><mi>r</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mn>1</mn></mrow></munder></mrow><mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mi>T</mi></msup></mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">−</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo><msubsup><mi mathvariant="italic">θ</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msubsup></mrow><mo stretchy="false">+</mo><mi mathvariant="italic">λ</mi><msubsup><mi>x</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msubsup></mrow></mfenced></math></span><script id="MathJax-Element-42" type="math/tex">x_k^{(i)} := x_k^{(i)} - \alpha\left (\sum_{j:r(i,j)=1}{((\theta^{(j)})^T x^{(i)} - y^{(i,j)}) \theta_k^{(j)}} + \lambda x_k^{(i)} \right)</script><br>
+<span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msubsup><mi mathvariant="italic">θ</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msubsup><mrow><mo>&nbsp;</mo></mrow><mo stretchy="false">:=</mo><msubsup><mi mathvariant="italic">θ</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msubsup><mo stretchy="false">−</mo><mi mathvariant="italic">α</mi><mfenced close=")" open="("><mrow><mrow><munder><mo stretchy="false">∑</mo><mrow><mi>i</mi><mo stretchy="false">:</mo><mi>r</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo><mo stretchy="false">=</mo><mn>1</mn></mrow></munder></mrow><mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><msup><mi mathvariant="italic">θ</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mrow><msup><mo stretchy="false">)</mo><mi>T</mi></msup></mrow><msup><mi>x</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">−</mo><msup><mi>y</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">,</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo><msubsup><mi>x</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></mrow></msubsup></mrow><mo stretchy="false">+</mo><mi mathvariant="italic">λ</mi><msubsup><mi mathvariant="italic">θ</mi><mi>k</mi><mrow><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow></msubsup></mrow></mfenced></math></span><script id="MathJax-Element-43" type="math/tex">\theta_k^{(j)} := \theta_k^{(j)} - \alpha\left (\sum_{i:r(i,j)=1}{((\theta^{(j)})^T x^{(i)} - y^{(i,j)}) x_k^{(i)}} + \lambda \theta_k^{(j)} \right)</script></li>
+<li>For a user with parameters <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi mathvariant="italic">θ</mi></math></span><script id="MathJax-Element-44" type="math/tex">\theta</script> and a movie with (learned) features <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><mi>x</mi></math></span><script id="MathJax-Element-45" type="math/tex">x</script>, predict a star rating of <span style="display: none;" class="MathJax_Preview"></span><span style="font-size: 100%;" class="MathJax_MathML"><math><msup><mi mathvariant="italic">θ</mi><mi>T</mi></msup><mi>x</mi></math></span><script id="MathJax-Element-46" type="math/tex">\theta^Tx</script>.</li>
+</ol>
+<h1> <span class="mw-headline" id="Vectorization:_Low_Rank_Matrix_Factorization">Vectorization: Low Rank Matrix Factorization</span></h1>
+<h1> <span class="mw-headline" id="Implementation_Detail:_Mean_Normalization">Implementation Detail: Mean Normalization</span></h1>
+<p></p><hr>
+Next: <a href="https://share.coursera.org/wiki/index.php/ML:Large_Scale_Machine_Learning" title="ML:Large Scale Machine Learning">Large Scale Machine Learning</a>  Back to Index:  <a href="https://share.coursera.org/wiki/index.php/ML:Main" title="ML:Main">Main</a><p></p>
+<p></p>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 5/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key crowdwiki:pcache:idhash:118-0!*!0!!en!*!* and timestamp 20141108142332 -->
+</div><div class="printfooter">
+Retrieved from "<a href="https://share.coursera.org/wiki/index.php?title=ML:Recommender_Systems&amp;oldid=26291">https://share.coursera.org/wiki/index.php?title=ML:Recommender_Systems&amp;oldid=26291</a>"</div>
+					<div id="catlinks" class="catlinks"><div id="mw-normal-catlinks"><a href="https://share.coursera.org/wiki/index.php/Special:Categories" title="Special:Categories">Category</a>: <ul><li><a href="https://share.coursera.org/wiki/index.php/Category:ML:Lecture_Notes" title="Category:ML:Lecture Notes">ML:Lecture Notes</a></li></ul></div></div>					<!-- end content -->
+									</div>
+			</div><!-- end of MAINCONTENT div -->	
+		</div>
+	
+	</div><!-- end of MBODY div -->
+	<div class="visualClear"></div>
+	<div id="footer">
+		<table style="width:100%;text-align:center;">
+			<tbody><tr>
+				<td rowspan="2" style="width:5%;text-align:center;vertical-align:top;padding-right:1em;white-space:nowrap">
+						</td>
+				<td align="center">
+			<ul id="f-list">
+					<li id="f-lastmod"> This page was last modified on 10 May 2014, at 23:22.</li>
+					<li id="f-viewcount">This page has been accessed 6,424 times.</li>
+					<li id="f-privacy"><a href="https://share.coursera.org/wiki/index.php/Coursera:Privacy_policy" title="Coursera:Privacy policy">Privacy policy</a></li>
+					<li id="f-about"><a href="https://share.coursera.org/wiki/index.php/Coursera:About" title="Coursera:About">About Coursera</a></li>
+					<li id="f-disclaimer"><a href="https://share.coursera.org/wiki/index.php/Coursera:General_disclaimer" title="Coursera:General disclaimer">Disclaimers</a></li>
+</ul></td>
+				<td rowspan="2" style="width:5%;text-align:center;vertical-align:top;padding-left:1em;white-space:nowrap"><div id="f-poweredbyico"><a href="http://www.mediawiki.org/"><img src="ML_Recommender%20Systems.NG_Coursera_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" height="31" width="88"></a></div></td>
+			</tr>
+			<tr>
+				<td><div id="skin-info">
+					Mozilla Cavendish Theme based on Cavendish style by Gabriel Wicke modified by <a href="http://www.dasch-tour.de/" target="_blank">DaSch</a><br>
+					<a href="http://sourceforge.net/projects/wecowi/">Sourceforge Projectpage</a> – <a href="https://sourceforge.net/apps/trac/wecowi/wiki">Bug Reports</a> – Skin-Version: 1.2.0				</div></td>
+			</tr>
+		</tbody></table>
+	</div><!-- end of the FOOTER div -->
+</div><!-- end of the CONTAINER div -->
+<!-- scripts and debugging information -->
+<script>if(window.mw){
+	mw.loader.load(["mediawiki.user", "mediawiki.util", "mediawiki.page.ready", "mediawiki.legacy.wikibits", "mediawiki.legacy.ajax", "mediawiki.action.watch.ajax"]);
+}
+</script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/load.php"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/load_002.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_013.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_008.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_010.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_011.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_009.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_012.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_009.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_010.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_007.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_012.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/wikibits_002.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/ajax_002.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_011.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_004.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_002.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_003.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_005.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/jquery_007.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_003.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_004.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_006.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/wikibits.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/ajax.js"></script><script type="text/javascript" src="ML_Recommender%20Systems.NG_Coursera_files/mediawiki_005.js"></script>
+<script src="ML_Recommender%20Systems.NG_Coursera_files/MathJax.js"></script>
+<script>if(window.mw){
+	mw.user.options.set({"ccmeonemails": 0, "cols": 80, "date": "default", "diffonly": 0, "disablemail": 0, "disablesuggest": 0, "editfont": "default", "editondblclick": 0, "editsection": 1, "editsectiononrightclick": 0, "enotifminoredits": 0, "enotifrevealaddr": 0, "enotifusertalkpages": 1, "enotifwatchlistpages": 0, "extendwatchlist": 0, "externaldiff": 0, "externaleditor": 0, "fancysig": 0, "forceeditsummary": 0, "gender": "unknown", "hideminor": 0, "hidepatrolled": 0, "highlightbroken": 1, "imagesize": 2, "justify": 0, "math": 1, "minordefault": 0, "newpageshidepatrolled": 0, "nocache": 0, "noconvertlink": 0, "norollbackdiff": 0, "numberheadings": 0, "previewonfirst": 0, "previewontop": 1, "quickbar": 5, "rcdays": 7, "rclimit": 50, "rememberpassword": 0, "rows": 25, "searchlimit": 20, "showhiddencats": 0, "showjumplinks": 1, "shownumberswatching": 1, "showtoc": 1, "showtoolbar": 1, "skin": "cavendish", "stubthreshold": 0, "thumbsize": 2, "underline": 2, "uselivepreview": 0, "usenewrc": 0, "watchcreations": 0, "watchdefault": 0, "watchdeletion": 0, "watchlistdays": 3, "watchlisthideanons": 0, "watchlisthidebots": 0, "watchlisthideliu": 0, "watchlisthideminor": 0, "watchlisthideown": 0, "watchlisthidepatrolled": 0, "watchmoves": 0, "wllimit": 250, "openid-hide": 0, "openid-update-on-login-nickname": false, "openid-update-on-login-email": false, "openid-update-on-login-fullname": false, "openid-update-on-login-language": false, "openid-update-on-login-timezone": false, "variant": "en", "language": "en", "searchNs0": true, "searchNs1": false, "searchNs2": false, "searchNs3": false, "searchNs4": false, "searchNs5": false, "searchNs6": false, "searchNs7": false, "searchNs8": false, "searchNs9": false, "searchNs10": false, "searchNs11": false, "searchNs12": false, "searchNs13": false, "searchNs14": false, "searchNs15": false, "searchNs500": true, "searchNs502": true, "searchNs504": true, "searchNs506": true, "searchNs508": true, "searchNs510": true, "searchNs512": true, "searchNs514": true, "searchNs516": true, "searchNs518": true});
+	;
+	mw.loader.state({"user.options": "ready"});
+}
+</script><script>if(window.mw){
+	mw.user.tokens.set({"editToken": "c954401ff74adf7e33a1a6d14b61d357+\\", "watchToken": "d22cb7f96d0e540549ee3ff1a79b790b+\\"});
+	;
+	mw.loader.state({"user.tokens": "ready"});
+}
+</script><!-- Served in 0.079 secs. --></body></html>

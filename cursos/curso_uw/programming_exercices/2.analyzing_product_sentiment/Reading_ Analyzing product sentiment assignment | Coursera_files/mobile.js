@@ -1,0 +1,1 @@
+"use strict";define("nls/es/mobile",{"Download App":"Descarga la App","Use the Coursera app":"Usa la aplicación de Coursera","You’ll be able to track your progress, giving you a better learning experience.":"Podrás seguir tu progreso, proporcionándote una mejor experiencia de aprendizaje."});

@@ -1,0 +1,1 @@
+"use strict";define("bundles/phoenix/components/follow/views/nls/es/follow",{Follow:"Seguir","Something went wrong. Please try again.":"Algo salió mal. Por favor, vuelve a intentarlo.",Unfollow:"Dejar de seguir","You will receive emails when answers are added.":"Cuando se añadan respuestas  recibirás un mensaje de correo electrónico."});

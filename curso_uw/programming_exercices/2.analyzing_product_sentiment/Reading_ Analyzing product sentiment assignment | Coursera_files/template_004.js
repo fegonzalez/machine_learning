@@ -1,1 +1,0 @@
-"use strict";define("bundles/assess/questionTypes/regex/student/nls/es/template",{"Enter answer here":"Introduce la respuesta aquí","Sorry, that’s not what we’re looking for.&nbsp;":"Lo siento, eso no es lo que estamos buscando.&nbsp;","Well done!&nbsp;":"¡Bien hecho!&nbsp;"});

@@ -1,0 +1,58 @@
+# ipython
+
+# ==============================================================================
+# INSTALL
+# ==============================================================================
+       
+   # jupiter: New installation with brew (mac)
+   pip3 install jupyter
+
+   # ipython: New installation with brew (mac)
+   brew python3
+   pip3 install ipython pyzmq jinja2 tornado
+   ipython notebook
+
+   # jupyter: updating from ipython to jupyter
+   pip3 install -U jupyter
+
+
+# ==============================================================================
+# EXECUTION
+# ==============================================================================
+
+
+# ------------------------------------------------------------------------------
+# launch ipython notebook with Python 3
+# ------------------------------------------------------------------------------
+
+>>> ipython notebook  # >>> jupyter notebook
+
+
+# ------------------------------------------------------------------------------
+# launch ipython notebook with Python 2
+# ------------------------------------------------------------------------------
+
+>>> ./launcher_ipython2 &
+
+     # Dato launcher screen is opened
+
+
+>>> click on TERMINAL icon
+
+    # A new terminal screen is opened. Using this terminal for now on.
+
+
+>>> close Dato launcher screen
+
+
+    # In the new terminal:
+
+>>> mv to the directory where you want to launch the notebook (where you have
+    the notebooks ".ipynb" files)
+
+
+    # In the new directory:
+    
+>>> ipython notebook
+
+    # the notebook is opened with Python 2.

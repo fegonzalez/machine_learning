@@ -1,1 +1,0 @@
-"use strict";define("pages/open-course/video/views/nls/es/video",{});

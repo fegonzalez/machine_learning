@@ -1,0 +1,475 @@
+################################################################################
+#
+# WARNING 'GraphLab Create' is non-free tool (licensed for this course)
+# 	  Same actions can be performed with free tools
+#
+################################################################################
+
+
+# Tools
+
+- GraphLab Create: (highly scalable) machine learning library. Runs over
+  ipython notebooks.
+
+- SFrame (highly-scalable) data manipulation library (R-style). Included inside
+  GraphLab, thus runs over ipython notebooks.
+
+
+
+################################################################################
+# INDEX
+################################################################################
+
+# 1) SFrame Basics 
+
+# 2) SFrame Regression
+
+# 3) graphlab.text_analytics
+
+# 4) graphlab.distances
+#    4.1) Standard distance functions
+
+# 5) nearest_neighbors algorithm
+#    5.1) graphlab.nearest_neighbors.create
+
+
+
+## References
+
+## Code examples
+
+
+# ==============================================================================
+# 1) SFrame Basics 
+# ==============================================================================
+
+a) import graphlab
+
+   > import graphlab   # or "import graphlab as gl; gl.SFrame ..."
+
+b) Load dataset
+
+   > sf = graphlab.SFrame('people-example.csv') 
+
+c) Data manipulation
+
+   > sf.head() # or just 'sf'
+
+   > sf.tail()
+
+
+   i) Operations over dataset's columns
+
+   > sf['Country'].head()
+
+   > sf['age'].mean()	# max(), ...
+
+   > map(lambda x: x*x, sf['age'])
+
+   > sf['Full Name'] = sf['First Name'] + ' ' + sf['Last Name'] # Create columns
+
+   > sf.  sort / filter ( group_bu / ...
+
+     SFrame.sort('tfidf',ascending=False)
+
+   > graphlab.SFrame.stack
+
+     SFrame.stack(column_name, new_column_name=None, drop_na=False,
+                  new_column_type=None)
+
+    Convert a “wide” column of an SFrame to one or two “tall” columns by
+    stacking all values.
+
+       table = src[['tfidf']].stack('tfidf', new_column_name=['word', 'tfidf'])
+
+
+   ii) Use the 'apply' function to do a advance transformation of our data
+
+       - Similar to Python.map() but using parallelism.
+
+   > sf['Country'].apply(transform_country)
+
+     # def transform_country(country):
+     # 	 if country == 'USA':
+     #        return 'United States'
+     # 	 else:   	
+     #        return country
+
+     > sf['Country'] = sf['Country'].apply(transform_country)
+
+     ['United States', 'Canada', 'England', 'United States', 'Poland']
+     type: <class 'graphlab.data_structures.sarray.SArray'>
+
+     > map_vs_apply = map(transform_country, sf['Country'])
+     ['United States', 'Canada', 'England', 'United States', 'Poland']
+     type: list
+
+WARNING How to pass a function with arguments to apply:
+	sf['Country'] = sf['Country'].apply(lambda x: transform_country(x,
+	param_2, .., param_n)
+	
+
+d) Canvas
+
+   # If you want Canvas visualization to show up on this notebook, 
+   # rather than popping up a new window, add this line:
+   #
+   > graphlab.canvas.set_target('ipynb')
+
+   # Visualizes any data structure in GraphLab Create (plots & tables)
+   # (http://localhost:52331/index.html)
+
+   > sf.show()
+
+
+   > sf['age'].show(view='Categorical')
+
+   > sales.show(view="Scatter Plot", x="sqft_living", y="price")
+
+   > sales.show(view='BoxWhisker Plot', x='zipcode', y='price')
+
+
+
+# ==============================================================================
+# 2) SFrame Regression
+# ==============================================================================
+
+#INFO rmse: root_mean_squeare_error == J(theta)
+
+#INFO Matplotlib is a Python plotting library that is also useful for plotting.
+#     You can install it with: 'pip install matplotlib'
+
+
+## STEP 1.- Get the proper data set
+
+
+## STEP 2.- Training the data set
+
+a) split data sets
+
+  > train_data,test_data = sales.random_split(.8,seed=0)
+
+
+b) train the data set
+
+# graphlab.linear_regression.create:   create AND TRAIN the linear algorithm
+# graphlab.logistic_classifier.create: create AND TRAIN the logistic algorithm
+
+
+# WARNING 'validation_set=None' when no cv set is needed, otherwise the
+# algorithm will create one by itself that could have different size each
+# execution -> non-repeatable results.  This has been empirically tested.
+# Other option is to use the test_set (see logistic regression example bellow)
+
+
+  # (e.g. simple linear regression)
+  
+  > sqft_model = graphlab.linear_regression.create
+    	            (train_data,                       # data source
+                     validation_set=None,
+	             target='price',                   # y to predict
+	             features=['sqft_living'])         # 1 feature
+
+
+  # (e.g. multiple linear regression)
+  > my_features = ['bedrooms', 'sqft_living', 'sqft_lot', 'floors', 'zipcode']
+  > my_features_model = graphlab.linear_regression.create
+    		           (train_data,
+			   validation_set=None,
+			   target='price',
+			   features=my_features)      # >1 features
+
+
+
+  # (e.g. logistic regression)
+
+  > sentiment_model = graphlab.logistic_classifier.create
+    		      (train_data,
+		      target=sentiment_target,
+		      features=sentiment_features,
+		      validation_set=test_data)
+
+
+
+# NOTICE Input / output for/of the sframes's algorithms [1], [2]
+#
+# Input: there are several other options available: feature_rescaling, ...
+#
+# Output: "PROGRESS" useful info is shown after the execution, includes:
+#         Algorithm used: i.e. "Starting L-BFGS"
+#         #iterations, Step size (α), Training-accuracy, Validation-accuracy, ..
+#
+#         "ERRORS" inf related to learning errors (i.e. useless features)
+
+
+
+c) (optional) View the learned regression coefficients: theta
+
+  > sqft_model.get('coefficients')	  
+
+  # Result example: table
+  #
+  #    name      index      value
+  # -------------------------------------
+  # intercept) 	  None 	  -46630.3239865      # theta_0
+  # sqft_living   None 	  282.066576944	      # theta_1
+
+
+
+## STEP 3.- Evaluate the regression algorithm (test set)
+
+
+  a) evaluate the test set
+  
+  > sqft_model.evaluate(test_data,            
+    		        metric='roc_curve')  # optional parameter
+
+
+   # regression metrics
+   # rmse 	Compute the root mean squared error between two SArrays.
+   # max_error 	Compute the maximum absolute deviation between two SArrays.
+
+   # classifier metrics
+   # confusion_matrix 	Compute the confusion matrix for classifier predictions.
+   # accuracy 	Compute the proportion of correct predictions.
+
+
+    # Result example -  linear regression:
+    #
+    # rmse has order of millions -> bad generalization
+    {'max_error': 4141991.878006587, 'rmse': 255183.70971457666}
+
+
+    # Result example -  logistic regression:
+    #
+    #   {'accuracy': 0.916256305548883, 'confusion_matrix': Columns:
+    # 	target_label	int
+    # 	predicted_label	int
+    # 	count	int
+    #
+    # Data:
+    # +--------------+-----------------+-------+
+    # | target_label | predicted_label | count |
+    # +--------------+-----------------+-------+
+    # |      0       |        1        |  1328 |
+    # |      0       |        0        |  4000 |
+    # |      1       |        1        | 26515 |
+    # |      1       |        0        |  1461 |
+    # +--------------+-----------------+-------+
+
+
+    # b) Examine the results of the evaluation
+    
+    > sentiment_model.show()
+    
+      - Schema: number of coefficients, n. of examples, ...
+      
+      - Training summary: iterations, status (i.e. iteration limit reached),
+        training time
+
+      - High / Low coefficients info
+    
+
+    > sentiment_model.show(view='Evaluation')
+
+      - if evaluate(test_data): confusion matrix + accuracy
+
+      - if evaluate(test_data, metric='roc_curve'): interactive threshold
+        update to show changes in curve TPvsFP & error metrics (precision,
+        recall, f1score, ...)
+
+      	
+
+## STEP 4.- Predict new solutions: apply the regression model to predict new
+## 	    values.
+
+
+ > house1 = sales[sales['id']=='5309101200'] # one only record in a dataset...
+ > my_features_model.predict(house1)
+
+
+ > giraffe_reviews = products[products['name'] == 'Vulli'] # ... data subset
+ > giraffe_reviews['predicted_sentiment'] =
+        sentiment_model.predict(giraffe_reviews, output_type='probability')
+
+
+ >  bill_gates = {'bedrooms':[8],            # ... or a python data
+              'bathrooms':[25], 
+              'sqft_living':[50000], 
+              'sqft_lot':[225000],
+              'floors':[4], 
+              'zipcode':['98039'], 
+              'condition':[10], 
+              'grade':[10],
+              'waterfront':[1],
+              'view':[4],
+              'sqft_above':[37500],
+              'sqft_basement':[12500],
+              'yr_built':[1994],
+              'yr_renovated':[2010],
+              'lat':[47.627606],
+              'long':[-122.242054],
+              'sqft_living15':[5000],
+              'sqft_lot15':[40000]}
+ > print my_features_model.predict(graphlab.SFrame(bill_gates))	      
+
+
+ # Just see a subset of predictions (i.e. one record of data)
+ > sentiment_model.predict(giraffe_reviews[0:1], output_type='probability')
+
+
+
+# ==============================================================================
+# 3) graphlab.text_analytics
+# ==============================================================================
+
+> graphlab.text_analytics.count_words
+
+  # Count words of a text string
+  #
+  # input: products['review']: a column of a sframe; type str.
+  #
+  # output: products['rword_count']: NEW column in the sframe; type dictionary
+  #                                  {'and': 5, 'then': 1, ...}
+
+  products['word_count']=graphlab.text_analytics.count_words(products['review'])
+
+
+> graphlab.text_analytics.tf_idf(dataset)
+
+  # \param dataset : SArray of type dict, SFrame with columns of type dict
+  #
+  #
+  # \return out : SArray of type dict. The same document corpus where each
+  #               score has been replaced by the TF-IDF transformed.
+
+  tfidf = graphlab.text_analytics.tf_idf(people['word_count'])
+
+
+##==============================================================================
+## 4) graphlab.distances
+##==============================================================================
+
+The GraphLab Create distances module provides access to the standard distance
+functions and utilities for working with composite distances.
+
+Distance functions are used in all toolkits based on a nearest neighbors
+search, including:
+
+	- nearest_neighbors
+	- nearest_neighbor_classifier
+	- nearest_neighbor_deduplication
+
+# 4.1) Standard distance functions
+
+  Measure the dissimilarity between two data points consisting of only a single
+  type.
+
+> cosine(x, y) Compute the cosine distance between two dictionaries or two
+  lists of equal length.
+
+  HINT Document similarity (manual calculation) = cosine distances dictionary
+       of tfidf [e1]
+
+
+##==============================================================================
+# 5) nearest_neighbors algorithm
+##==============================================================================
+
+The GraphLab Create nearest neighbors toolkit finds the rows in a tabular
+reference dataset that are most similar to a set of queries with the same
+schema.
+
+
+# 5.1) graphlab.nearest_neighbors.create [3] [e1] 
+
+ > graphlab.nearest_neighbors.create(dataset, label=None, features=None,
+   					      distance=None, method='auto',
+					      verbose=True, **kwargs)
+
+  # \param dataset: SFrame. Reference data
+  #
+  # \param label: string, optional. Name of the SFrame column with row labels.
+  #
+  # \param features: list[string], optional
+  #
+  #   Name of the columns with features to use in computing distances between
+  #   observations and the query points.
+  #
+  # distance : string, function, or list[list], optional
+  #
+  #   Function to measure the distance between any two input data rows. 
+  #	String: the name of a standard distance function. One of ‘euclidean’,
+  # 	..., ‘cosine’, ...
+  #
+  # \return NearestNeighborsModel: a structure for efficiently computing the
+  # nearest neighbors in ‘dataset’ of new query points.
+
+  knn_model = graphlab.nearest_neighbors.create(dataset = people,
+  	      					features=['tfidf'],
+						label='name',
+						distance='cosine')
+
+
+ # 5.2) NearestNeighborsModel [4] [e1]
+
+  Data structure returned by graphlab.nearest_neighbors.create.
+
+  > NearestNeighborsModel.query(dataset[, ...])
+
+    For each row of the input ‘dataset’, RETRIEVE THE NEAREST NEIGHBORS from
+    the model’s stored data.
+
+    (e.g) [e1]
+    	  knn_model.query(obama)
+	  # [Out]
+	  query_label 	reference_label 	distance 	rank
+	  0 		Barack Obama 		0.0 		1
+	  0 		Joe Biden 		0.794117647059 	2
+	  0 		Joe Lieberman 		0.794685990338 	3
+	  0 		Kelly Ayotte 		0.811989100817 	4
+
+
+
+##==============================================================================
+## References
+##==============================================================================
+
+[1] graphlab.linear_regression.create - https://dato.com/products/create/docs/generated/graphlab.linear_regression.create.html
+
+[2] graphlab.logistic_classifier.create - https://dato.com/products/create/docs/generated/graphlab.logistic_classifier.create.html
+
+[3] graphlab.nearest_neighbors.create - https://dato.com/products/create/docs/generated/graphlab.nearest_neighbors.create.html#graphlab.nearest_neighbors.create
+
+[4] graphlab.nearest_neighbors.NearestNeighborsModel - https://dato.com/products/create/docs/generated/graphlab.nearest_neighbors.NearestNeighborsModel.html#graphlab.nearest_neighbors.NearestNeighborsModel
+
+
+
+##==============================================================================
+## Code examples
+##==============================================================================
+
+[e1] document_retrieval - /curso_uw/programming_exercices/3.retrieving_wikipedia_articles/document_retrieval.ipynb
+
+
+
+What's the most similar article, other than itself, to the one on 'Victoria Beckham' using word count features?  =  name = Mary Fitzgerald (artist), distance = 0.207307036115 
+
+Which one of the two is closest to Elton John,'Victoria Beckham' or 'Paul McCartney'  =  Paul McCartney 
+
+elton john: 3 words in his articles with highest word counts  =  {18: 'in', 27: 'the', 15: 'and'} 
+
+What's the most similar article, other than itself, to the one on 'Victoria Beckham' using TF-IDF features?  =  name = David Beckham, distance = 0.548169610263 
+
+elton john: 3 words in his articles with highest TF-IDF  =  {18.38947183999428: 'furnish', 17.30368095754203: 'billboard', 17.482320270031995: 'elton'} 
+
+cosine distance between the articles on 'Elton John' and 'Paul McCartney'  =  0.825031002922 
+
+cosine distance between the articles on 'Elton John' and 'Victoria Beckham'  =  0.956700637666 
+
+What's the most similar article, other than itself, to the one on 'Elton John' using word count features?  =  name = Cliff Richard, distance = 0.16142415259 
+
+What's the most similar article, other than itself, to the one on 'Elton John' using TF-IDF features?  =  name = Rod Stewart, distance = 0.717219667893 
+
+Which one of the two is closest to Elton John, Does this result make sense to you?  =  Yes. They two have simlilar ages, and they are in music during the same period of history)
+

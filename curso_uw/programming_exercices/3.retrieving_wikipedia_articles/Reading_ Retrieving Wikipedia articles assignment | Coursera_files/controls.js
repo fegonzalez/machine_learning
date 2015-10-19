@@ -1,1 +1,0 @@
-"use strict";define("bundles/videojs/layout/nls/es/controls",{Cast:"Emitir",Download:"Descargar",Fullscreen:"Pantalla Completa",Settings:"Ajustes",Subtitles:"Subtítulos","Subtitles Off":"Subtítulos Desactivados"});

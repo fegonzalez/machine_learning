@@ -1,1 +1,0 @@
-"use strict";define("bundles/confirmNavigation/nls/es/confirmNavigation",{"Are you sure you want to leave this page?":"¿Estás seguro/a de que quieres abandonar esta página?","Confirm Navigation":"Confirmar Navegación","Leave this Page":"Abandonar esta página","Stay on this Page":"Permanecer en esta página"});
