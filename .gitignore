@@ -44,22 +44,22 @@ topics/SVMs/*
 
 cursos/curso_stanford/*
 !cursos/curso_stanford/cs229-notes1.pdf
-# !cursos/curso_stanford/lectures
+!cursos/curso_stanford/IX.Neural_Networks_Learning/nn1.pdf
+!cursos/curso_stanford/VI.Logistic_Regression/Logistic Regression/Lecture6.pdf
+!cursos/curso_stanford/VII.Regularization/Regularization/Lecture7.pdf
+!cursos/curso_stanford/VIII.Neural_Networks_Representation/Neural Networks- Representation/Lecture8.pdf
+!cursos/curso_stanford/VIII.Neural_Networks_Representation/nn1.pdf
+!cursos/curso_stanford/X.Advice_for_Applying_Machine_Learning/Lecture10.pdf
+!cursos/curso_stanford/XI.Machine_Learning_System_Design/Lecture11.pdf
+!cursos/curso_stanford/XII.Support_Vector_Machines/Lecture12.pdf
+!cursos/curso_stanford/XIII.Clustering/Lecture13.pdf
+!cursos/curso_stanford/XIV.Dimensionality_Reduction/Lecture14.pdf
+!cursos/curso_stanford/XV.Anomaly_Detection/Lecture15.pdf
+!cursos/curso_stanford/XVI.Recommender_Systems/Lecture16.pdf
+!cursos/curso_stanford/XVII.Large_Scale_Machine_Learning/Lecture17.pdf
+!cursos/curso_stanford/XVIII.Application_Example.Photo_OCR/Lecture18.pdf
 
-!cursos/curso_stanford/lectures/IX. Neural Networks Learning (Week 5)/nn1.pdf
-!cursos/curso_stanford/lectures/VI. Logistic Regression (Week 3)/Logistic Regression/Lecture6.pdf
-!cursos/curso_stanford/lectures/VII. Regularization (Week 3)/Regularization/Lecture7.pdf
-!cursos/curso_stanford/lectures/VIII. Neural Networks Representation (Week 4)/Neural Networks- Representation/Lecture8.pdf
-!cursos/curso_stanford/lectures/VIII. Neural Networks Representation (Week 4)/nn1.pdf
-!cursos/curso_stanford/lectures/X. Advice for Applying Machine Learning (Week 6)/Lecture10.pdf
-!cursos/curso_stanford/lectures/XI. Machine Learning System Design (Week 6)/Lecture11.pdf
-!cursos/curso_stanford/lectures/XII.Support_Vector_Machines (Week 7)/Lecture12.pdf
-!cursos/curso_stanford/lectures/XIII. Clustering (Week 8)/Lecture13.pdf
-!cursos/curso_stanford/lectures/XIV. Dimensionality Reduction (Week 8)/Lecture14.pdf
-!cursos/curso_stanford/lectures/XV. Anomaly Detection (Week 9)/Lecture15.pdf
-!cursos/curso_stanford/lectures/XVI.Recommender_Systems/Lecture16.pdf
-!cursos/curso_stanford/lectures/XVII. Large Scale Machine Learning (Week 10)/Lecture17.pdf
-!cursos/curso_stanford/lectures/XVIII. Application Example .Photo OCR/Lecture18.pdf
+
 
 
 #===============================================================================
