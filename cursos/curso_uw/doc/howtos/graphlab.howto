@@ -32,7 +32,9 @@
 # 5) nearest_neighbors algorithm
 #    5.1) graphlab.nearest_neighbors.create
 
-
+# 6) graphlab.recommender
+#    6.1) graphlab.recommender.create [6] [e2]
+#    6.2) Making recomendations: graphlab.recommend  [8] [e2]
 
 ## References
 
@@ -83,6 +85,24 @@ c) Data manipulation
        table = src[['tfidf']].stack('tfidf', new_column_name=['word', 'tfidf'])
 
 
+   > graphlab.SFrame.groupby(key_columns, operations, *args)   [e2]
+
+       - key_columns, string | list[string].
+
+       	 Column(s) to group by. Key cols can be of any type other than dict.
+
+       - operations : dict, list
+
+       	 Dictionary of columns and aggregation operations. Each key is a output
+       	 column name and each value is an aggregator (e.g., sum)
+
+	 (e.g.), 'artist' & 'listen_count' are columns of the SFrame.
+
+	 song_data.groupby(key_columns='artist', operations={'total_count':
+	                   graphlab.aggregate.SUM('listen_count')})
+
+	 
+
    ii) Use the 'apply' function to do a advance transformation of our data
 
        - Similar to Python.map() but using parallelism.
@@ -127,7 +147,6 @@ d) Canvas
    > sales.show(view="Scatter Plot", x="sqft_living", y="price")
 
    > sales.show(view='BoxWhisker Plot', x='zipcode', y='price')
-
 
 
 # ==============================================================================
@@ -205,7 +224,7 @@ b) train the data set
 
 c) (optional) View the learned regression coefficients: theta
 
-  > sqft_model.get('coefficients')	  
+  > sqft_model.get('coefficients')
 
   # Result example: table
   #
@@ -432,6 +451,140 @@ schema.
 
 
 ##==============================================================================
+## 6) graphlab.recommender [5]
+##==============================================================================
+
+The GraphLab Create recommender toolkit provides a unified interface to train a
+variety of recommender models and use them to make recommendations.
+
+Recommender models can be created using graphlab.recommender.create() or loaded
+from a previously saved model using graphlab.load_model().
+
+A recommender model object can perform key tasks including predict, recommend,
+evaluate, and save.
+
+
+# 6.1) graphlab.recommender.create [6] [e2]
+
+ > graphlab.recommender.create(observation_data, user_id='user_id',
+   item_id='item_id', target=None, user_data=None, item_data=None,
+   ranking=True, verbose=True)
+
+
+Returns:	
+
+out : A trained model.
+
+      If a target column is given, then
+      graphlab.recommender.factorization_recommender.FactorizationRecommender.
+
+      If no target column is given, then
+      graphlab.recommender.item_similarity_recommender.ItemSimilarityRecommender
+
+
+Examples
+
+- Basic usage
+
+Given basic user-item observation data, an ItemSimilarityRecommender is created:
+
+>>> sf = graphlab.SFrame({'user_id': ['0', '0', '0', '1', '1', '2', '2', '2'],
+...                       'item_id': ['a', 'b', 'c', 'a', 'b', 'b', 'c', 'd']})
+>>> m = graphlab.recommender.create(sf)
+>>> recs = m.recommend()
+
+
+- Creating a model for ratings data
+
+This trains a FactorizationRecommender that can predict target ratings:
+
+>>> sf2 = graphlab.SFrame({'user_id': ['0', '0', '0', '1', '1', '2', '2', '2'],
+...                        'item_id': ['a', 'b', 'c', 'a', 'b', 'b', 'c', 'd'],
+...                        'rating': [1, 3, 2, 5, 4, 1, 4, 3]})
+>>> m2 = graphlab.recommender.create(sf2, target="rating", ranking = False)
+
+>>> recs = m.recommend()
+
++---------+---------+---------------+------+
+| user_id | item_id |     score     | rank |
++---------+---------+---------------+------+
+|    0    |    d    | 2.42301885789 |  1   |
+|    1    |    c    | 5.52301720893 |  1   |
+|    1    |    d    | 5.20882169849 |  2   |
+|    2    |    a    |  2.149379798  |  1   |
++---------+---------+---------------+------+
+
+
+# 6.2) Making recomendations: graphlab.recommend  [8] [e2]
+
+>>> recs = m.recommend()
+
+By default, calling m.recommend() without any arguments returns the top 10
+recommendations for all users seen during training. It automatically excludes
+items that were seen during training. Hence all generated recommendations are
+for items that the user has not already seen.
+
+a) Making recommendations for specific users: m.recommend(users=['Brian'])
+
+b) Making recommendations for specific users and items
+
+c) Aaking recommendations for new users ("cold-start" problem)
+
+d) Incorporating information about a new user
+
+e) Incorporating new side information
+
+f) Incorporating new observation data
+
+   recommend() accepts new observation data. Currently, the ItemSimilarityModel
+   makes the best use of this information.
+
+g) Controlling the number of recommendations (items per user): 'k' param
+   
+   recommendations = m.recommend(k = 5)
+
+h) Including/ Excluding specific items from recommendation
+
+i) Digging deeper
+
+   Behind the scenes, recommend() calls predict()
+   
+
+
+# 6.2 Types of recommenders [5]
+
+a) item similarity models: item_similarity_recommender.create
+   NOTICE returns most similar items according to user-chosen similarity
+
+b) factorization recommenders: factorization_recommender.create
+   NOTICE returns most similar items using matrix factorization
+
+c) factorization rec. for ranking: ranking_factorization_recommender.create
+
+d) popularity-based recommenders: popularity_recommender.create
+
+
+# 6.3 utilities
+
+a) util.compare_models: Compare the prediction or recommendation performance of
+   			recommender models on a common test dataset.
+
+   (e.g.),
+   model_performance = graphlab.recommender.util.compare_models
+			(test_data,
+			[popularity_model, personalized_model],
+			user_sample=0.05)
+
+b) util.random_split_by_user: Create a recommender-friendly train-test split of
+   			      the provided data set.
+
+c) util.precision_recall_by_user: Compute precision and recall at a given
+   				  cutoff for each user.
+
+d) model.get_similar_items(item)
+
+
+##==============================================================================
 ## References
 ##==============================================================================
 
@@ -443,6 +596,13 @@ schema.
 
 [4] graphlab.nearest_neighbors.NearestNeighborsModel - https://dato.com/products/create/docs/generated/graphlab.nearest_neighbors.NearestNeighborsModel.html#graphlab.nearest_neighbors.NearestNeighborsModel
 
+[5] graphlab recommender systems - https://dato.com/products/create/docs/graphlab.toolkits.recommender.html
+
+[6] graphlab.recommender.create - https://dato.com/products/create/docs/generated/graphlab.recommender.create.html#graphlab.recommender.create
+
+[7] https://dato.com/products/create/docs/generated/graphlab.recommender.popularity_recommender.PopularityRecommender.recommend.html#graphlab.recommender.popularity_recommender.PopularityRecommender.recommend
+
+[8] making recommendations - https://dato.com/learn/userguide/recommender/making-recommendations.html
 
 
 ##==============================================================================
@@ -451,25 +611,5 @@ schema.
 
 [e1] document_retrieval - /curso_uw/programming_exercices/3.retrieving_wikipedia_articles/document_retrieval.ipynb
 
-
-
-What's the most similar article, other than itself, to the one on 'Victoria Beckham' using word count features?  =  name = Mary Fitzgerald (artist), distance = 0.207307036115 
-
-Which one of the two is closest to Elton John,'Victoria Beckham' or 'Paul McCartney'  =  Paul McCartney 
-
-elton john: 3 words in his articles with highest word counts  =  {18: 'in', 27: 'the', 15: 'and'} 
-
-What's the most similar article, other than itself, to the one on 'Victoria Beckham' using TF-IDF features?  =  name = David Beckham, distance = 0.548169610263 
-
-elton john: 3 words in his articles with highest TF-IDF  =  {18.38947183999428: 'furnish', 17.30368095754203: 'billboard', 17.482320270031995: 'elton'} 
-
-cosine distance between the articles on 'Elton John' and 'Paul McCartney'  =  0.825031002922 
-
-cosine distance between the articles on 'Elton John' and 'Victoria Beckham'  =  0.956700637666 
-
-What's the most similar article, other than itself, to the one on 'Elton John' using word count features?  =  name = Cliff Richard, distance = 0.16142415259 
-
-What's the most similar article, other than itself, to the one on 'Elton John' using TF-IDF features?  =  name = Rod Stewart, distance = 0.717219667893 
-
-Which one of the two is closest to Elton John, Does this result make sense to you?  =  Yes. They two have simlilar ages, and they are in music during the same period of history)
+[e2] recommender_system - /curso_uw/programming_exercices/4.recommending_songs/song_recommender.ipynb
 
