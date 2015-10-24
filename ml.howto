@@ -21,6 +21,9 @@
 #     1.3 Clustering [2].41-42
 #
 #     1.4 Recommender Systems
+#     	  1.4.1 Building a recommender system
+#     	  1.4.2 Collaborative Filtering
+#     	  1.4.3 Performance metric for recommender systems
 #
 #     1.? Dimensionality Reduction [2].43-46
 #
@@ -431,20 +434,179 @@ def (GOTO Glossary.Clustering)
 # 1.4 Recommender Systems [3.4] [2].55-59
 ##------------------------------------------------------------------------------
 
-
 NOTICE  Supervised learning model
+
+INFO Users & Items are of the same type: recommendation =  (user, item) pair
 
 
 # 1.4.1 Building a recommender system
 
+a) Solution 0: Popularity [e2]
+
+   - Implementation: rank by GLOBAL popularity
+
+   - Pros: easy
+
+   - Limitations: no personalization -> makes the same prediction for all users
+
+b) Solution 1: Classification model
+
+   - Implementation: prob(user_u-like-produc_p) ?
+
+   - Pros:
+
+     > personalized: uses user info & purchase history
+
+     > Features can capture context: Time of the day, what I just saw,…
+     
+     > Even handles limited user history: Age of user, …
+
+   - Limitations:
+
+     > Features may not be available
+
+     > Often doesn't’t perform as well as collaborative filtering methods
 
 
-1.4.?? Collaborative Filtering [2].57
+c) Solution 2: Co-occurrence matrix (user who liked this also liked ...)
 
-Matrix factorization model
+   Pros    Personalization
+   Limits  No capture context
+   
+
+   - Implementation: co-occurrence matrix
+     > #items x #items matrix
+     > Symmetric: # purchasing i & j same as # for j & i (C_ij = C_ji)
+     
+   i) Making Recommendations:
+
+      A User liked product ABC, what other products can the system recommend?
+
+      1. Look at ABC row of matrix
+      2. Recommend other items with largest counts
 
 
-# 1.4.END Performance metric for recommender systems
+   ii) Is a skewed matrix => Normalize co-occurrences: Similarity matrix
+
+       • Jaccard similarity (normalizes by popularity): Who purchased i and j
+         divided by who purchased i or j: C_ij = Ci*Cj / Ci+Cj
+
+       • Many other similarity metrics possible, e.g., cosine similarity
+
+   - Limitations:
+
+     > No history used in the recommendations.
+
+
+   iii) (Weighted) Average of purchased items
+
+   	A User liked product ABC & DEF, what other products recommend?
+
+	1. Compute user-specific score for each item j in inventory by
+	   combining similarities:
+
+	   Score (user_u, new_item_j) = 1/2(S_j_abc + S_j_def)
+
+	   note.- could also weight recent purchases more
+
+	2. Sort Score(user_u, j) and find item j with highest similarity
+
+	ooO(new product-j will be recommended to user_u based on  all the
+	    scores in the matrix for all the  products that user_u just liked)
+
+   - Limitations:
+
+     > Does not utilize: context (e.g., timeofday), user features (e.g., age),
+       product features (e.g., baby vs electronics)
+
+     > Cold start problem: no info for new users.
+
+
+d) Solution 3: Discovering hidden structure by matrix factorization ->
+   	       Collaborative Filtering
+
+
+# 1.4.2 Collaborative Filtering [2].55-59
+
+  Problem: matrix of users-items with some pairs user-item unknown.
+  Solution: all the users collaborate to fulfill the empty values.
+
+  (i.e. Users scoring some movies based on some movies features) 
+
+
+a) Problem formulation
+
+   n_u: number of users
+   n_m: number of movies
+   r(i,j) = 1 iff user-j has rated movie-i
+
+             | rating by user-j of movie-i    if r(i,j)==1
+   y(i,j) = <    
+             | ?			      otherwise
+
+
+   Matrix: user/movies where X= features of the movies
+
+   Approach: apply linear regression for every single user to predict y(i,j)
+   
+
+b) Algorithm [2].58
+
+   i) Data pre-processing: mean normalization -> this resolves cold start
+      problem for new users (but not for new movies)
+
+
+   ii) step 1: initialize X^i; θ^j to small random values.
+
+       ooO(this breaks symmetry, ensuring that the algorithm learns features
+       	   that are different from each other)
+
+
+   iii) step 2: minimize J(X, θ) using Gradient descent or other optimization
+   	algorithm. Applying regularization!
+
+
+   iv) step3: - For a user-j with parameters θ           |
+                                                          > -> predict (θ'X)
+              - For a movie-i with (learned) features X  |
+
+
+c) (Optimization) "Low Rank Matrix" factorization model
+
+  ooO(Low Rank Matrix is a linear algebra property)
+
+  Y =  X * θ'
+
+  where: 
+  	 Y = Y(i,j) == 1 if movie-i is ranked by user-j
+
+	 X = [X^i']
+
+	 θ = [θ^j'] 
+
+
+  FINALLY: What new movies to recommend to a user?
+
+  - Given learned vector X, small || X^i - X^j || means movies are similar
+
+  - Then recommend the n-smaller values
+
+
+d) Conclusions: combining features and discovered topics [3.4].31
+
+   • Features capture context: Time of day, what I just saw, user info, past
+     purchases,…
+
+   • Discovered topics from matrix factorization capture groups of users who
+     behave similarly (e.g. Women from Seattle who teach and have a baby)
+
+   • Combine to mitigate cold-start problem
+     - Ratings for a new user from features only
+     - As more information about user is discovered, matrix factorization
+       topics become more relevant
+
+
+# 1.4.3 Performance metric for recommender systems
 
   - Use precision & recall (GOTO 7.2): recommender systems only cares of the
     very few liked items -> skewed cases -> accuracy is a bad measure (GOTO
@@ -1494,6 +1656,7 @@ V
 
 [e1] k-means random initialization - /curso_stanford/programming_exercices/ex7.week8/mlclass-ex7/kMeansInitCentroids.m
 
+[e2] recommender_system - /curso_uw/programming_exercices/4.recommending_songs/song_recommender.ipynb
 
 
 
