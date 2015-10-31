@@ -4,11 +4,12 @@
 ## INDEX
 ##==============================================================================
 
-# 1.- Machine Learning methods to solve problems
+# 1.- Machine Learning models
 #
 #     1.1 Linear Regression
 #     	  1.1.1 Linear Regression basics
 # 	  1.1.2 Problem description
+#
 #     1.2 Logistic Regression
 #     	  1.2.1 Logistic Regression basics
 # 	  1.2.2 Linear Classifiers
@@ -25,11 +26,23 @@
 #     	  1.4.2 Collaborative Filtering
 #     	  1.4.3 Performance metric for recommender systems
 #
+#     1.5 Neural Networks
+#     	  1.5.1 NN Representation
+# 	  1.5.2 NN Learning
+# 	  1.5.3 NN as a machine learning predictor  [2].27
+#
+#     1.6 Deep Learning
+#     	  1.6.1 Neural Network model to solve deep learning
+# 	  1.6.2 Application of deep learning to computer vision
+# 	  1.6.3 Challenges of deep learning 
+# 	  1.6.4 Deep Features: deep learning + transfer learning
+#
+#
 #     1.? Dimensionality Reduction [2].43-46
 #
-#     1.? Anomaly Detection  [2].47-53
 #
-#     1.? Neural Networks [2].21-27 & [2].31  NOTICE Super/Unsup/Reinforc model
+#     1.? Anomaly Detection  [2].47-53
+#     
 #
 #     1.? Support Vector Machines [2].35-38   NOTICE  Supervised learning model
 #
@@ -43,6 +56,9 @@
 #     	   2.1.2 Vectorized Notation
 #     	   2.1.3 Speeding up Gradient Descent
 #     	   2.1.4 Debugging Gradient Descent [2].p7
+#     2.2 Backpropagation Algorithm
+
+
 
 # 3.- Unsupervised Learning Algorithms
 #
@@ -82,7 +98,7 @@
 # 	  6.3.3 Is 'm' OK? - Learning curves: 'm' selection
 # 	  6.3.4 Is λ OK? - Regularization & Bias/Variance: selecting λ
 # 	  6.3.5 The decision process
-#     6.4 Neural Networks Diagnosis FIXME_TODO
+#     6.4 Neural Networks Diagnosis
 
 # 7.- Machine Learning systems design [2].page33
 #
@@ -136,7 +152,7 @@ INFO Notation   A /=> B: A does not implies B
 
 
 ##==============================================================================
-## 1.- Machine Learning methods to solve problems
+## 1.- Machine Learning models
 ##==============================================================================
 
 ##------------------------------------------------------------------------------
@@ -623,6 +639,286 @@ d) Conclusions: combining features and discovered topics [3.4].31
   
 
 
+##------------------------------------------------------------------------------
+# 1.5 Neural Networks [2].21-27 & [2].31
+##------------------------------------------------------------------------------
+
+NOTICE neural networks m.l. models: Supervised / Unsupervised/Reinforcement
+
+
+HINT Neural networks -> Learning *very* non-linear features
+
+     => A neural network learns its own features => complex & flexible features
+     arise => ALOWING the CALCULATION of more COMPLEX NON-LINEAR functions.
+
+     => a NN can represent non-linear separable functions (i.e. XOR)
+
+
+# 1.5.1 NN Representation
+
+
+       Input                      Hidden                    Output
+       Layer                      Layers                    Layer
+
+
+                               θ_1,0^1 = 1                  θ_1,0^2 = 1
+              ((x_0 = a_0^1)) --------+           ((a_0^2)) -----+
+                     |	              |                          |
+                     v GOTO a_2^2     |                          |   
+                                      |                          |
+                                      |                          |
+                    θ_1,1^1           v           θ_1,1^2        v
+   ((x_1 = a_1^1)) ------------->  ((a_1^2))   ----------->  ((a_1^3))
+         |                              ^                         ^
+         |   θ_2,1^1                    |                         |
+         |                              |                         |
+	 +--------------------------+   |                         |
+                                    |   |                         |
+                                    |   |                         |
+             θ_1,2^1                |   |                         |
+         +------------------------------+                         |
+	 |                          |                             |
+	 |                          |                             |	 
+         |            θ_1,2^        v               θ_1,2^2       |
+   ((x_2 = a_2^1))  ------------>  ((a_2^2))  --------------------+
+
+
+
+     a_1^2 = g(θ_1,0^1 * a_0^1  +  θ_1,1^1 * a_1^1  +  θ_1,2^1 * a_2^1)
+     ...
+
+
+
+a) Vectorized Notation
+
+   a^j = g(z^j)
+
+   z^j = θ^(j-1) * a^(j-1)
+
+
+   Notes.-
+
+   - a_k^j: k = node ; j = layer
+
+   - g ≡ sigmoid function ooO(Derivable function to be used by G.D. Algorithm)
+
+
+                                                             (+1 from bias)Ooo
+                       | S_j units, layer-j     |                            o
+   - Size of θ matrix <                          => size θ^j = S_j+1 * (S_j + 1)
+                       | S_j+1 units, layer-j+1 |
+ 
+
+b) Examples and intuitions [2].22
+
+   - AND, OR: no hidden layers
+   
+   - XOR, XNOR: requires a hidden layer
+
+
+c) Multiclass classification
+
+                                  | h, y ∉ {1, 2, .., n}
+   X -> a^j -> ... -> [h]  t.q.  <
+                                  | h, y ∈ [1 0 .. 0]' , [0, 1, .. 0]', [0..1]'
+
+
+# 1.5.2 NN Learning
+
+a) Representation
+
+   L:        number of layers
+   S_l:      number of units in layer-l (not counting the bias)
+   K:        number of units/classes in the output layer
+   h_θ(x)_k: hypothesis in the k-th output   
+
+b) Cost Function  ooO(generalization of Logistic Regression with Regularization)
+
+   J(θ) = -1/m ((SUM_i=1_to_m SUM_k=1_to_K y_k^i log((h(x^i)_k)) +
+   	        + (1-y_k^i) log (1-(h(x^i))_k) ) +
+		# regularization part
+	        λ/(2m) SUM_l=1_to_L-1 SUM_i=1_to_Sl SUM_j=1_to_S_j+1 (θ_j,i^l)^2
+
+c) Backpropagation Algorithm (GOTO 2.2)
+
+
+# 1.5.3 NN as a machine learning predictor  [2].27
+
+a) Architecture selection
+
+   - Input units = #features = size(x^i)
+
+   - Output units = #classes = size(y^i)
+   
+   - How many hidden layers ?
+     Does not exists any rule -> use NN cross validation (GOTO 6.4)
+
+     Note.- Theorem of Finahashi: NN with one only hidden layer can compute,
+     	    (with a little error), any function iff the hidden layer has #units
+     	    enough.
+
+- How many units per hidden layer ?
+     > All the hidden layers MUST have the same number of units.
+     > BUT does not exists any rule to decide how many units must have a layer.
+
+   
+b) TRAINING the NN (6 steps)
+
+   step 1) Randomly initiate weights.
+
+   step 2) Implement forward propagation to calculate h_θ(x^i)
+
+   step 3) Implement the cost function (J(θ))
+
+   step 4) Implement backpropagation to compute the Gradient (D^l)
+
+       ooO(
+	   
+   	   FOR i=1 to m   ooO(pairs (x^i, y^i))
+
+	       Forward-propagation on (x^i, y^i)
+	       Back-propagation on (x^i, y^i)
+	       
+                           | activations a^l
+	       ... to get <                     ; l= 2, 3, .., L
+                           | delta items δ^l
+
+   	   EN_FOR
+
+	   Finally compute D^l
+
+	   )
+
+
+   step 5) Use Gradient Descent ONCE to confirm that Back-propagation works OK
+   	   and then disable Gradient Descent.
+
+   step 6) minimize J(θ) using G. D. alg. OR an advanced optimization method
+
+
+	   
+##------------------------------------------------------------------------------
+# 1.6 Deep Learning
+##------------------------------------------------------------------------------
+
+Def Is a branch of machine learning based on a set of algorithms that attempt
+    to model high-level abstractions in data by using MULTIPLE processing
+    LAYERS with complex structures or otherwise, composed of MULTIPLE
+    NON-LINEAR TRANSFORMATIONS. [5.1]
+
+    Keys: (1) MULTIPLE LAYERS of nonlinear processing units
+    	  (2) the supervised or unsupervised learning of feature
+     	  representations in each layer, with the layers forming a hierarchy
+     	  from low-level to high-level features.
+
+Applications: [5.1]
+    - Automatic speech recognition
+    - Image recognition
+    - Natural language processing
+    - Drug discovery and toxicology
+    - Customer relationship management
+
+
+# 1.6.1 Neural Network model to solve deep learning
+
+- NN (GOTO 1.5)
+
+
+# 1.6.2 Application of deep learning to computer vision
+
+a) Image features
+
+- Features = collections of locally interesting points (angles, ... => eye,
+  nose, ...), combined to build classifiers => make predictions (face, no face)
+
+
+b)  Standard image classification approach
+
+    Input -> extract features (hand-created) -> Use simple classifier
+                                                (e.g. logistic regression, SVMs)
+
+    - PROBLEM Hand-created features are very painful to design.
+
+    - SOLUTION deep-learning NN implicitly learns features:
+
+      Input -> layer 1 -> .. -> layer n -> Prediction
+    
+
+# 1.6.3 Challenges of deep learning
+
+Pros
+
+• Enables learning of features rather than hand tuning
+
+• Impressive performance gains
+  - Computer vision
+  - Speech recognition
+  - Some text analysis
+
+• Potential for more impact
+
+
+Cons
+
+• Requires a lot of data for high accuracy
+
+• Computationally really expensive
+
+• Extremely hard to tune
+  - Choice of architecture
+  - Parameter types
+  - Hyperparameters
+  - Learning algorithm
+
+
+    Computational cost+ so many choices = incredibly hard to tune
+
+
+# 1.6.4 Deep Features: deep learning + transfer learning
+
+Hint  Deep features allow to build neural networks EVEN WHEN YOU DON'T HAVE A
+      LOT OF DATA.
+
+
+- Transfer learning: Use data from one task to help learn on another
+
+   Use neural network models trained in one domain as features for building a
+   model in another domain
+
+
+a) Intuition:
+
+   - LOTS of data => Learn NN => Great accuracy CONCRETE case (i.e. cat vs dog)
+
+   - SOME data    => NN as feature extractor => Great a. on SEVERAL categories
+                     + simple classifier
+
+
+b) Transfer Learning detail
+
+   - NN layers =    generic layers   +  problem-specific layers
+                 (i.e. eye detector)       (i.e. cat vs dog)
+
+
+   - T.L. application =
+
+     1) use generic layers as feature extractors (keeping weights fixed)
+
+     2) Ignore (cut) the very specific layers
+
+     3) Apply a simple classifier after the last generic layer
+
+
+c) Transfer Learning workflow
+
+                                           | T.set => Learn simple classifier
+   SOME labeled  ->  Extract features  -> <                       |
+        data         with a NN trained     |                      v
+	            on a different task    | Validation set => validate
+
+
+
+
 
 ##==============================================================================
 ## 2.- Supervised Learning Algorithms
@@ -667,7 +963,7 @@ d) Conclusions: combining features and discovered topics [3.4].31
   > Logistic Regression
 
 
-  2.1.1 Equation
+  # 2.1.1 Equation
 
   # Notation note.- theta = θ
   # Notation note.- h_theta = h
@@ -685,7 +981,7 @@ d) Conclusions: combining features and discovered topics [3.4].31
   }
 
 
-  2.1.2 Vectorized Notation (see glossary for details)
+  # 2.1.2 Vectorized Notation (see glossary for details)
 
   	# INFO Notation in vectorized notation, uppercase means MATRIX &
   	# lowercase means scalar variable.
@@ -718,14 +1014,14 @@ d) Conclusions: combining features and discovered topics [3.4].31
        θ = θ - (α * grad)
 
 
-  2.1.3 Speeding up Gradient Descent
+  # 2.1.3 Speeding up Gradient Descent
 
   	 - feature scaling technique (GOTO 4.1)
 	 - mean normalization technique (GOTO 4.2)
 	 - Polynomial Regression technique (GOTO 4.3)
 
 
-  2.1.4 Debugging Gradient Descent [2].p7
+  # 2.1.4 Debugging Gradient Descent [2].p7
   
   a) α selection for GD
 
@@ -749,6 +1045,34 @@ d) Conclusions: combining features and discovered topics [3.4].31
 	Convergence iff curve form is the expected (fast fall - medium fall -
 	almost flat)
 
+
+
+
+##------------------------------------------------------------------------------
+# 2.2 Backpropagation Algorithm
+##------------------------------------------------------------------------------
+
+Def [5.3] Backpropagation, an abbreviation for "backward propagation of
+    errors", is a common method of training artificial neural networks USED IN
+    CONJUNCTION WITH AN OPTIMIZATION METHOD such as gradient descent.
+
+
+1.- GOAL: The method calculates the gradient of a loss function with respect to
+    	  all the weights in the network (θ_j,i^l)
+
+2.- USE The gradient is fed to the optimization method which in turn uses it to
+    	update the weights, in an attempt to minimize the loss function.
+
+	-> to predict the result of a new input.
+
+
+WARNING Backpropagation requires a known, desired output for each input value
+	in order to calculate the loss function gradient. It is therefore
+	usually considered to be a supervised learning method (although it is
+	also used in some unsupervised networks such as autoencoders)
+
+
+Detail [2].23-27
 
 
 ##------------------------------------------------------------------------------
@@ -1202,7 +1526,30 @@ HINT Models with less bias need more data to learn (initially slow learning ->
      WARNING Adding training examples (+m) does not fix high bias.
      
 
-# 6.4 Neural Networks Diagnosis
+# 6.4 Neural Networks Diagnosis [2].31
+
+  a) Number of parameters ?
+
+                                    | - under-fitting
+     - NN with few parameters  =>  <
+                                    | - computationally cheaper
+
+
+                                    | - over-fitting => use (λ) regularization
+     - larger NN               =>  <
+                                    | - computationally expensive
+
+
+  b) Number of hidden layers ?
+
+     => Use NN cross validation (J_cv)
+
+     i) start with one hidden layer & calculate J_cv
+
+     ii) try with different number of hidden layers & calculate J_cv for each
+
+     iii) Select the value with minimum J_cv
+     
 
 
 ##==============================================================================
@@ -1463,6 +1810,9 @@ HINT Models with less bias need more data to learn (initially slow learning ->
 
 HINT  Decicion boundary is a property of 'h_θ(x)',  it is not a property of 'X'
 
+HINT Neural networks -> Learning *very* non-linear features
+
+
 
 ##==============================================================================
 ## Warnings
@@ -1647,7 +1997,12 @@ V
 [4.7] Decision boundary - https://en.wikipedia.org/wiki/Decision_boundary
 [4.8] Clustering - https://en.wikipedia.org/wiki/Cluster_analysis
 
-[5] Other Web references
+
+[5] Deep Learning
+[5.1] deep learning wiki - https://en.wikipedia.org/wiki/Deep_learning
+[5.2] http://deeplearning.net/
+[5.3] Backpropagation algorithm - https://en.wikipedia.org/wiki/Backpropagation
+
 
 
 ##==============================================================================
