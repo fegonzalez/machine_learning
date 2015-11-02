@@ -20,7 +20,10 @@
 # INDEX
 ################################################################################
 
-# 1) SFrame Basics 
+# 1) SFrame Basics
+#    1.1) Data manipulation
+#    1.2) Canvas
+#    1.3) Computing summary statistics of the data
 
 # 2) SFrame Regression
 
@@ -53,14 +56,14 @@ b) Load dataset
 
    > sf = graphlab.SFrame('people-example.csv') 
 
-c) Data manipulation
+
+# 1.1) Data manipulation
 
    > sf.head() # or just 'sf'
 
    > sf.tail()
 
-
-   i) Operations over dataset's columns
+  a) Operations over dataset's columns
 
    > sf['Country'].head()
 
@@ -103,7 +106,7 @@ c) Data manipulation
 
 	 
 
-   ii) Use the 'apply' function to do a advance transformation of our data
+  b) Use the 'apply' function to do a advance transformation of our data
 
        - Similar to Python.map() but using parallelism.
 
@@ -125,11 +128,15 @@ c) Data manipulation
      type: list
 
 WARNING How to pass a function with arguments to apply:
-	sf['Country'] = sf['Country'].apply(lambda x: transform_country(x,
-	param_2, .., param_n)
+	(e.g)
+	sf['Country'] = sf['Country'].
+		      apply(lambda x: transform_country(x, param_2, .., param_n)
 	
+	(e.g)
+	songs['year'] = songs['year'].apply(lambda x: None if x == 0 else x)
 
-d) Canvas
+
+# 1.2) Canvas
 
    # If you want Canvas visualization to show up on this notebook, 
    # rather than popping up a new window, add this line:
@@ -149,6 +156,28 @@ d) Canvas
    > sales.show(view='BoxWhisker Plot', x='zipcode', y='price')
 
 
+
+
+# 1.3) Computing summary statistics of the data [9]
+
+  Sketch summaries are techniques for computing summary statistics of data very
+  quickly. In GraphLab Create, SFrames and SArrays include a method:
+  .sketch_summary()
+
+  The sketch computation is fast, with complexity approximately linear in the
+  length of the SArray. After the Sketch is computed, all queryable functions
+  are performed nearly instantly.
+
+  a) SArray.sketch_summary(background=False, sub_sketch_keys=None)
+
+     Returns: Sketch object that contains descriptive statistics for this
+     	      SArray. Many of the statistics are approximate.
+
+     
+
+
+
+
 # ==============================================================================
 # 2) SFrame Regression
 # ==============================================================================
@@ -157,6 +186,14 @@ d) Canvas
 
 #INFO Matplotlib is a Python plotting library that is also useful for plotting.
 #     You can install it with: 'pip install matplotlib'
+
+
+STEPS:
+	STEP 1.- Get the proper data set
+	STEP 2.- Training the data set
+	STEP 3.- Evaluate the regression algorithm (test set)
+	STEP 4.- Predict new solutions: apply the regression model to predict.
+
 
 
 ## STEP 1.- Get the proper data set
@@ -434,9 +471,12 @@ schema.
 
   Data structure returned by graphlab.nearest_neighbors.create.
 
-  > NearestNeighborsModel.query(dataset[, ...])
+  > NearestNeighborsModel.query(dataset,
+				label=None,
+				k=5,   # size of the returned SFrame
+				radius=None, verbose=True)
 
-    For each row of the input ‘dataset’, RETRIEVE THE NEAREST NEIGHBORS from
+    For each row of the input ‘dataset’, RETRIEVE THE k NEAREST NEIGHBORS from
     the model’s stored data.
 
     (e.g) [e1]
@@ -604,6 +644,7 @@ d) model.get_similar_items(item)
 
 [8] making recommendations - https://dato.com/learn/userguide/recommender/making-recommendations.html
 
+[9] sketch summary - https://dato.com/products/create/docs/generated/graphlab.Sketch.html
 
 ##==============================================================================
 ## Code examples

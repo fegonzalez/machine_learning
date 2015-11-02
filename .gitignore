@@ -86,6 +86,9 @@ cursos/curso_uw/programming_exercices/1.predicting_house_prices/home_data.gl/*
 cursos/curso_uw/programming_exercices/2.analyzing_product_sentiment/amazon_baby.gl/*
 # 3
 cursos/curso_uw/programming_exercices/3.retrieving_wikipedia_articles/people_wiki.gl/*
+# 6
+cursos/curso_uw/programming_exercices/5.deep_features_for_image_retrieval/image_test_data/*
+cursos/curso_uw/programming_exercices/5.deep_features_for_image_retrieval/image_train_data/*
 
 # quizzes
 cursos/curso_uw/quizzes/*
