@@ -874,19 +874,29 @@ Cons
     Computational cost+ so many choices = incredibly hard to tune
 
 
-# 1.6.4 Deep Features: deep learning + transfer learning
+# 1.6.4 Deep Features: deep learning + transfer learning [e3] [e4]
 
 Hint  Deep features allow to build neural networks EVEN WHEN YOU DON'T HAVE A
       LOT OF DATA.
 
 
-- Transfer learning: Use data from one task to help learn on another
-
-   Use neural network models trained in one domain as features for building a
-   model in another domain
+- Transfer learning: Use data from one task to help learn on another task.
 
 
-a) Intuition:
+a) Transfer Learning workflow
+
+                                           | T.set => Learn simple classifier
+   SOME labeled  ->  Extract features  -> <                       |
+        data         with a NN trained     |                      v
+	            on a different task    | Validation set => validate
+                          (*)
+
+    (*) Problem: current data set too short to extract good features    
+    	Solution: use instead the (valid) features extracted in ANOTHER (long
+    		  enough) domain trained for a similar problem.
+
+
+b) Intuition:
 
    - LOTS of data => Learn NN => Great accuracy CONCRETE case (i.e. cat vs dog)
 
@@ -894,7 +904,7 @@ a) Intuition:
                      + simple classifier
 
 
-b) Transfer Learning detail
+c) Transfer Learning detail
 
    - NN layers =    generic layers   +  problem-specific layers
                  (i.e. eye detector)       (i.e. cat vs dog)
@@ -907,16 +917,6 @@ b) Transfer Learning detail
      2) Ignore (cut) the very specific layers
 
      3) Apply a simple classifier after the last generic layer
-
-
-c) Transfer Learning workflow
-
-                                           | T.set => Learn simple classifier
-   SOME labeled  ->  Extract features  -> <                       |
-        data         with a NN trained     |                      v
-	            on a different task    | Validation set => validate
-
-
 
 
 
@@ -2013,6 +2013,9 @@ V
 
 [e2] recommender_system - /curso_uw/programming_exercices/4.recommending_songs/song_recommender.ipynb
 
+[e3] Deep_Features_for_Image_Classification - /curso_uw/programming_exercices/5.deep_features_for_image_retrieval/Deep_Features_for_Image_Classification.ipynb
+
+[e4] Building an image retrieval system with deep features¶ - /curso_uw/programming_exercices/5.deep_features_for_image_retrieval/Deep_Features_for_Image_Retrieval.ipynb
 
 
 
