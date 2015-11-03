@@ -67,6 +67,10 @@ cursos/curso_stanford/lectures/*
 ## cursos/curso_uw/
 #===============================================================================
 
+#-------------------------------------------------------------------------------
+#  Base dir
+#-------------------------------------------------------------------------------
+
 # avoid local links
 !cursos/curso_uw/ipython_books/ipython2
 !cursos/curso_uw/ipython_books/launcher_ipython2
@@ -76,22 +80,27 @@ cursos/curso_stanford/lectures/*
 # tools
 cursos/curso_uw/tools/sframe/doc/*
 
+#-------------------------------------------------------------------------------
+#  1.ml_foundations
+#-------------------------------------------------------------------------------
+
 # programming_exercices
 # 1
-cursos/curso_uw/programming_exercices/1.predicting_house_prices/statement/local_copy/*
-cursos/curso_uw/programming_exercices/1.predicting_house_prices/enunciado
-cursos/curso_uw/programming_exercices/1.predicting_house_prices/sframe_doc
-cursos/curso_uw/programming_exercices/1.predicting_house_prices/home_data.gl/*
+cursos/curso_uw/1.ml_foundations/programming_exercices/1.predicting_house_prices/statement/local_copy/*
+cursos/curso_uw/1.ml_foundations/programming_exercices/1.predicting_house_prices/enunciado
+cursos/curso_uw/1.ml_foundations/programming_exercices/1.predicting_house_prices/sframe_doc
+cursos/curso_uw/1.ml_foundations/programming_exercices/1.predicting_house_prices/home_data.gl/*
 # 2
-cursos/curso_uw/programming_exercices/2.analyzing_product_sentiment/amazon_baby.gl/*
+cursos/curso_uw/1.ml_foundations/programming_exercices/2.analyzing_product_sentiment/amazon_baby.gl/*
 # 3
-cursos/curso_uw/programming_exercices/3.retrieving_wikipedia_articles/people_wiki.gl/*
+cursos/curso_uw/1.ml_foundations/programming_exercices/3.retrieving_wikipedia_articles/people_wiki.gl/*
 # 6
-cursos/curso_uw/programming_exercices/5.deep_features_for_image_retrieval/image_test_data/*
-cursos/curso_uw/programming_exercices/5.deep_features_for_image_retrieval/image_train_data/*
+cursos/curso_uw/1.ml_foundations/programming_exercices/5.deep_features_for_image_retrieval/image_test_data/*
+cursos/curso_uw/1.ml_foundations/programming_exercices/5.deep_features_for_image_retrieval/image_train_data/*
 
 # quizzes
-cursos/curso_uw/quizzes/*
+cursos/curso_uw/1.ml_foundations/quizzes/*
+#-------------------------------------------------------------------------------
 
 
 #===============================================================================
