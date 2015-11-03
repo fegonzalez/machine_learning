@@ -105,7 +105,7 @@
 #     7.1 Error analysis
 #     7.2 Error metrics for skewed classes: apply the Precision-Recall trade-off
 #     7.3 How much data should we train?. Learning curves
-
+#     7.4 Ceiling Analysis: what part of the problem pipeline to work on next?
 
 # 8.- Some Machine Learning Problems 
 #
@@ -1633,6 +1633,53 @@ HINT what accuracy does my application need?
 
     b) First: get a low bias algorithm.
        Second: reduce overfiting and increase the accuracy of the training set.
+
+
+# 7.4 Ceiling Analysis  [2].67
+
+  - What part of the problem pipeline to work on next to improve the solution?
+
+  - Behind idea: is this step would be perfect, how much the overall system
+    would improve?
+
+  STEP 1: Estimating the errors due to each component of the model.
+
+  STEP 2: Avoid the tasks with very few error (worthless improve), and dedicate
+  the time only to resolve the steps with high error (worthful improve)
+
+  * Example (photo OCR problem
+
+
+    Pipeline                       Component             Accuracy  
+   ----------                     -----------           ----------
+
+     Image                        Overall system           72%
+                                                            \ 
+      |                                                      |  17% error
+      v                                                     /
+                                                           v 
+    Text Detection                Text Detection          89% (*1)
+
+      |
+      v
+
+    Character segmentation        Char. Seg.              90%
+                                                            \ 
+      |                                                      |  10% error
+      v                                                     /
+                                                           v 
+    Char. recognition             Char. Recognition       100%
+
+
+    > Ceiling Analysis:
+      - Char segmentation step improve is worthless.
+      - Text detection & Char. recognition are worthful
+
+      (*1) How do we know that perfect text detection improves accuracy to 89%?
+      	   i.e. we could manually fix all the text detection errors and then
+      	   recalculate the accuracy before-after
+      	   
+
 
 
 
