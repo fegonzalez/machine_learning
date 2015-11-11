@@ -1,0 +1,171 @@
+################################################################################
+# INDEX
+################################################################################
+
+# 1) Learning and predicting
+#    1.1) Estimator object
+
+# 2) Model persistence
+
+# 3) Conventions
+
+# Annex 1.- Example data
+
+# Annex 2.- sklearn methods
+
+## References
+
+## Code examples
+
+
+
+# ==============================================================================
+# 1) Learning and predicting [1.1]
+# ==============================================================================
+
+# 1.1) Estimator object for classification
+
+- Python object that implements the methods fit(X, y) and predict(T)
+
+>>> from sklearn import svm
+>>> clf = svm.SVC(gamma=0.001, C=100.)
+
+
+a) Choosing the parameters of the model
+
+  It is possible to automatically find good values for the parameters by using
+  tools such as 'grid search' and 'cross validation'.
+
+
+b) Learning (fit)
+
+   fit(X, y, sample_weight=None): fit the model training data.
+
+>>> X = digits.data[:-1]	# all but the last elements (using last as test)
+>>> y = digits.target[:-1]
+>>> clf.fit(X, y)
+
+
+c) Predicting
+
+   y_pred = predict(X): perform classification on samples in X.
+
+>>> clf.predict(digits.data[-1:])
+    array([8])                     #thus: an '8' was predicted
+
+
+
+##==============================================================================
+## 2) Model persistence
+##==============================================================================
+
+a) Python generic (pickle.dumps & pickle.loads)
+
+>>> import pickle  #Create portable serialized representations of Python objects
+>>> s = pickle.dumps(clf)   # object to byte array
+>>> clf2 = pickle.loads(s)  # byte array to object
+>>> clf2.predict(digits.data[-1:])
+array([8])
+
+
+b) scikit specific (joblib.dump & joblib.load):
+
++ More efficient for big data
+- But can only pickle to the disk and not to a string:
+
+>>> from sklearn.externals import joblib
+>>> joblib.dump(clf, 'filename.pkl') 
+>>> clf2 = joblib.load('filename.pkl')
+>>> clf2.predict(digits.data[-1:])
+array([8])
+
+
+##==============================================================================
+## 3) Conventions
+##==============================================================================
+
+- scikit-learn estimators follow certain rules to make their behavior more
+  predictive.
+
+
+# a) Type casting [1.1]
+
+     - Unless otherwise specified, input will be cast (returned) to float64
+
+     - Regression targets are cast to float64
+
+     - classification targets are maintained
+
+
+# b) Refitting and updating parameters [1.1]
+
+     - Hyper-parameters of an estimator can be updated after it has been
+       constructed via the 'sklearn.pipeline.Pipeline.set_params' method.
+
+WARNING Calling fit() more than once will overwrite what was learned by any
+	previous fit():
+
+>>> clf.set_params(kernel='linear').fit(X, y)
+>>> clf.predict(digits.data)
+array([0, 1, 2, ..., 8, 9, 8])
+>>> clf.set_params(kernel='rbf').fit(X, y)
+>>> clf.predict(digits.data)
+array([0, 1, 2, ..., 8, 9, 8])   # In this case the result is the same
+
+
+
+##==============================================================================
+## Annex 1.- Example data
+##==============================================================================
+
+1) Loading example datasets [1.1]
+
+- for classification: 'iris' and 'digits' datasets.
+- for regression: the 'boston house prices' dataset
+
+  $ python
+  >>> from sklearn import datasets
+  >>> iris = datasets.load_iris()
+  >>> digits = datasets.load_digits()
+  >>> iris.keys()
+  dict_keys(['DESCR', 'feature_names', 'data', 'target', 'target_names'])
+
+- iris.data: X
+- iris.target: y #regression only
+
+- Shape of the data arrays: the data is always a 2D array, shape (n_samples,
+  n_features).
+
+
+
+##==============================================================================
+# Annex 2.- sklearn methods
+##==============================================================================
+
+- fit(X, y, sample_weight=None): fit the model training data.
+
+- predict(X): perform classification on samples in X.
+
+- set_params(**params): set the parameters of this estimator.
+
+
+
+##==============================================================================
+## References
+##==============================================================================
+
+[1] sklearn main doc page - http://scikit-learn.org/stable/documentation.html
+
+[1.1] Intro - http://scikit-learn.org/stable/tutorial/basic/tutorial.html
+
+[1.2] complete user guide - http://scikit-learn.org/stable/user_guide.html
+
+[1.3] api - http://scikit-learn.org/stable/modules/classes.html
+
+
+##==============================================================================
+## Code examples
+##==============================================================================
+
+[e1] document_retrieval - /curso_uw/programming_exercices/3.retrieving_wikipedia_articles/document_retrieval.ipynb
+
