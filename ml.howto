@@ -122,7 +122,7 @@
 
 # Annex.- Linear Algebra Review
 
-# Glossary 
+# Annex.- Glossary 
 
 # References
 
@@ -643,7 +643,7 @@ d) Conclusions: combining features and discovered topics [3.4].31
 # 1.5 Neural Networks [2].21-27 & [2].31
 ##------------------------------------------------------------------------------
 
-NOTICE neural networks m.l. models: Supervised / Unsupervised/Reinforcement
+NOTICE neural networks m.l. models: Supervised / Unsupervised/ Reinforcement
 
 
 HINT Neural networks -> Learning *very* non-linear features
@@ -1898,7 +1898,7 @@ WARNING case 'z -> ∞' (e.g. θ'x very big): logistic regression has no solutio
 
 
 ##==============================================================================
-## Annex.- Glossary 
+# Annex.- Glossary 
 ##==============================================================================
 
 A
@@ -1912,8 +1912,9 @@ B
 
 C
 
-- Classification Problem: to predict the actual DISCRETE valued output
-  (i.e. {yes, no})
+- Classification Problem: to PREDICT the actual DISCRETE valued output. In
+  other words, we are trying to map input variables into discrete categories
+  (e.g. {yes, no})
   
 - Clustering (Cluster analysis): cluster analysis or clustering is the task of
   grouping a set of objects in such a way that objects in the same group
@@ -1972,7 +1973,8 @@ R
 
 - Recall: see 4.4
 
-- Regression Problem: predict the actual CONTINUOUS valued output.
+- Regression Problem: PREDICT the actual CONTINUOUS valued output, meaning that
+  we are trying to map input variables to some continuous function.
 
 - RMSE: Root-mean-square error (or r-m-s deviation) -
   https://en.wikipedia.org/wiki/Root-mean-square_deviation
@@ -1998,9 +2000,15 @@ S
   Skewed classes can be evaluated using the Precision/Recall technique (see 4.4)
   WARNING Accuracy is a bad index to evaluate skewed classes (always high)
 
-- Supervised Learning (Algorithms): for every example of the data set, we are
-  provided with the "correct answer" to predict. Thus, the training example
-  sets are provided to the algorithm.
+
+- Supervised Learning (Algorithms): is the machine learning task of inferring a
+  function from labeled training data.
+
+  For every example of the data set, we are provided with the "correct answer"
+  to predict. Thus, the training example sets are provided to the algorithm.
+
+  Supervised learning problems are categorized into "regression" and
+  "classification" problems.
 
 
 U
